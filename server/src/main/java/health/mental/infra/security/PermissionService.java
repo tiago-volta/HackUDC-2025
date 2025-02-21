@@ -32,7 +32,7 @@ public class PermissionService {
         SimpleGrantedAuthority psico = new  SimpleGrantedAuthority(UserRole.PSICO.toString());
         SimpleGrantedAuthority admin = new SimpleGrantedAuthority(UserRole.ADMIN.toString());
 
-        hierarchy.put(UserRole.ADMIN, List.of(psico, user, admin));
+        hierarchy.put(UserRole.ADMIN, List.of(admin,psico, user));
         hierarchy.put(UserRole.PSICO, List.of(user,psico));
         hierarchy.put(UserRole.USER, List.of(user));
 
@@ -50,15 +50,19 @@ public class PermissionService {
         auth.put(HttpMethod.POST, null);
         auth.put(HttpMethod.GET, null);
         urlPermissions.put("/gpt/ask", auth);
-
+        urlPermissions.put("/chat/new", auth);
 
         auth = new HashMap<>();
         auth.put(HttpMethod.POST, Set.of(UserRole.ADMIN));
         urlPermissions.put("/product", auth);
 
+
         auth = new HashMap<>();
         auth.put(HttpMethod.GET, Set.of(UserRole.PSICO));
         urlPermissions.put("/product/{id}", auth);
+
+
+
 
     }
 
@@ -82,8 +86,9 @@ public class PermissionService {
 
         try {
             Set<UserRole> roles  = urlPermissions.get(url).get(HttpMethod.valueOf(method));
-            return user.getAuthorities().stream().anyMatch(a -> roles.contains(UserRole.valueOf(a.getAuthority().split("_")[1].toUpperCase())));
+            return user.getAuthorities().stream().anyMatch(a -> roles.contains(UserRole.valueOf(a.getAuthority().toUpperCase())));
         }catch (NullPointerException e){
+
             return true;
         }
 

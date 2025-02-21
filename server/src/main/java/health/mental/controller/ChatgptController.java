@@ -2,9 +2,11 @@ package health.mental.controller;
 
 import health.gpt.model.ChatgptRequest;
 import health.gpt.model.ChatgptResponse;
+import health.mental.domain.Chat.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +28,8 @@ public class ChatgptController {
 
     @Value("${chatgpt.api.key}")
     private String apiKey;
+
+
 
     private static RestTemplate restTemplate = new RestTemplate();
 

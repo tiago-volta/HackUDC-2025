@@ -36,6 +36,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var login = tokenService.validateToken(token);
                 UserDetails user = userRepository.findByLogin(login);
                 if(!permissionService.hasPermission(request, user)){
+
                     sendError(response, HttpServletResponse.SC_FORBIDDEN, "You don't have permission to access this resource");
                     return;
                 }
