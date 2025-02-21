@@ -4,10 +4,7 @@ package health.mental.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import health.mental.domain.Chat.Chat;
-import health.mental.domain.Chat.ChatCreatedDTO;
-import health.mental.domain.Chat.ChatReturnDTO;
-import health.mental.domain.Chat.ChatService;
+import health.mental.domain.Chat.*;
 import health.mental.domain.Product.Product;
 import health.mental.domain.Product.ProductMapper;
 import health.mental.domain.Product.ProductRequestDTO;
@@ -26,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +57,8 @@ public class ChatController {
         if(user == null)
             return ResponseEntity.badRequest().body("User not found");
 
+
+
         var chat = chatRepository.save(new Chat(user));
 
         return ResponseEntity.ok(new ChatCreatedDTO(chat.getId().toString()));
@@ -78,7 +78,7 @@ public class ChatController {
 
     @PostMapping("/{id}")
     @Operation(summary = "Send message to chat", description = "Send message to chat and get an answer")
-    public ResponseEntity sendMessage(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken, @RequestBody String msg) {
+    public ResponseEntity sendMessage(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken, @RequestBody MessageRequestDTO msg) {
         String token = bearerToken.substring(7);
         String userLogin = tokenService.validateToken(token);
         var user =  (User) userRepository.findByLogin(userLogin);
@@ -88,11 +88,16 @@ public class ChatController {
         var chat =  chatRepository.findById(id);
         if(chat == null)
             return ResponseEntity.badRequest().body("Chat not found");
-        var answer = chatgptController.ask(chatService.buildQuestion(msg));
+        var answer = chatgptController.ask(chatService.buildQuestion(msg.getMsg()));
 
         try {
+            if (chat.get().getChatMsgs().isEmpty()){
+                chat.get().setTitle(chatgptController.ask("Say the title of the chat based on the first message of our chat:"+msg.getMsg()+". Please answer only the title without puting it in any object").getBody());
+            }
 
-            chat.get().addMsg(msg, answer.getBody());
+            chat.get().addMsg(msg.getMsg(), answer.getBody());
+
+            chatRepository.save(chat.get());
         }catch(Exception e){
             ResponseEntity.badRequest().body("Error in the answer");
         }
@@ -107,6 +112,25 @@ public class ChatController {
     public ResponseEntity deleteChat(@PathVariable Long id) {
         chatRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/history")
+    @Operation(summary = "Get chat history", description = "Get chat history by user")
+    public ResponseEntity getChatHistory(@RequestHeader("Authorization") String bearerToken) {
+        String token = bearerToken.substring(7);
+        String userLogin = tokenService.validateToken(token);
+        var user =  (User) userRepository.findByLogin(userLogin);
+        if(user == null)
+            return ResponseEntity.badRequest().body("User not found");
+
+        var chats = chatRepository.findByUser(user);
+        List<ChatHistoryDTO> chatHistory = new ArrayList<>();
+        for(Chat chat: chats){
+            if(chat.getChatMsgs().isEmpty())
+                continue;
+            chatHistory.add(new ChatHistoryDTO(chat.getId().toString(), chat.getTitle(), chat.getChatMsgs()));
+        }
+        return ResponseEntity.ok(chatHistory);
     }
 
 

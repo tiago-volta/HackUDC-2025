@@ -40,6 +40,10 @@ You will recieve a Json like this:
     }
 }
 
+Here goes the JSON with the input information:
+
+{$JSON$}
+
 You must return message with a hidden JSON response with your analysis and recommendations:
 
 {
@@ -72,6 +76,7 @@ You must return message with a hidden JSON response with your analysis and recom
     "concernsForNextSession": ["{topics or emotions to explore next time}"],  
     "personalityInsights": "{summary of user personality and how it relates to current session}"
   }
+  "OpenAnswers": "{Here you put the final reply to the user, try to sum up everything you said in the previous fields, but try to keep the most important ones}"
 }
 
 
