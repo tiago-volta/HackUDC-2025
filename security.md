@@ -1,24 +1,24 @@
-TherapIA Security
+TerapIA Security
 
-This page documents the security measures implemented in TherapIA, the AI-powered psychological chatbot.
+This page documents the security measures implemented in TerapIA, the AI-powered psychological chatbot.
 
 
 Principles
 
-TherapIA provides a secure environment to ensure user privacy and data protection. It follows strict authentication and authorization mechanisms to safeguard sensitive conversations.
+TerapIA provides a secure environment to ensure user privacy and data protection. It follows strict authentication and authorization mechanisms to safeguard sensitive conversations.
 
 The chatbot operates through a single secure interface where all users and applications must authenticate before accessing any service.
 
 Security considerations include:
 
-Authentication – Verifying the identity of the user interacting with TherapIA.
+Authentication – Verifying the identity of the user interacting with TerapIA.
 
 Authorization – Ensuring that users only have access to permitted functionalities.
 
 
 Supported Versions
 
-TherapIA provides security updates for all active versions, with long-term support (LTS) for major releases. Users are encouraged to keep their applications updated to ensure they receive the latest security patches.
+TerapIA provides security updates for all active versions, with long-term support (LTS) for major releases. Users are encouraged to keep their applications updated to ensure they receive the latest security patches.
 
 Reporting a Vulnerability
 
@@ -29,7 +29,7 @@ Our team will acknowledge the report and begin an investigation.
 
 Disclosure Policy
 
-TherapIA follows a responsible disclosure policy:
+TerapIA follows a responsible disclosure policy:
 
 Upon receiving a report, our security team will assess the severity of the issue.
 
@@ -54,7 +54,7 @@ Secure Interface
 
 Security summary:
 
-Users grant permission for TherapIA to access relevant data.
+Users grant permission for TerapIA to access relevant data.
 
 Authentication tokens are securely managed to prevent unauthorized access.
 
@@ -62,13 +62,13 @@ Authentication tokens are securely managed to prevent unauthorized access.
 
 Emergency & Crisis Handling
 
-If a user indicates distress or suicidal intent, TherapIA will:
+If a user indicates distress or suicidal intent, TerapIA will:
 
 Provide immediate crisis resources, such as national helpline numbers.
 
 Encourage the user to seek professional help.
 
-TherapIA is designed to support users but is not a replacement for professional psychological help. In cases of emergency, users are advised to contact licensed professionals.
+TerapIA is designed to support users but is not a replacement for professional psychological help. In cases of emergency, users are advised to contact licensed professionals.
 
 
-TherapIA continuously evolves to enhance security and user safety while providing a supportive mental health experience.
+TerapIA continuously evolves to enhance security and user safety while providing a supportive mental health experience.
