@@ -48,6 +48,9 @@ class AxiosHttpClient {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+        console.log(`[Request] ${config.method?.toUpperCase()} ${config.url}`);
+        console.log("[Request] Headers:", config.headers);
+        console.log("[Request] Body:", config.data);
 
         const cacheKey = this.getCacheKey(config);
         const cachedData = this.cache.get(cacheKey);

@@ -37,7 +37,11 @@ class AuthService {
 
   async login(data: UserAuthRequest): Promise<JwtTokenValue> {
     const dto = UserAuthRequestMapper.toDTO(data);
+    console.log("Logging DTO in login method");
+    console.log({ dto });
     const res = await authApi.login(dto);
+    console.log("Logging response in login method");
+    console.log({ res });
     const jwtTokenValue = JwtTokenValueMapper.getJwtTokenValue(res);
     return jwtTokenValue;
   }

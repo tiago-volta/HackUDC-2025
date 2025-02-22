@@ -8,8 +8,17 @@ class AuthApi {
   };
 
   login = async (dto: UserAuthRequestDTO): Promise<JwtTokenValueDto> => {
-    const response = await api.post<JwtTokenValueDto>("auth/login", dto);
-    return response.data;
+    try {
+      const response = await api.post<JwtTokenValueDto>("auth/login", dto);
+      return response.data;
+    } catch (error: unknown) {
+      console.error("[AuthApi] Failed to login", {
+        error,
+        email: dto.login,
+        timestamp: new Date().toISOString(),
+      });
+      throw new Error("Authentication failed. Please try again.");
+    }
   };
 
   getUserInfo = async (): Promise<UserDTO> => {

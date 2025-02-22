@@ -14,26 +14,9 @@ import {
 } from "react-native";
 import { THEME } from "../../constants/theme";
 import { RootDrawerParamList } from "../../navigation";
+import { chatService } from "../../core/services/chat.service";
+import { DisplayMessage } from "../../core/domain/chat";
 import { styles } from "./styles";
-
-// Mock therapeutic responses
-const MOCK_RESPONSES = [
-  "I understand how you're feeling. Could you tell me more about that?",
-  "That sounds challenging. How does that make you feel?",
-  "I hear you. What thoughts come up when you experience this?",
-  "You're showing great awareness by sharing this. How can we work through this together?",
-  "It's perfectly normal to feel this way. What would help you feel more supported right now?",
-  "Let's explore that further. What do you think triggered these feelings?",
-  "You're taking important steps by talking about this. How can we help you move forward?",
-  "I appreciate you sharing that. Would you like to discuss some coping strategies?",
-];
-
-type Message = {
-  id: string;
-  text: string;
-  sender: "user" | "bot";
-  timestamp: Date;
-};
 
 export type ChatDetailParams = {
   chatId: string;
@@ -43,54 +26,54 @@ export type ChatDetailParams = {
 type Props = DrawerScreenProps<RootDrawerParamList, "ChatDetail">;
 
 export function ChatDetailScreen({ navigation, route }: Props) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hello! How are you feeling today?",
-      sender: "bot",
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+  const { chatId, title } = route.params;
 
   useEffect(() => {
-    navigation.setOptions({
-      title: route.params?.title || "Therapeutic Chat",
-    });
-  }, []);
+    loadChat();
+  }, [chatId]);
 
-  const scrollToBottom = () => {
-    if (flatListRef.current && messages.length > 0) {
-      flatListRef.current.scrollToEnd({ animated: true });
+  const loadChat = async () => {
+    const chat = await chatService.getChatById(chatId);
+    if (chat) {
+      navigation.setOptions({
+        title: chat.title || title || "Therapeutic Chat",
+      });
+
+      const displayMessages = chat.msgs
+        .map((msg): [DisplayMessage, DisplayMessage] => {
+          const userMsg: DisplayMessage = {
+            id: msg.date.getTime().toString(),
+            text: msg.question,
+            sender: "user",
+            timestamp: msg.date,
+          };
+
+          const botMsg: DisplayMessage = {
+            id: msg.date.getTime().toString() + "_response",
+            text:
+              typeof msg.answer === "string"
+                ? msg.answer
+                : JSON.stringify(msg.answer, null, 2),
+            sender: "bot",
+            timestamp: msg.date,
+          };
+
+          return [userMsg, botMsg];
+        })
+        .flat();
+
+      setMessages(displayMessages);
     }
   };
 
-  const getRandomResponse = () => {
-    const randomIndex = Math.floor(Math.random() * MOCK_RESPONSES.length);
-    return MOCK_RESPONSES[randomIndex];
-  };
+  const handleSend = async () => {
+    if (inputMessage.trim().length === 0 || isTyping) return;
 
-  const simulateBotResponse = () => {
-    setIsTyping(true);
-    // Simulate typing delay
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: Date.now().toString(),
-        text: getRandomResponse(),
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1500); // 1.5 seconds delay
-  };
-
-  const handleSend = () => {
-    if (inputMessage.trim().length === 0) return;
-
-    const userMessage: Message = {
+    const userMessage: DisplayMessage = {
       id: Date.now().toString(),
       text: inputMessage.trim(),
       sender: "user",
@@ -99,7 +82,34 @@ export function ChatDetailScreen({ navigation, route }: Props) {
 
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
-    simulateBotResponse();
+    setIsTyping(true);
+
+    try {
+      const response = await chatService.sendMessage(
+        chatId,
+        inputMessage.trim()
+      );
+      const botMessage: DisplayMessage = {
+        id: Date.now().toString() + "_response",
+        text:
+          typeof response === "string"
+            ? response
+            : JSON.stringify(response, null, 2),
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (flatListRef.current && messages.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
   };
 
   const formatTime = (date: Date) => {
@@ -109,7 +119,7 @@ export function ChatDetailScreen({ navigation, route }: Props) {
     });
   };
 
-  const renderMessage = ({ item }: { item: Message }) => (
+  const renderMessage = ({ item }: { item: DisplayMessage }) => (
     <View
       style={[
         styles.messageContainer,

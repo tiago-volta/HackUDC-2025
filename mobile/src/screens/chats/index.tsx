@@ -4,7 +4,7 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
-  FlatList,
+  SectionList,
   RefreshControl,
 } from "react-native";
 import { styles } from "./styles";
@@ -12,70 +12,56 @@ import { THEME } from "../../constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { RootDrawerParamList } from "../../navigation";
-
-// Mock data for chats
-const MOCK_CHATS = [
-  {
-    id: "1",
-    title: "Anxiety Management",
-    lastMessage: "Let's talk about breathing exercises...",
-    timestamp: "2024-03-20T10:30:00",
-  },
-  {
-    id: "2",
-    title: "Sleep Journal",
-    lastMessage: "How was your sleep schedule this week?",
-    timestamp: "2024-03-19T15:45:00",
-  },
-  {
-    id: "3",
-    title: "Stress Relief",
-    lastMessage: "Remember to take breaks during work...",
-    timestamp: "2024-03-18T09:20:00",
-  },
-  {
-    id: "4",
-    title: "Mindfulness Session",
-    lastMessage: "Today we'll focus on present moment...",
-    timestamp: "2024-03-17T14:15:00",
-  },
-];
+import { chatService } from "../../core/services/chat.service";
+import { ChatPreview, GroupedChats } from "../../core/domain/chat";
 
 export type ChatsParams = {};
 
 type Props = DrawerScreenProps<RootDrawerParamList, "Chats">;
 
-export function ChatsScreen({ navigation, route }: Props) {
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [chats, setChats] = React.useState(MOCK_CHATS);
+const formatDate = (date: string) => {
+  const today = new Date().toLocaleDateString();
+  const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    // Simulate data refresh
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+  if (date === today) return "Today";
+  if (date === yesterday) return "Yesterday";
+
+  // For other dates, return the formatted date
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+export function ChatsScreen({ navigation }: Props) {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [groupedChats, setGroupedChats] = React.useState<GroupedChats>({});
+
+  const fetchChats = React.useCallback(async () => {
+    try {
+      const chats = await chatService.getGroupedChats();
+      setGroupedChats(chats);
+    } catch (error) {
+      console.error("Failed to fetch chats:", error);
+    }
   }, []);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await fetchChats();
+    setRefreshing(false);
+  }, [fetchChats]);
 
-    if (days === 0) {
-      return "Today";
-    } else if (days === 1) {
-      return "Yesterday";
-    } else if (days < 7) {
-      return `${days} days ago`;
-    } else {
-      return date.toLocaleDateString();
-    }
-  };
+  React.useEffect(() => {
+    fetchChats();
+  }, [fetchChats]);
 
-  const renderChatItem = ({ item }) => (
-    <TouchableOpacity style={styles.chatCard}>
+  const renderChatItem = ({ item }: { item: ChatPreview }) => (
+    <TouchableOpacity
+      style={styles.chatCard}
+      onPress={() => onChatPress(item.id, item.title)}
+    >
       <View style={styles.chatIconContainer}>
         <Ionicons
           name="chatbubble-outline"
@@ -87,7 +73,6 @@ export function ChatsScreen({ navigation, route }: Props) {
       <View style={styles.chatContent}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatTitle}>{item.title}</Text>
-          <Text style={styles.chatTimestamp}>{formatDate(item.timestamp)}</Text>
         </View>
 
         <Text style={styles.chatPreview} numberOfLines={1}>
@@ -97,17 +82,40 @@ export function ChatsScreen({ navigation, route }: Props) {
     </TouchableOpacity>
   );
 
-  const onNewChatPress = () => {
-    const chatId: string = "1";
-    navigation.navigate("ChatDetail", {
-      chatId: chatId,
-    });
+  const renderDateSection = ({
+    section,
+  }: {
+    section: { title: string; data: ChatPreview[] };
+  }) => (
+    <View style={styles.dateSection}>
+      <View style={styles.dateDivider}>
+        <View style={styles.dividerLine} />
+        <Text style={styles.dateSectionTitle}>{formatDate(section.title)}</Text>
+        <View style={styles.dividerLine} />
+      </View>
+    </View>
+  );
+
+  const onNewChatPress = async () => {
+    try {
+      const chatId = await chatService.createNewChat();
+      navigation.navigate("ChatDetail", { chatId });
+    } catch (error) {
+      console.error("Failed to create new chat:", error);
+    }
   };
 
-  const onChatPress = (chatId: string) => {
-    navigation.navigate("ChatDetail", {
-      chatId,
-    });
+  const onChatPress = (chatId: string, title: string) => {
+    navigation.navigate("ChatDetail", { chatId, title });
+  };
+
+  const getSectionData = () => {
+    return Object.entries(groupedChats)
+      .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+      .map(([date, chats]) => ({
+        title: date,
+        data: chats,
+      }));
   };
 
   return (
@@ -124,15 +132,10 @@ export function ChatsScreen({ navigation, route }: Props) {
         <Text style={styles.newChatButtonText}>Start New Conversation</Text>
       </TouchableOpacity>
 
-      <View style={styles.divider}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>Recent Chats</Text>
-        <View style={styles.dividerLine} />
-      </View>
-
-      <FlatList
-        data={chats}
+      <SectionList
+        sections={getSectionData()}
         renderItem={renderChatItem}
+        renderSectionHeader={renderDateSection}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.chatList}
         showsVerticalScrollIndicator={false}
