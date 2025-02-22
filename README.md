@@ -1,18 +1,47 @@
+<a name="readme-top" id="readme-top"></a>
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="#">
-    <img src="./main/mobile/assets/TherapIA.png)g" alt="Logo" width="180" height="180">
+    <img src="./main/mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
   </a>
-
   <h3 align="center">TerapIA</h3>
-  
-TerapIA 🧠
-An AI-powered psychological support chatbot
+  <p align="center">
+    AI-powered psychological support at your fingertips
+    <br />
+    <a href="#"><strong>Start your journey with TerapIA »</strong></a>
+    <br />
+    <br />
+  </p>
 </div>
-About The Project 🎯
-TerapIA was developed for the BubsByte 23/24 Hackathon! It's an innovative AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support.
-Key Features 🌟
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#key-features">Key Features</a></li>
+      </ul>
+    </li>
+    <li>
+        <a href="#built-with">Built with</a>
+        <ul>
+            <li><a href="#front-end">Front end</a></li>
+            <li><a href="#back-end">Back end</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+        </ul>
+    </li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#project-status">Project Status</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#support">Support</a></li>
+  </ol>
+</details>
+<!-- ABOUT THE PROJECT -->
+About The Project
+This app was developed to participate in the BubsByte 23/24 Hackathon and consists of an AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support! 🌍
+Key Features
 
 💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
 🔒 Secure Environment: Protected user data and encrypted conversations
@@ -20,8 +49,8 @@ Key Features 🌟
 🤖 Smart Analysis: Personalized insights based on your interactions
 🚨 Crisis Support: Emergency resources and professional guidance when needed
 
-<div align="left">
-Built With 🛠️
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Built With
 Front-end
 
 React ⚛️
@@ -40,13 +69,13 @@ Authentication
 JWT Authentication 🔐
 Secure Session Management 🔑
 
-Getting Started 🚀
-Prerequisites 📋
-Before running TerapIA, ensure you have installed:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Getting Started
+Prerequisites
 bashCopyJava 17+
 Node.js 18+
 MySQL 8+
-Installation 💻
+Installation
 
 Clone the repository
 
@@ -61,12 +90,8 @@ Install backend dependencies
 
 bashCopycd server
 mvn install
-
-Configure environment variables
-
-bashCopycp .env.example .env
-# Edit .env with your configurations
-Project Status 📊
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Project Status
 Current Features ✅
 
 Chat-based psychological support
@@ -81,37 +106,20 @@ Advanced diary entry processing
 New user engagement features
 Improved crisis detection algorithms
 
-Contributing 🤝
-We welcome contributions to improve TerapIA! Please read our Contributing Guidelines and Code of Conduct before getting started.
-How to Report Issues 🐛
-
-For bugs and feature requests, open an issue on GitHub
-For security vulnerabilities, email security@terapia.com
-For general questions, join our Discord community
-
-Team 👥
-
-Ricardo Freitas - Frontend Developer - @rmotafreitas
-Rodrigo Pinto - Backend Developer - @pintous66
-Tiago Volta - AI Engineer - @tiago-volta
-
-Documentation 📚
-
-API Documentation
-Security Policy
-Contributing Guidelines
-
-License 📄
-This project is licensed under the MIT License - see the LICENSE file for details.
-Support 💪
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Team
+Frontend Developer - Ricardo Freitas - @rmotafreitas
+Backend Developer - Rodrigo Pinto - @pintous66
+AI Engineer - Tiago Volta - @tiago-volta
+Project Link: https://github.com/your_username/terapia
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Support
 If you're experiencing a crisis or need immediate help, please contact professional mental health services:
 
 Emergency: 112 (EU) / 911 (US)
 National Suicide Prevention Lifeline: 988 (US)
 
 Remember: TerapIA is a support tool, not a replacement for professional mental health care.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<div align="center">
-  Made with ❤️ by the TerapIA Team
-⬆ Back to top
-</div>
+Note: Additional documentation can be found in server/docs/readme.md
