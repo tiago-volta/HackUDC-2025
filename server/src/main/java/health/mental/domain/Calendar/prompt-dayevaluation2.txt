@@ -42,3 +42,7 @@ Vais retornar o seguinte JSON como resposta final:
 
      }
 }
+
+Aqui tens o JSON com a informmaçáo:
+
+{{JSON}}
