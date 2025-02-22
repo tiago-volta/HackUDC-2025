@@ -1,5 +1,7 @@
 package health.mental.controller;
 
+import health.mental.domain.Calendar.Calendar;
+import health.mental.repositories.CalendarRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,9 @@ public class AuthController {
     private UserRepository userRepository;
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private CalendarRepo calendarRepo;
 
     @Value("${jose.is.enable.jose}")
     private boolean IS_ENABLE_JOSE;
@@ -87,9 +92,12 @@ public class AuthController {
 
         String encodedPassword = new BCryptPasswordEncoder().encode(Utils.decodeJwt(authDTO.password()));
         try {
-            System.out.println("Birthdate: " + authDTO.birthDate());
+
             User user = new User(authDTO.login(), encodedPassword, authDTO.role(), authDTO.completeName(), authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality());
             userRepository.save(user);
+
+            calendarRepo.save(new Calendar(user));
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(e.getMessage());
         }

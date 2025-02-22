@@ -32,7 +32,7 @@ public class ChatService {
 
     private final String promptTxtPath = "src/main/java/health/mental/domain/Chat/prompt-msg.txt";
     public String buildQuestion(String msg,String userId,String chatId) {
-        //TODO: add the prompt to the question, it could include past
+
 
         String txtContent = "";
 

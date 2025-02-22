@@ -1,0 +1,53 @@
+Vais receber um cojunto de mensagens com um psicologo (as mensagens do cliente e as respostas do psicologo) e as respetivas notas do diário do cliente de um determinado dia,
+tens de retornar uma nota de 0 a 100 do quão bem o cliente está a lidar com a situação/vida no geral.
+
+vais receber um json com a seguinte estrutura:
+
+
+{
+  "mensagens": [
+    {
+      "cliente": "mensagem do cliente",
+      "psicologo": "resposta do psicologo"
+    }
+  ],
+  "diario": "nota do diário"
+}
+
+
+e tens de retornar o seguinte json:
+
+
+{
+  "grade": [0-100],
+  "justification": "justificação da nota(justificacao completa não tenhas medo de escrever muito, em ingles)"
+}
+
+
+input:
+
+{JSON}
+
+output:
+
+{
+  "grade": [0-100],
+  "justification": "justificação da nota(justificacao completa não tenhas medo de escrever muito, em ingles)"
+}
+
+
+dame um output para o input que te dei, nao fales na primeira pessoa e tem em conta a nota do diaria e as conversas com o psicologo
+Para a parte da justificacao Pedido para Descrição de Outras Pessoas:
+
+                             "Gostaria que descrevesses esta pessoa de forma detalhada, incluindo os seguintes aspectos:
+
+                             Características principais da personalidade: Utiliza adjetivos para descrever como esta pessoa se comporta e como é em termos gerais (ex: extrovertido, introvertido, criativo, calmo, etc.).
+
+                             Comportamentos e ações: Refere atividades ou ações que esta pessoa realiza regularmente e que são representativas da sua personalidade (ex: adora socializar, busca sempre novas experiências, etc.).
+
+                             Contrastes ou aspectos opostos: Indica se existe alguma dualidade ou algo que se contradiga na sua personalidade (ex: apesar de ser muito aventureiro, também sente dificuldade em tomar decisões rápidas).
+
+                             Evolução ou reflexões internas: Se for o caso, menciona alguma mudança ou reflexão interna importante que esta pessoa tenha tido, como desenvolvimento emocional ou mudança de perspectiva.
+
+                             Reflexão e autoconhecimento: Se possível, descreve como esta pessoa lida com questões emocionais ou com o seu crescimento pessoal, como se mostra introspectiva ou em busca de equilíbrio entre diferentes aspectos da sua vida.
+Faz isso em ingles e sem falar na primeira pessoa

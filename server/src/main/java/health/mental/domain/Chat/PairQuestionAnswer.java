@@ -38,4 +38,12 @@ public class PairQuestionAnswer {
     public LocalDateTime getDate() {
         return date;
     }
+
+    public String toString() {
+        return "PairQuestionAnswer{" +
+                "question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
