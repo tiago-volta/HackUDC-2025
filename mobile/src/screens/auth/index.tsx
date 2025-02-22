@@ -1,50 +1,25 @@
+import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
 import {
+  ActivityIndicator,
+  Platform,
+  SafeAreaView,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  ActivityIndicator,
 } from "react-native";
-import { styles } from "./styles";
+import DropDownPicker from "react-native-dropdown-picker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { OCCUPATIONS } from "../../@types/occupation";
+import { Role } from "../../@types/role";
 import { THEME } from "../../constants/theme";
 import { useAuth } from "../../contexts/auth";
 import { UserAuthRequest, UserRegisterRequest } from "../../core/domain/user";
-import { Role } from "../../@types/role";
 import { HttpRequestError } from "../../core/errors/http.error";
-import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DropDownPicker from "react-native-dropdown-picker";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-export const OCCUPATIONS = [
-  "Student",
-  "Professional",
-  "Self-employed",
-  "Unemployed",
-  "Retired",
-  "Other",
-] as const;
-
-export type Occupation = (typeof OCCUPATIONS)[number] | string;
-
-export type Country = {
-  code: string;
-  name: string;
-  flag: string;
-};
-
-export const COUNTRIES: Country[] = [
-  { code: "US", name: "United States", flag: "🇺🇸" },
-  { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
-  { code: "ES", name: "Spain", flag: "🇪🇸" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  // Add more countries as needed
-];
+import { styles } from "./styles";
+import { COUNTRIES } from "../../@types/country";
 
 export function LoginScreen() {
   const [email, setEmail] = React.useState("");

@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../contexts/auth";
 import { styles } from "./styles";
 import { THEME } from "../../constants/theme";
+import { COUNTRIES } from "../../@types/country";
 
 // Mock Big Five data
 const BIG_FIVE_DATA = [
@@ -56,20 +57,6 @@ const MOCK_ENNEAGRAM = {
   description:
     "As an Individualist, you are creative, introspective, and emotionally deep. You value authenticity and uniqueness; however, sometimes you may feel misunderstood or overly self-absorbed. Embracing your individuality can help enrich your personal growth and therapy journey.",
 };
-
-export type Country = {
-  code: string;
-  name: string;
-  flag: string;
-};
-
-export const COUNTRIES: Country[] = [
-  { code: "US", name: "United States", flag: "🇺🇸" },
-  { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
-  { code: "ES", name: "Spain", flag: "🇪🇸" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  // Add more countries as needed
-];
 
 export function ProfileScreen() {
   const { user, logout } = useAuth();
