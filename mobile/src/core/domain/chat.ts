@@ -27,3 +27,11 @@ export type ChatPreview = {
 export type GroupedChats = {
   [date: string]: ChatPreview[];
 };
+
+export type CalendarDay = {
+  day: Date;
+  note: string;
+  chats: ChatPreview[];
+  justificative: string;
+  grade: number;
+};

@@ -1,10 +1,12 @@
 import {
+  CalendarDay,
   Chat,
   ChatMessage,
   ChatPreview,
   GroupedChats,
 } from "../../core/domain/chat";
 import {
+  CalendarDayDTO,
   ChatDTO,
   ChatMessageDTO,
   ChatPreviewDTO,
@@ -45,5 +47,15 @@ export class ChatMapper {
     });
 
     return result;
+  }
+
+  static calendarDayToDomain(dto: CalendarDayDTO): CalendarDay {
+    return {
+      day: new Date(dto.day),
+      note: dto.note,
+      chats: [],
+      justificative: dto.justificative,
+      grade: dto.grade,
+    };
   }
 }

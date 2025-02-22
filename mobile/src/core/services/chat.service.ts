@@ -1,6 +1,6 @@
 import { chatApi } from "../../data/http/chat.api";
 import { ChatMapper } from "../../data/mappers/chat.mapper";
-import { Chat, ChatPreview, GroupedChats } from "../domain/chat";
+import { CalendarDay, Chat, ChatPreview, GroupedChats } from "../domain/chat";
 
 class ChatService {
   private currentChat: Chat | null = null;
@@ -75,6 +75,22 @@ class ChatService {
 
   getCurrentChat(): Chat | null {
     return this.currentChat;
+  }
+
+  async getCalendarDay(date: string): Promise<CalendarDay | null> {
+    try {
+      const response = await chatApi.getCalendarDay(date);
+      const parsedResponse = ChatMapper.calendarDayToDomain(response);
+      if (parsedResponse.justificative == "Error parsing evaluation") {
+        return null;
+      }
+      const chats = await chatApi.getGroupedChats();
+      parsedResponse.chats = chats[date].map(ChatMapper.previewToDomain);
+      return parsedResponse;
+    } catch (error) {
+      console.error("[ChatService] Failed to get calendar day:", error);
+      return null;
+    }
   }
 }
 
