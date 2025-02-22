@@ -47,10 +47,16 @@ public class ChatgptController {
                 ChatgptResponse.class);
 
         if (chatgptResponse == null) {
+
             return ResponseEntity.badRequest().body("Erro ao processar a requisição");
         }
 
-        return ResponseEntity.ok(chatgptResponse.getChoices().get(0).getMessage().getContent());
+
+        String res = chatgptResponse.getChoices().get(0).getMessage().getContent().toString();
+       res = res.replace("```json", "");
+        res = res.replace("```", "");
+        System.err.println(res + "res");
+        return ResponseEntity.ok(res + " Ola");
     }
 
     /*
