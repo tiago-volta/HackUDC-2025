@@ -198,6 +198,7 @@ public class CalendarController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
+
             EvaluationDTO eval = objectMapper.readValue(Evaluation.toString(), EvaluationDTO.class);
             grade = eval.getGrade();
             justificative = eval.getJustification();
