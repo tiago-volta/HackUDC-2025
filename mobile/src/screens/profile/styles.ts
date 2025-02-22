@@ -111,6 +111,48 @@ export const styles = StyleSheet.create({
     color: THEME.colors.foreground,
     fontWeight: "500",
   },
+  enneagramCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: THEME.colors.card,
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    ...Platform.select({
+      ios: {
+        shadowColor: THEME.colors.foreground,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  enneagramContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 12,
+  },
+  enneagramEmoji: {
+    fontSize: 36,
+  },
+  enneagramTextContainer: {
+    flex: 1,
+  },
+  enneagramTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: THEME.colors.foreground,
+  },
+  enneagramSub: {
+    fontSize: 12,
+    color: THEME.colors.mutedForeground,
+  },
   statsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -145,6 +187,60 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: THEME.colors.mutedForeground,
   },
+  personalityCard: {
+    margin: 20,
+    backgroundColor: THEME.colors.card,
+    borderRadius: 20,
+    padding: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: THEME.colors.foreground,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  chartContainer: {
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  chartHelper: {
+    textAlign: "center",
+    color: THEME.colors.mutedForeground,
+    fontSize: 14,
+    marginTop: 8,
+    marginBottom: 20,
+  },
+  traitsLegend: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  traitItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  traitScore: {
+    backgroundColor: THEME.colors.primary + "20",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  traitScoreText: {
+    color: THEME.colors.primary,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  traitLabel: {
+    color: THEME.colors.mutedForeground,
+    fontSize: 14,
+  },
   actionButtons: {
     padding: 20,
     gap: 12,
@@ -176,5 +272,64 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: THEME.colors.destructiveForeground,
+  },
+  // Modal styles
+  modal: {
+    margin: 20,
+    justifyContent: "center",
+  },
+  modalContent: {
+    backgroundColor: THEME.colors.card,
+    borderRadius: 20,
+    padding: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: THEME.colors.foreground,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+    padding: 4,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: THEME.colors.foreground,
+  },
+  modalClose: {
+    padding: 4,
+  },
+  modalScoreContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: THEME.colors.primary + "10",
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  modalScoreLabel: {
+    fontSize: 16,
+    color: THEME.colors.mutedForeground,
+  },
+  modalScoreValue: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: THEME.colors.primary,
+  },
+  modalDescription: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: THEME.colors.foreground,
   },
 });
