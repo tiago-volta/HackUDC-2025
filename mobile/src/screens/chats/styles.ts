@@ -49,11 +49,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: THEME.spacing.medium,
     marginVertical: THEME.spacing.medium,
   },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: THEME.colors.border,
-  },
   dividerText: {
     color: THEME.colors.mutedForeground,
     paddingHorizontal: THEME.spacing.medium,
@@ -133,5 +128,25 @@ export const styles = StyleSheet.create({
     color: THEME.colors.mutedForeground,
     textAlign: "center",
     lineHeight: 24,
+  },
+  dateSection: {
+    paddingHorizontal: THEME.spacing.medium,
+    marginVertical: THEME.spacing.small,
+  },
+  dateDivider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: THEME.spacing.small,
+  },
+  dateSectionTitle: {
+    fontSize: 14,
+    color: THEME.colors.mutedForeground,
+    fontWeight: "500",
+    paddingHorizontal: THEME.spacing.medium,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: THEME.colors.border,
   },
 });

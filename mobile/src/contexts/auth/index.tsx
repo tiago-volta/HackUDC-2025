@@ -69,6 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const register = async (data: UserRegisterRequest) => {
     try {
+      await logout();
       const res = await authService.register(data);
       return res;
     } catch (error) {
@@ -83,6 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (data: UserAuthRequest) => {
     try {
+      await logout();
       const jwtTokenValue = await authService.login(data);
       if (!jwtTokenValue) {
         throw new HttpRequestError("Invalid token", 401);

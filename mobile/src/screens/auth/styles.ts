@@ -1,17 +1,19 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
 import { THEME } from "../../constants/theme";
+
+const { height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: THEME.colors.background,
   },
+  scrollContent: {
+    minHeight: height - (Platform.OS === "ios" ? 90 : 60),
+    padding: 20,
+  },
   keyboardView: {
     flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
   },
   header: {
     alignItems: "center",
@@ -141,5 +143,34 @@ export const styles = StyleSheet.create({
     color: THEME.colors.destructive,
     marginLeft: 8,
     flex: 1,
+  },
+  datePickerButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: THEME.colors.muted,
+    borderRadius: THEME.radius.default,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: THEME.colors.border,
+    height: 50,
+    paddingHorizontal: 10,
+  },
+  datePickerText: {
+    flex: 1,
+    color: THEME.colors.foreground,
+    fontSize: 16,
+  },
+  dropdown: {
+    backgroundColor: THEME.colors.muted,
+    borderColor: THEME.colors.border,
+    borderRadius: THEME.radius.default,
+  },
+  dropdownText: {
+    color: THEME.colors.foreground,
+    fontSize: 16,
+  },
+  dropdownContainer: {
+    marginBottom: 16,
+    zIndex: Platform.OS === "ios" ? 1000 : undefined, // Only apply zIndex on iOS
   },
 });
