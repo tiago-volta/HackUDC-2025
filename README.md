@@ -6,6 +6,7 @@
   </a>
 
   <h3 align="center">TerapIA</h3>
+  
 TerapIA 🧠
 An AI-powered psychological support chatbot
 </div>
