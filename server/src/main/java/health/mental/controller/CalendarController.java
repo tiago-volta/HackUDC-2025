@@ -198,7 +198,7 @@ public class CalendarController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
-            EvaluationDTO eval = objectMapper.readValue((JsonParser) Evaluation, EvaluationDTO.class);
+            EvaluationDTO eval = objectMapper.readValue(Evaluation.toString(), EvaluationDTO.class);
             grade = eval.getGrade();
             justificative = eval.getJustification();
         } catch (Exception e) {
@@ -206,12 +206,18 @@ public class CalendarController {
             justificative = "Error parsing evaluation";
         }
         //refresh evaluation
+        boolean flag = true;
         for(var eval : calendarUser.getEvaluationDay()){
             if(eval.getDay().equals(date)){
                 eval.setDateOfEvaluation(new Date().toString());
                 eval.setEvaluation(grade);
                 eval.setEvaluationJustification(justificative);
+                flag = false;
             }
+        }
+        if(flag){
+            EvaluationDay newEval = new EvaluationDay(date,grade,justificative,new Date().toString());
+            calendarUser.getEvaluationDay().add(newEval);
         }
 
         calendarRepo.save(calendarUser);
