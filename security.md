@@ -22,7 +22,7 @@ TerapIA provides security updates for all active versions, with long-term suppor
 
 Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it to our security team via security@therapia.com. Provide a detailed description of the issue, steps to reproduce it, and any potential impact it may have. 
+If you discover a security vulnerability, please report it to our security team via security@terapia.com. Provide a detailed description of the issue, steps to reproduce it, and any potential impact it may have. 
 
 Our team will acknowledge the report and begin an investigation.
 
