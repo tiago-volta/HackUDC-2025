@@ -276,4 +276,32 @@ public class CalendarController {
         }
     }
 
+
+    @GetMapping("/full")
+    @Operation(summary = "Get user calendar", description = "Get user calendar by user id and know the days he has notes or chats")
+public ResponseEntity getCalendarFull(@RequestHeader("Authorization") String bearerToken) throws IOException {
+        String token = bearerToken.substring(7);
+        String userLogin = tokenService.validateToken(token);
+        User u = (User) userRepository.findByLogin(userLogin);
+        String userId = u.getId();
+
+        var calendarUser = calendarRepo.findAllByUserId(userId);
+        List<String> days = new ArrayList<>();
+        for(var noteDay : calendarUser.getNoteday()){
+            days.add(noteDay.getDate());
+        }
+        for(var eval : calendarUser.getEvaluationDay()){
+            days.add(eval.getDay());
+        }
+        for(var chat : chatRepository.findAllByUserId(userId)){
+            for(var msg : chat.getChatMsgs()){
+                if(!days.contains(msg.getDate().toLocalDate().toString())){
+                    days.add(msg.getDate().toLocalDate().toString());
+                }
+            }
+        }
+        return ResponseEntity.ok(days);
+    }
+
+
 }
