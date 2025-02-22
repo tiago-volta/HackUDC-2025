@@ -1,5 +1,12 @@
+<!-- PROJECT LOGO -->
+<br />
 <div align="center">
-  <img src="assets/logo.png" alt="TerapIA Logo" width="200" height="200">
+  <a href="#">
+    <img src="./main/mobile/assets/TherapIA.png)g" alt="Logo" width="180" height="180">
+  </a>
+
+  <h3 align="center">TerapIA</h3>
+  
 TerapIA 🧠
 An AI-powered psychological support chatbot
 </div>
