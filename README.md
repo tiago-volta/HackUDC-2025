@@ -74,7 +74,7 @@ Installation
 
 Clone the repository
 
-bashCopygit clone https://github.com/your_username/terapia.git
+bashCopygit clone (https://github.com/pintous66/hack-udc.git)
 
 Install frontend dependencies
 
