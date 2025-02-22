@@ -46,3 +46,5 @@ Vais retornar o seguinte JSON como resposta final:
 Aqui tens o JSON com a informmaçáo:
 
 {{JSON}}
+
+Nao te esquecas de responder no formato pedido e da GeneralEvaluation
