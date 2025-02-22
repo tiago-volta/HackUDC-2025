@@ -89,7 +89,7 @@ Ensure you have the following installed:
 ### 🛠 Installation  
 
 #### 1️⃣ Clone the repository  
-```bash
+
 git clone https://github.com/pintous66/hack-udc.git
 
 ## 📌 Project Status
