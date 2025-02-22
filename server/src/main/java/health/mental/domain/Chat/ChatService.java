@@ -1,11 +1,17 @@
 package health.mental.domain.Chat;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.nio.file.Paths.*;
 
@@ -27,6 +33,26 @@ public class ChatService {
 
         return txtContent + " " + msg;
 
+
+    }
+
+    public Map<String, List<ChatGroupDTO>> groupByDay(List<Chat> chats) {
+
+        Map<String, List<ChatGroupDTO>> chatsByDay = new HashMap<>();
+
+        for(Chat chat : chats){
+            if(chat.getChatMsgs().isEmpty())
+                continue;
+            String key = chat.getChatMsgs().get(chat.getChatMsgs().size()-1 < 0 ? 0:chat.getChatMsgs().size()-1).getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString();
+
+            if(!chatsByDay.containsKey(key)){
+                chatsByDay.put(key, new ArrayList<>());
+                chatsByDay.get(key).add(new ChatGroupDTO(chat.getId().toString(),chat.getTitle(),chat.getChatMsgs().get(chat.getChatMsgs().size()-1).getAnswer()));
+
+            }
+
+        }
+        return chatsByDay;
 
     }
 }

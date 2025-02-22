@@ -43,6 +43,20 @@ public class User implements UserDetails {
     @Column(name = "role")
     private UserRole role;
 
+    @Column(name = "complete_name")
+    private String CompleteName;
+
+    //date in format yyyy-MM-dd
+    @Column(name = "birth_date")
+
+    private String BirthDate;
+
+    @Column(name = "Occupation")
+    private String Occupation;
+
+    @Column(name = "Nacionality")
+    private String Nacionality;
+
     public User(String login, String password, String role) {
         this.login = login;
         this.password = password;

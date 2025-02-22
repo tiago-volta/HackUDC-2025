@@ -133,6 +133,27 @@ public class ChatController {
         return ResponseEntity.ok(chatHistory);
     }
 
+    @GetMapping("/group")
+    @Operation(summary = "Get chat grouped by day", description = "Get chat grouped by day of a certain user")
+    public ResponseEntity getChatGroupedByDay(@RequestHeader("Authorization") String bearerToken) {
+        String token = bearerToken.substring(7);
+        String userLogin = tokenService.validateToken(token);
+        var user =  (User) userRepository.findByLogin(userLogin);
+        if(user == null)
+            return ResponseEntity.badRequest().body("User not found");
+
+        var chats = chatRepository.findByUser(user);
+
+
+        Map<String, List<ChatGroupDTO>> chatGrouped = chatService.groupByDay(chats);
+
+
+
+
+        return ResponseEntity.ok(chatGrouped);
+
+    }
+
 
 
 }
