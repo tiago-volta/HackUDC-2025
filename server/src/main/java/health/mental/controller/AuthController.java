@@ -2,6 +2,9 @@ package health.mental.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
 import health.mental.domain.Calendar.Calendar;
 import health.mental.domain.User.*;
 import health.mental.repositories.CalendarRepo;
@@ -31,6 +34,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -151,7 +156,7 @@ public class AuthController {
         }
 
         // Verifica se passaram mais de 15 minutos desde a última atualização do perfil
-        if (new Date(lastChangeMillis + (15 * 60 * 1000)).before(new Date())) {
+        if (new Date(lastChangeMillis + (15 * 60 )).before(new Date())) {
             return atualizarPerfil(user);
         }
 
@@ -195,5 +200,98 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado ao atualizar o perfil.");
         }
     }
+
+
+    private static final String PDF_DIRECTORY = "src/main/resources/static/pdf/";
+
+    @GetMapping("/pdf")
+    public ResponseEntity<?> getPdf(@RequestHeader("Authorization") String bearerToken) {
+        try {
+            // Retrieve user from token
+            User user = getUserFromToken(bearerToken);
+
+            // PDF file name and path
+            String pdfFileName = "UserProfile_" + user.getId() + ".pdf";
+            String pdfFilePath = PDF_DIRECTORY + pdfFileName;
+
+            // Create directory if it doesn't exist
+            File directory = new File(PDF_DIRECTORY);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // Create PDF document
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+            document.open();
+
+            // Add the logo image at the top
+            String imagePath = "src/main/resources/static/TherapIA.png";
+            Image logo = Image.getInstance(imagePath);
+            logo.scaleToFit(150, 150); // Resize image if needed
+            logo.setAlignment(Element.ALIGN_CENTER);
+            document.add(logo);
+
+            // Application/Clinic name
+            Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 24, Font.BOLD);
+            Paragraph header = new Paragraph("TherapIA", headerFont);
+            header.setAlignment(Element.ALIGN_CENTER);
+            document.add(header);
+            document.add(new Paragraph("\n"));
+
+            // User Information
+            Font infoFont = new Font(Font.FontFamily.HELVETICA, 12);
+            document.add(new Paragraph("Full Name: " + user.getCompleteName(), infoFont));
+            document.add(new Paragraph("Date of Birth: " + user.getBirthDate(), infoFont));
+            document.add(new Paragraph("Occupation: " + user.getOccupation(), infoFont));
+            document.add(new Paragraph("Nationality: " + user.getNacionality(), infoFont));
+            document.add(new Paragraph("\n"));
+
+            // Psychological Profile
+            if (user.getProfile() != null) {
+                document.add(new Paragraph("General Evaluation: " + user.getProfile().getEvaluation(), infoFont));
+                document.add(new Paragraph("Last Update: " + user.getProfile().getLastChange(), infoFont));
+                document.add(new Paragraph("\n"));
+
+                // Big Five Personality Traits
+                if (user.getProfile().getOcean() != null) {
+                    document.add(new Paragraph("🔹 Big Five Personality Traits", infoFont));
+                    document.add(new Paragraph("Neuroticism: " + user.getProfile().getOcean().getNeurocitismLevel() +
+                            " - " + user.getProfile().getOcean().getNeurocistismDescription(), infoFont));
+                    document.add(new Paragraph("Extraversion: " + user.getProfile().getOcean().getExtroversionLevel() +
+                            " - " + user.getProfile().getOcean().getExtroversionDescription(), infoFont));
+                    document.add(new Paragraph("Openness: " + user.getProfile().getOcean().getOpenessLevel() +
+                            " - " + user.getProfile().getOcean().getOpenessDescription(), infoFont));
+                    document.add(new Paragraph("Agreeableness: " + user.getProfile().getOcean().getAgreeablenessLevel() +
+                            " - " + user.getProfile().getOcean().getAgreeablenessDescription(), infoFont));
+                    document.add(new Paragraph("Conscientiousness: " + user.getProfile().getOcean().getConscientiousnessLevel() +
+                            " - " + user.getProfile().getOcean().getConscientiousnessDescription(), infoFont));
+                    document.add(new Paragraph("\n"));
+                }
+
+                // Enneagram Type
+                if (user.getProfile().getEneagrama() != null) {
+                    document.add(new Paragraph("🔹 Enneagram Type", infoFont));
+                    document.add(new Paragraph("Type: " + user.getProfile().getEneagrama().getType(), infoFont));
+                    document.add(new Paragraph("Description: " + user.getProfile().getEneagrama().getDescription(), infoFont));
+                }
+            }
+
+            document.close();
+
+            // Return PDF download link
+            return ResponseEntity.ok("/pdf/" + pdfFileName);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error generating PDF: " + e.getMessage());
+        }
+    }
+
+    private User getUserFromToken(String bearerToken) {
+        String token = bearerToken.substring(7);
+        String userLogin = tokenService.validateToken(token);
+        return (User) userRepository.findByLogin(userLogin);
+    }
+
 
 }
