@@ -1,4 +1,4 @@
-# Documentação dos Endpoints do CalendarController
+# Calendar Controller Endpoints Documentation
 
 ## Base URL
 ```
@@ -7,125 +7,125 @@
 
 ## Endpoints
 
-### 1. Obter Calendário do Usuário
+### 1. Get User Calendar
 
 **Endpoint:**
 ```
 GET /calendar/{date}
 ```
 
-**Descrição:**
-Obtém o calendário do usuário para uma data específica, incluindo notas, mensagens de chat e avaliação do dia. O sistema pode gerar uma avaliação automática baseada nas interações do usuário.
+**Description:**
+Gets the user's calendar for a specific date, including notes, chat messages, and day evaluation. The system can generate an automatic evaluation based on user interactions.
 
-**Cabeçalhos Necessários:**
+**Required Headers:**
 ```
 Authorization: Bearer <token>
 ```
 
-**Parâmetros de Path:**
-- `date`: Data no formato YYYY-MM-DD
+**Path Parameters:**
+- `date`: Date in YYYY-MM-DD format
 
-**Respostas:**
-- `200 OK` - Retorna os dados do calendário
-- `401 UNAUTHORIZED` - Token inválido ou expirado
+**Responses:**
+- `200 OK` - Returns calendar data
+- `401 UNAUTHORIZED` - Invalid or expired token
 
-**Exemplo de Resposta:**
+**Response Example:**
 ```json
 {
     "date": "2024-03-20",
-    "note": "Exemplo de nota do dia",
+    "note": "Example day note",
     "chats": [
         {
-            "message": "Exemplo de mensagem",
+            "message": "Example message",
             "date": "2024-03-20T10:30:00"
         }
     ],
-    "justificative": "Avaliação positiva baseada nas interações",
+    "justificative": "Positive evaluation based on interactions",
     "grade": 8
 }
 ```
 
 ---
 
-### 2. Atualizar Nota do Calendário
+### 2. Update Calendar Note
 
 **Endpoint:**
 ```
 PUT /calendar/{date}
 ```
 
-**Descrição:**
-Atualiza ou cria uma nota no calendário do usuário para uma data específica. Também pode disparar uma reavaliação automática do dia.
+**Description:**
+Updates or creates a note in the user's calendar for a specific date. Can also trigger an automatic day re-evaluation.
 
-**Cabeçalhos Necessários:**
+**Required Headers:**
 ```
 Authorization: Bearer <token>
 ```
 
-**Parâmetros de Path:**
-- `date`: Data no formato YYYY-MM-DD
+**Path Parameters:**
+- `date`: Date in YYYY-MM-DD format
 
-**Corpo da Requisição:**
+**Request Body:**
 ```json
 {
     "note": "string"
 }
 ```
 
-**Respostas:**
-- `200 OK` - Nota atualizada com sucesso
-- `401 UNAUTHORIZED` - Token inválido ou expirado
+**Responses:**
+- `200 OK` - Note successfully updated
+- `401 UNAUTHORIZED` - Invalid or expired token
 
-**Exemplo de Resposta:**
+**Response Example:**
 ```json
 {
     "date": "2024-03-20",
-    "note": "Nova nota atualizada",
+    "note": "New updated note",
     "chats": [
         {
-            "message": "Exemplo de mensagem",
+            "message": "Example message",
             "date": "2024-03-20T10:30:00"
         }
     ],
-    "justificative": "Nova avaliação baseada na nota atualizada",
+    "justificative": "New evaluation based on updated note",
     "grade": 7
 }
 ```
 
-## Funcionalidades Especiais
+## Special Features
 
-### Avaliação Automática
-- O sistema realiza avaliações automáticas baseadas em:
-  - Mensagens de chat do dia
-  - Notas do usuário
-  - Conteúdo do arquivo prompt-dayevaluation.txt
+### Automatic Evaluation
+- The system performs automatic evaluations based on:
+  - Day's chat messages
+  - User notes
+  - Content from prompt-dayevaluation.txt file
 
-### Reavaliação Periódica
-- As avaliações são atualizadas automaticamente após 15 minutos
-- Utiliza um sistema de IA para análise do conteúdo
-- Gera uma nota (grade) e justificativa baseada nas interações
+### Periodic Re-evaluation
+- Evaluations are automatically updated after 15 minutes
+- Uses an AI system for content analysis
+- Generates a grade and justification based on interactions
 
-## Observações Técnicas
+## Technical Notes
 
-1. **Autenticação**
-   - Requer token JWT válido
-   - Token deve ser enviado no formato Bearer
+1. **Authentication**
+   - Requires valid JWT token
+   - Token must be sent in Bearer format
 
-2. **Formato de Dados**
-   - Datas devem seguir o padrão YYYY-MM-DD
-   - Notas são armazenadas como texto
-   - Avaliações incluem nota numérica e justificativa
+2. **Data Format**
+   - Dates must follow YYYY-MM-DD pattern
+   - Notes are stored as text
+   - Evaluations include numerical grade and justification
 
-3. **Armazenamento**
-   - As notas e avaliações são persistidas no banco de dados
-   - Histórico de chat é mantido para referência
+3. **Storage**
+   - Notes and evaluations are persisted in the database
+   - Chat history is maintained for reference
 
-4. **Limitações**
-   - Avaliações automáticas dependem da qualidade dos dados fornecidos
-   - Sistema requer configuração adequada do arquivo prompt-dayevaluation.txt
+4. **Limitations**
+   - Automatic evaluations depend on provided data quality
+   - System requires proper configuration of prompt-dayevaluation.txt file
 
-## Códigos de Erro
+## Error Codes
 
-- `401` - Problemas de autenticação
-- `400` - Requisição mal formatada
-- `500` - Erro interno do servidor
+- `401` - Authentication issues
+- `400` - Malformed request
+- `500` - Internal server error
