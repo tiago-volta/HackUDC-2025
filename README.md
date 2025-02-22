@@ -1,62 +1,110 @@
-TerapIA
+<div align="center">
+  <img src="assets/logo.png" alt="TerapIA Logo" width="200" height="200">
+TerapIA 🧠
+An AI-powered psychological support chatbot
+</div>
+About The Project 🎯
+TerapIA was developed for the BubsByte 23/24 Hackathon! It's an innovative AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support.
+Key Features 🌟
 
-What is TerapIA?
+💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
+🔒 Secure Environment: Protected user data and encrypted conversations
+📝 Digital Diary: Track your emotional journey and progress
+🤖 Smart Analysis: Personalized insights based on your interactions
+🚨 Crisis Support: Emergency resources and professional guidance when needed
 
-TerapIA is an AI-powered psychological chatbot designed to support users by providing mental health guidance. It interacts with users through chat, gathers profile information and diary entries, and analyzes each individual to offer personalized advice and emotional support.
+<div align="left">
+Built With 🛠️
+Front-end
 
-What does TerapIA solve?
+React ⚛️
+Tailwind CSS 🎨
+Shadcn UI 🎆
 
-TerapIA aims to assist individuals facing emotional distress or seeking psychological support. While it is not a replacement for professional therapy, it provides a safe space for users to express themselves and receive guidance. It can also direct users to appropriate crisis resources when necessary.
+Back-end
 
-Dependencies
+Spring Boot 🟢
+Java ☕
+OpenAI API 🧠
+MySQL Database 📊
 
-To install and run TerapIA, you need the following:
+Authentication
 
-Spring Boot (for the backend API)
+JWT Authentication 🔐
+Secure Session Management 🔑
 
-React (for the frontend interface)
+Getting Started 🚀
+Prerequisites 📋
+Before running TerapIA, ensure you have installed:
+bashCopyJava 17+
+Node.js 18+
+MySQL 8+
+Installation 💻
 
-Make sure you have Java and Node.js installed on your system to properly set up the project.
+Clone the repository
 
-How does TerapIA work?
+bashCopygit clone https://github.com/your_username/terapia.git
 
-Users interact with the chatbot through a conversational interface.
+Install frontend dependencies
 
-The chatbot gathers and processes information from chats, profile data, and diary entries.
+bashCopycd client
+npm install
 
-Using AI-driven analysis, it provides personalized responses and recommendations.
+Install backend dependencies
 
-If distress signals or crisis situations are detected, TerapIA offers emergency resources and guidance to seek professional help.
+bashCopycd server
+mvn install
 
-Current Features
+Configure environment variables
 
-✅ Chat-based psychological support
-✅ Secure authentication and data handling
-✅ AI-powered user analysis
-✅ Emergency response mechanism
+bashCopycp .env.example .env
+# Edit .env with your configurations
+Project Status 📊
+Current Features ✅
 
-Work in Progress
+Chat-based psychological support
+Secure authentication and data handling
+AI-powered user analysis
+Emergency response mechanism
 
-🚧 Additional AI improvements for better support
-🚧 Enhanced diary entry analysis
-🚧 New user engagement features
+Work in Progress 🚧
 
-Reporting Issues
+Enhanced AI analysis capabilities
+Advanced diary entry processing
+New user engagement features
+Improved crisis detection algorithms
 
-If you encounter any issues or security vulnerabilities, please report them to security@terapia.com. Our team will promptly review and address the concerns.
+Contributing 🤝
+We welcome contributions to improve TerapIA! Please read our Contributing Guidelines and Code of Conduct before getting started.
+How to Report Issues 🐛
 
-How to Contribute
+For bugs and feature requests, open an issue on GitHub
+For security vulnerabilities, email security@terapia.com
+For general questions, join our Discord community
 
-We welcome contributions to improve TerapIA! If you find a bug, have suggestions, or want to collaborate, contact us at security@terapia.com.
+Team 👥
 
-Contributors
+Ricardo Freitas - Frontend Developer - @rmotafreitas
+Rodrigo Pinto - Backend Developer - @pintous66
+Tiago Volta - AI Engineer - @tiago-volta
 
-@pintous66
+Documentation 📚
 
-@rmotafreitas
+API Documentation
+Security Policy
+Contributing Guidelines
 
-@tiago-volta
+License 📄
+This project is licensed under the MIT License - see the LICENSE file for details.
+Support 💪
+If you're experiencing a crisis or need immediate help, please contact professional mental health services:
 
-License
+Emergency: 112 (EU) / 911 (US)
+National Suicide Prevention Lifeline: 988 (US)
 
-This project is licensed under the MIT License, allowing flexibility for modification and distribution.
+Remember: TerapIA is a support tool, not a replacement for professional mental health care.
+
+<div align="center">
+  Made with ❤️ by the TerapIA Team
+⬆ Back to top
+</div>
