@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.nio.file.Paths.get;
@@ -56,11 +58,54 @@ public class CalendarController {
         Integer grade = 0;
         String justificative = "No evaluation";
         var calendarUser = calendarRepo.findAllByUserId(userId);
+        String changeDay ="" ;
         for(var eval : calendarUser.getEvaluationDay()){
             if(eval.getDay().equals(date)){
                 grade = eval.getEvaluation();
+                changeDay = eval.getDateOfEvaluation();
                 justificative = eval.getEvaluationJustification();
             }
+        }
+        if(!changeDay.equals("")){
+            // se ja passou mais de 15 minutos printa ola
+            Date date1 = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            Date date2 = null;
+            try {
+                 date2 = formatter.parse(changeDay);
+                System.out.println("Data convertida: " + date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (date1.getTime() - date2.getTime() > 900000) {
+
+                var eval = getEvaluationCalendar(getChatsFromDay(date,userId),"No note");
+
+
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    EvaluationDTO evaluation = objectMapper.readValue(eval.toString(), EvaluationDTO.class);
+
+                    grade = evaluation.getGrade();
+                    justificative = evaluation.getJustification();
+
+                    for( var evall : calendarUser.getEvaluationDay() ){
+
+                        evall.setDateOfEvaluation(new Date().toString());
+                    }
+
+                    calendarRepo.save(calendarUser);
+
+                } catch (Exception e) {
+                    System.out.println("Erro ao processar JSON: " + e.getMessage());
+                }
+
+
+
+
+
+            }
+
         }
 
         for (var noteDay : calendarUser.getNoteday()) {
