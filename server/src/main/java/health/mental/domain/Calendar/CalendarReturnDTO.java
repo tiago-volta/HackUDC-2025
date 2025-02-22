@@ -24,6 +24,15 @@ public class CalendarReturnDTO {
 
     Integer grade;
 
+    public CalendarReturnDTO(String day, String note, Object chats, String justificative, Integer grade) {
+        this.day = day;
+        this.note = note;
+        this.chats = chats;
+        this.justificative = justificative;
+        this.grade = grade;
+
+    }
+
 
     public CalendarReturnDTO(String day, String note, Object chats, String evaluation) {
         this.day = day;

@@ -1,9 +1,9 @@
 package health.mental.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import health.mental.domain.Calendar.CalendarInsertDTO;
-import health.mental.domain.Calendar.CalendarReturnDTO;
-import health.mental.domain.Calendar.PairNoteDay;
+import health.mental.domain.Calendar.*;
+import health.mental.domain.Calendar.Calendar;
 import health.mental.domain.User.User;
 import health.mental.infra.security.TokenService;
 import health.mental.repositories.CalendarRepo;
@@ -47,28 +47,66 @@ public class CalendarController {
     private final String promptTxtPath = "src/main/java/health/mental/domain/calendar/prompt-dayevaluation.txt";
     @GetMapping("/{date}")
     @Operation(summary = "Get user calendar", description = "Get user calendar by user id and date")
-    public ResponseEntity getCalendar(@RequestHeader("Authorization") String bearerToken, @PathVariable String date) {
+    public ResponseEntity getCalendar(@RequestHeader("Authorization") String bearerToken, @PathVariable String date) throws IOException {
         String token = bearerToken.substring(7);
         String userLogin = tokenService.validateToken(token);
         User u = (User) userRepository.findByLogin(userLogin);
         String userId = u.getId();
 
-
-
+        Integer grade = 0;
+        String justificative = "No evaluation";
         var calendarUser = calendarRepo.findAllByUserId(userId);
-        for (var noteDay : calendarUser.getNoteday()) {
-            if (noteDay.getDate().equals(date)) {
-
-
-                return ResponseEntity.ok(new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId),getEvaluationCalendar(getChatsFromDay(date,userId), noteDay.getNote()).toString()));
+        for(var eval : calendarUser.getEvaluationDay()){
+            if(eval.getDay().equals(date)){
+                grade = eval.getEvaluation();
+                justificative = eval.getEvaluationJustification();
             }
         }
 
-        var chats = chatRepository.findAllByUserId(userId);
+        for (var noteDay : calendarUser.getNoteday()) {
+            if (noteDay.getDate().equals(date)) {
+                return ResponseEntity.ok(new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId), justificative, grade));
+            }
+        }
 
-        Object a  = getChatsFromDay(date,userId);
-        if(a != "No chat"){
-            return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", a,getEvaluationCalendar(a, "No note").toString()));
+
+       var chats = getChatsFromDay(date,userId);
+        var calendar = calendarRepo.findAllByUserId(userId);
+
+        for(var eval : calendar.getEvaluationDay()){
+            if(eval.getDay().equals(date)){
+                return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", chats, eval.getEvaluationJustification(), eval.getEvaluation()));
+            }
+        }
+        if(chats != "No chat" ){
+
+
+            var eval = getEvaluationCalendar(chats,"No note");
+            int newGrade = 0;
+            String newJustificative = "No evaluation";
+
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                EvaluationDTO evaluation = objectMapper.readValue(eval.toString(), EvaluationDTO.class);
+
+                 newGrade = evaluation.getGrade();
+                 newJustificative = evaluation.getJustification();
+
+
+            } catch (Exception e) {
+                System.out.println("Erro ao processar JSON: " + e.getMessage());
+            }
+
+
+            EvaluationDay newEval = new EvaluationDay(date,newGrade,newJustificative,new Date().toString());
+            List<EvaluationDay> evals = new ArrayList   <>();
+            evals.add(newEval);
+
+             calendar = calendarRepo.findAllByUserId(userId);
+            calendar.setEvaluationDay(evals);
+            calendarRepo.save(calendar);
+
+            return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", chats, newJustificative, newGrade));
         }
         return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", "No chat", "No evaluation"));
     }
@@ -87,8 +125,18 @@ public class CalendarController {
         for(var noteDay : calendarUser.getNoteday()){
             if(noteDay.getDate().equals(date)){
                 noteDay.setNote(calendarInsertDTO.note);
+                CalendarReturnDTO res = new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId),getEvaluationCalendar(getChatsFromDay(date,userId), noteDay.getNote()).toString());
+
+                for(var eval : calendarUser.getEvaluationDay()){
+                    if(eval.getDay().equals(date)) {
+                        eval.setEvaluation(res.getGrade());
+                        eval.setEvaluationJustification(res.getJustificative());
+                        eval.setDateOfEvaluation(new Date().toString());
+                    }
+                }
+
                 calendarRepo.save(calendarUser);
-                return ResponseEntity.ok(new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId),getEvaluationCalendar(getChatsFromDay(date,userId), noteDay.getNote()).toString())) ;
+                return ResponseEntity.ok(res);
             }
         }
         PairNoteDay newNoteDay = new PairNoteDay(calendarInsertDTO.note, date);
@@ -118,6 +166,8 @@ public class CalendarController {
         }
         return "No chat";
     }
+
+
 
     private Object getEvaluationCalendar(Object msgs,String note){
         String txtContent = "";
