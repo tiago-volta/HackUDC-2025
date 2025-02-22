@@ -208,10 +208,6 @@ export function DayJournalScreen({ navigation, route }: Props) {
     </TouchableOpacity>
   );
 
-  const handleClearNote = () => {
-    setNote("");
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -225,9 +221,6 @@ export function DayJournalScreen({ navigation, route }: Props) {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Editable note area */}
-          {renderNoteSection()}
-
           {/* Evaluation Section */}
           {data === null && refreshing ? (
             <View style={styles.evaluationContainer}>
@@ -308,6 +301,9 @@ export function DayJournalScreen({ navigation, route }: Props) {
               </View>
             )
           )}
+
+          {/* Editable note area */}
+          {renderNoteSection()}
 
           {/* History Chat Section */}
           <View style={styles.historyContainer}>
