@@ -11,8 +11,6 @@ import { ProfileScreen } from "../screens/profile";
 import { ChatsParams, ChatsScreen } from "../screens/chats";
 import { ChatDetailParams, ChatDetailScreen } from "../screens/chat-detail";
 
-const Drawer = createDrawerNavigator();
-
 function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
