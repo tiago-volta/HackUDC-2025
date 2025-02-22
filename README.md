@@ -47,28 +47,29 @@ Key Features
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Built With
-Front-end
 
-React native ⚛️
-Expo go 🎆
+-Front-end
+
+-React native ⚛️
+-Expo go 🎆
 
 Back-end
 
-Spring Boot 🟢
-Java ☕
-OpenAI API 🧠
+-Spring Boot 🟢
+-Java ☕
+-OpenAI API 🧠
 
 Authentication
 
-JWT Authentication 🔐
-Secure Session Management 🔑
+-JWT Authentication 🔐
+-Secure Session Management 🔑
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Getting Started
 Prerequisites
 
-Spring Boot 🟢
-Java ☕
+-Spring Boot 🟢
+-Java ☕
 
 Installation
 
@@ -89,34 +90,39 @@ mvn install
 Project Status
 Current Features ✅
 
-Chat-based psychological support
-Secure authentication and data handling
-AI-powered user analysis
-Emergency response mechanism
+-Chat-based psychological support
+-Emotional Calendar
+-Clients evaluation
+-Secure authentication and data handling
+-AI-powered user analysis
+-Emergency response mechanism
 
 Work in Progress 🚧
 
-Enhanced AI analysis capabilities
-Advanced diary entry processing
-New user engagement features
-Improved crisis detection algorithms
+-Enhanced AI analysis capabilities
+-Advanced diary entry processing
+-New user engagement features
+-Improved crisis detection algorithms
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Team
 
-Frontend Developer - Ricardo Freitas - @rmotafreitas
-Backend Developer - Rodrigo Pinto - @pintous66
-Prompt Engineer - Tiago Volta - @tiago-volta
+-Frontend Developer - Ricardo Freitas - @rmotafreitas
+-Backend Developer - Rodrigo Pinto - @pintous66
+-Prompt Engineer - Tiago Volta - @tiago-volta
 
 Project Link: https://github.com/pintous66/hack-udc
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Support
-If you're experiencing a crisis or need immediate help, please contact professional mental health services:
+-If you're experiencing a crisis or need immediate help, please contact professional mental health services:
 
-Emergency: 112 (EU) / 911 (US)
-National Suicide Prevention Lifeline: 988 (US)
+-Emergency: 112 (EU) / 911 (US)
+-National Suicide Prevention Lifeline: 988 (US)
 
 Remember: TerapIA is a support tool, not a replacement for professional mental health care.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+License
+
 
 Note: Additional documentation can be found in server/docs/readme.md
