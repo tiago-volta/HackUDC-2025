@@ -155,6 +155,17 @@ export function ProfileScreen() {
           </View>
         </View>
 
+        <View style={styles.evaluationCard}>
+          <View style={styles.evaluationHeader}>
+            <Ionicons name="medal" size={24} color={THEME.colors.primary} />
+            <Text style={styles.evaluationTitle}>Global Evaluation</Text>
+          </View>
+
+          <Text style={styles.evaluationText}>
+            {`Based on your progress and engagement, you're doing an excellent job managing your mental health. Your consistency in sessions and proactive approach to personal growth are commendable. Keep up the great work!`}
+          </Text>
+        </View>
+
         {/* ENNEAGRAM SECTION */}
         <TouchableOpacity
           style={styles.enneagramCard}

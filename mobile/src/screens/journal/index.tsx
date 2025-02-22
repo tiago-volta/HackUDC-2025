@@ -1,3 +1,4 @@
+// screens/mood-calendar/index.tsx
 import React, { useState, useMemo } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import { Calendar } from "react-native-calendars";
@@ -7,33 +8,30 @@ import { Ionicons } from "@expo/vector-icons";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { RootDrawerParamList } from "../../navigation";
 
-// Mock data structure for mood entries
 type MoodEntry = {
   date: string;
   moodScore: number;
   note?: string;
 };
 
-// Mock data - you can replace this with your API data later
 const MOCK_MOOD_DATA: MoodEntry[] = [
-  { date: "2024-03-01", moodScore: 85, note: "Feeling great today!" },
-  { date: "2024-03-05", moodScore: 60, note: "Somewhat stressed" },
-  { date: "2024-03-10", moodScore: 95, note: "Amazing day!" },
-  { date: "2024-03-15", moodScore: 40, note: "Difficult day" },
-  { date: "2024-03-20", moodScore: 75, note: "Pretty good" },
-  { date: "2024-03-25", moodScore: 30, note: "Struggling" },
-  // Add more mock data as needed
+  { date: "2024-03-01", moodScore: 85 },
+  { date: "2024-03-05", moodScore: 60 },
+  { date: "2024-03-10", moodScore: 95 },
+  { date: "2024-03-15", moodScore: 40 },
+  { date: "2024-03-20", moodScore: 75 },
+  { date: "2024-03-25", moodScore: 30 },
 ];
 
 const getMoodColor = (score: number): string => {
-  if (score >= 80) return "#22c55e"; // Green for great mood
-  if (score >= 60) return "#84cc16"; // Light green for good mood
-  if (score >= 40) return "#eab308"; // Yellow for neutral mood
-  if (score >= 20) return "#f97316"; // Orange for low mood
-  return "#ef4444"; // Red for very low mood
+  if (score >= 80) return "#22c55e"; // Green
+  if (score >= 60) return "#84cc16"; // Light Green
+  if (score >= 40) return "#eab308"; // Yellow
+  if (score >= 20) return "#f97316"; // Orange
+  return "#ef4444"; // Red
 };
 
-export type JournalParams = {};
+export type CalendarJournalParams = {};
 
 type Props = DrawerScreenProps<RootDrawerParamList, "Journal">;
 
@@ -43,43 +41,29 @@ export function CalendarJournalScreen({ navigation }: Props) {
     selectedDate.toISOString().split("T")[0].slice(0, 7)
   );
 
-  // Convert mood data to calendar marking format
   const markedDates = useMemo(() => {
-    const marks = {};
+    const marks: Record<string, any> = {};
     MOCK_MOOD_DATA.forEach((entry) => {
       marks[entry.date] = {
-        marked: true,
-        selected: true,
-        selectedColor: getMoodColor(entry.moodScore),
-        selectedTextColor:
-          entry.moodScore >= 60
-            ? THEME.colors.background
-            : THEME.colors.primaryForeground,
+        dots: [
+          {
+            key: entry.date,
+            color: getMoodColor(entry.moodScore),
+            selectedDotColor: getMoodColor(entry.moodScore),
+          },
+        ],
       };
     });
     return marks;
   }, []);
 
   const handleDayPress = (day) => {
-    // Find mood entry for selected date
-    const moodEntry = MOCK_MOOD_DATA.find(
-      (entry) => entry.date === day.dateString
-    );
-
-    // Navigate to detail screen with mood data
-    navigation.navigate("MoodDetail", {
-      date: day.dateString,
-      moodEntry,
+    day = day.dateString;
+    day = new Date(day);
+    console.log("Selected day", day);
+    navigation.navigate("DayJournal", {
+      date: day,
     });
-  };
-
-  const renderHeader = (date) => {
-    const monthYear = date.toString("MMMM yyyy");
-    return (
-      <View style={styles.calendarHeader}>
-        <Text style={styles.calendarHeaderText}>{monthYear}</Text>
-      </View>
-    );
   };
 
   return (
@@ -93,9 +77,8 @@ export function CalendarJournalScreen({ navigation }: Props) {
         <Calendar
           current={currentMonth}
           onDayPress={handleDayPress}
-          markingType="custom"
           markedDates={markedDates}
-          renderHeader={renderHeader}
+          markingType="multi-dot"
           theme={{
             backgroundColor: THEME.colors.background,
             calendarBackground: THEME.colors.background,
