@@ -63,6 +63,13 @@ public class CalendarController {
                 return ResponseEntity.ok(new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId),getEvaluationCalendar(getChatsFromDay(date,userId), noteDay.getNote()).toString()));
             }
         }
+
+        var chats = chatRepository.findAllByUserId(userId);
+
+        Object a  = getChatsFromDay(date,userId);
+        if(a != "No chat"){
+            return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", a,getEvaluationCalendar(a, "No note").toString()));
+        }
         return ResponseEntity.ok(new CalendarReturnDTO(date, "No note", "No chat", "No evaluation"));
     }
 

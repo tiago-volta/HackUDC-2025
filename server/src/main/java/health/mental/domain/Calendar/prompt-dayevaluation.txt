@@ -1,26 +1,26 @@
-You will analyze a set of messages between a cliente and theri psychologist, along with diary entries, to evaluate the client´s overall well-being and provide a detailed personality assessment
+Vais receber um cojunto de mensagens com um psicologo (as mensagens do cliente e as respostas do psicologo) e as respetivas notas do diário do cliente de um determinado dia,
+tens de retornar uma nota de 0 a 100 do quão bem o cliente está a lidar com a situação/vida no geral.
 
-you will receive a JSON with the following structure:
+vais receber um json com a seguinte estrutura:
 
 
 {
-  "messages": [
+  "mensagens": [
     {
-      "client": "client messages",
-      "psychologist": "psychologist answers"
+      "cliente": "mensagem do cliente",
+      "psicologo": "resposta do psicologo"
     }
   ],
-  "diary": "diary entry"
+  "diario": "nota do diário"
 }
 
 
-return the follow JSON:
+e tens de retornar o seguinte json:
 
 
 {
-  "evaluation": "this should evaluate the user emotional state based on the messages, previous history and diary entries"
-  "enneagram" : "description of the users traits based in a enneagram model"
-  "BigFive": "gives a description of the user´s personality charateristics based on the Big Five Model(agreeableness, openess to experiences, conscientiousness, neuroticism and extraversion"
+  "grade": [0-100],
+  "justification": "justificação da nota(justificacao completa não tenhas medo de escrever muito, em ingles)"
 }
 
 
@@ -31,17 +31,23 @@ input:
 output:
 
 {
-  "evaluation": "this should evaluate the user emotional state based on the messages, previous history and diary entries"
-  "enneagram" : "description of the users traits based in a enneagram model"
-  "BigFive": "gives a description of the user´s personality charateristics based on the Big Five Model(agreeableness, openess to experiences, conscientiousness, neuroticism and extraversion)"
+  "grade": [0-100],
+  "justification": "justificação da nota(justificacao completa não tenhas medo de escrever muito, em ingles)"
 }
 
-Provide an output for the input I gave you, without speaking in the first person, and take into account the diary entries and the conversations with the psychologist. For the evaluation and Big Five parts, please follow this request for the description of another person:
 
-Please describe this person in detail, including the following aspects:
+dame um output para o input que te dei, nao fales na primeira pessoa e tem em conta a nota do diaria e as conversas com o psicologo
+Para a parte da justificacao Pedido para Descrição de Outras Pessoas:
 
-Evaluation: Use adjectives to describe how this person behaves and what they are like in general (e.g., extroverted, introverted, creative, calm, etc.). Mention activities or actions this person regularly engages in that are representative of their personality (e.g., loves socializing, always seeks new experiences, etc.). Indicate if there is any duality or something contradictory in their personality (e.g., despite being very adventurous, they also struggle with making quick decisions). Give us two paragraphs, one based on the messages and another based on the diary entries.
+                             "Gostaria que descrevesses esta pessoa de forma detalhada, incluindo os seguintes aspectos:
 
-Enneagram: Identify the enneagram type that suits more the users traits, giving a brief description of the type. Give also, if applicable, other enneagram types that can suit the user (e.g., this profiles matches with enneagram type 7 "the enthusiast", but on the other hand some diaries entries shows some traits of enneagram type 5 "the investigator") and explain briefly why. To conclude just say the predominant type and the other ones.
+                             Características principais da personalidade: Utiliza adjetivos para descrever como esta pessoa se comporta e como é em termos gerais (ex: extrovertido, introvertido, criativo, calmo, etc.).
 
-Big Five: Evaluate the patient on a scale from very low to very high for each personality trait, justifying. Put emojis on each trait.
+                             Comportamentos e ações: Refere atividades ou ações que esta pessoa realiza regularmente e que são representativas da sua personalidade (ex: adora socializar, busca sempre novas experiências, etc.).
+
+                             Contrastes ou aspectos opostos: Indica se existe alguma dualidade ou algo que se contradiga na sua personalidade (ex: apesar de ser muito aventureiro, também sente dificuldade em tomar decisões rápidas).
+
+                             Evolução ou reflexões internas: Se for o caso, menciona alguma mudança ou reflexão interna importante que esta pessoa tenha tido, como desenvolvimento emocional ou mudança de perspectiva.
+
+                             Reflexão e autoconhecimento: Se possível, descreve como esta pessoa lida com questões emocionais ou com o seu crescimento pessoal, como se mostra introspectiva ou em busca de equilíbrio entre diferentes aspectos da sua vida.
+Faz isso em ingles e sem falar na primeira pessoa

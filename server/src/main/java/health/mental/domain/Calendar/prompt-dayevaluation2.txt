@@ -1,0 +1,47 @@
+You will analyze a set of messages between a cliente and theri psychologist, along with diary entries, to evaluate the client´s overall well-being and provide a detailed personality assessment
+
+you will receive a JSON with the following structure:
+
+
+{
+  "messages": [
+    {
+      "client": "client messages",
+      "psychologist": "psychologist answers"
+    }
+  ],
+  "diary": "diary entry"
+}
+
+
+return the follow JSON:
+
+
+{
+  "evaluation": "this should evaluate the user emotional state based on the messages, previous history and diary entries"
+  "enneagram" : "description of the users traits based in a enneagram model"
+  "BigFive": "gives a description of the user´s personality charateristics based on the Big Five Model(agreeableness, openess to experiences, conscientiousness, neuroticism and extraversion"
+}
+
+
+input:
+
+{JSON}
+
+output:
+
+{
+  "evaluation": "this should evaluate the user emotional state based on the messages, previous history and diary entries"
+  "enneagram" : "description of the users traits based in a enneagram model"
+  "BigFive": "gives a description of the user´s personality charateristics based on the Big Five Model(agreeableness, openess to experiences, conscientiousness, neuroticism and extraversion)"
+}
+
+Provide an output for the input I gave you, without speaking in the first person, and take into account the diary entries and the conversations with the psychologist. For the evaluation and Big Five parts, please follow this request for the description of another person:
+
+Please describe this person in detail, including the following aspects:
+
+Evaluation: Use adjectives to describe how this person behaves and what they are like in general (e.g., extroverted, introverted, creative, calm, etc.). Mention activities or actions this person regularly engages in that are representative of their personality (e.g., loves socializing, always seeks new experiences, etc.). Indicate if there is any duality or something contradictory in their personality (e.g., despite being very adventurous, they also struggle with making quick decisions). Give us two paragraphs, one based on the messages and another based on the diary entries.
+
+Enneagram: Identify the enneagram type that suits more the users traits, giving a brief description of the type. Give also, if applicable, other enneagram types that can suit the user (e.g., this profiles matches with enneagram type 7 "the enthusiast", but on the other hand some diaries entries shows some traits of enneagram type 5 "the investigator") and explain briefly why. To conclude just say the predominant type and the other ones.
+
+Big Five: Evaluate the patient on a scale from very low to very high for each personality trait, justifying. Put emojis on each trait.
