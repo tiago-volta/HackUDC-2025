@@ -39,42 +39,42 @@ About The Project
 This app was developed to participate in the HackUdc 24/25 Hackathon and consists of an AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support! 🌍
 Key Features
 
--💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
--🔒 Secure Environment: Protected user data and encrypted conversations
--📝 Digital Diary: Track your emotional journey and progress
--🤖 Smart Analysis: Personalized insights based on your interactions
--🚨 Crisis Support: Emergency resources and professional guidance when needed
+💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
+🔒 Secure Environment: Protected user data and encrypted conversations
+📝 Digital Diary: Track your emotional journey and progress
+🤖 Smart Analysis: Personalized insights based on your interactions
+🚨 Crisis Support: Emergency resources and professional guidance when needed
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-## Built With
+Built With
+Front-end
 
-#### Front-end
+React native ⚛️
+Expo go 🎆
 
--React native ⚛️
--Expo go 🎆
+Back-end
 
-#### Back-end
+Spring Boot 🟢
+Java ☕
+OpenAI API 🧠
 
--Spring Boot 🟢
--Java ☕
--OpenAI API 🧠
+Authentication
 
-#### Authentication
-
--JWT Authentication 🔐
--Secure Session Management 🔑
+JWT Authentication 🔐
+Secure Session Management 🔑
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Getting Started
 Prerequisites
+
 Spring Boot 🟢
 Java ☕
 
-#### Installation
+Installation
 
 Clone the repository
 
-bashCopygit clone (https://github.com/pintous66/hack-udc.git)
+bashCopygit clone https://github.com/pintous66/hack-udc.git
 
 Install frontend dependencies
 
@@ -102,10 +102,12 @@ New user engagement features
 Improved crisis detection algorithms
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-## Team
+Team
+
 Frontend Developer - Ricardo Freitas - @rmotafreitas
 Backend Developer - Rodrigo Pinto - @pintous66
 Prompt Engineer - Tiago Volta - @tiago-volta
+
 Project Link: https://github.com/pintous66/hack-udc
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Support
