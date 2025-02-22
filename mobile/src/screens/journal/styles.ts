@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     backgroundColor: THEME.colors.card,
     margin: 20,
     borderRadius: THEME.radius.default,
+    overflow: "hidden",
     ...Platform.select({
       ios: {
         shadowColor: THEME.colors.foreground,
@@ -35,6 +36,10 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  legendContainer: {
+    padding: 20,
+    marginTop: 10,
+  },
   calendarHeader: {
     flexDirection: "row",
     alignItems: "center",
@@ -46,9 +51,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: THEME.colors.foreground,
-  },
-  legendContainer: {
-    padding: 20,
   },
   legendTitle: {
     fontSize: 16,
