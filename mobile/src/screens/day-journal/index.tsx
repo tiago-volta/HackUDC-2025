@@ -69,27 +69,27 @@ export function DayJournalScreen({ navigation, route }: Props) {
   };
 
   const getMoodColor = (grade: number): string => {
-    if (grade >= 80) return "#ef4444"; // Red - Very Sad
-    if (grade >= 60) return "#f97316"; // Orange - Sad
+    if (grade >= 80) return "#22c55e"; // Green - Very Happy
+    if (grade >= 60) return "#84cc16"; // Light Green - Happy
     if (grade >= 40) return "#eab308"; // Yellow - Neutral
-    if (grade >= 20) return "#84cc16"; // Light Green - Happy
-    return "#22c55e"; // Green - Very Happy
+    if (grade >= 20) return "#f97316"; // Orange - Sad
+    return "#ef4444"; // Red - Very Sad
   };
 
   const getMoodLabel = (grade: number): string => {
-    if (grade >= 80) return "Very Sad";
-    if (grade >= 60) return "Sad";
+    if (grade >= 80) return "Very Happy";
+    if (grade >= 60) return "Happy";
     if (grade >= 40) return "Neutral";
-    if (grade >= 20) return "Happy";
-    return "Very Happy";
+    if (grade >= 20) return "Sad";
+    return "Very Sad";
   };
 
   const getMoodIcon = (grade: number) => {
-    if (grade >= 80) return "sad" as const;
-    if (grade >= 60) return "sad-outline" as const;
+    if (grade >= 80) return "happy" as const;
+    if (grade >= 60) return "happy-outline" as const;
     if (grade >= 40) return "radio-button-on" as const;
-    if (grade >= 20) return "happy-outline" as const;
-    return "happy" as const;
+    if (grade >= 20) return "sad-outline" as const;
+    return "sad" as const;
   };
 
   const renderChatItem = ({ item }: { item: ChatPreview }) => (
