@@ -14,14 +14,21 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { RootDrawerParamList } from "../../navigation";
 import { chatService } from "../../core/services/chat.service";
 import { ChatPreview, GroupedChats } from "../../core/domain/chat";
+import { useFocusEffect } from "@react-navigation/native";
 
 export type ChatsParams = {};
 
 type Props = DrawerScreenProps<RootDrawerParamList, "Chats">;
 
 const formatDate = (date: string) => {
+  date = date.replaceAll("-", "/");
+  date = date.split("/").reverse().join("/");
+  const parts = date.split("/");
+  date = `${parts[1]}/${parts[0]}/${parts[2]}`;
+  date = date.replace(/(^|\/)0+/g, "$1");
   const today = new Date().toLocaleDateString();
   const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+  console.log(today, yesterday, date);
 
   if (date === today) return "Today";
   if (date === yesterday) return "Yesterday";
@@ -34,7 +41,7 @@ const formatDate = (date: string) => {
   });
 };
 
-export function ChatsScreen({ navigation }: Props) {
+export function ChatsScreen({ navigation, route }: Props) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [groupedChats, setGroupedChats] = React.useState<GroupedChats>({});
 
@@ -53,9 +60,11 @@ export function ChatsScreen({ navigation }: Props) {
     setRefreshing(false);
   }, [fetchChats]);
 
-  React.useEffect(() => {
-    fetchChats();
-  }, [fetchChats]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchChats();
+    }, [fetchChats])
+  );
 
   const renderChatItem = ({ item }: { item: ChatPreview }) => (
     <TouchableOpacity

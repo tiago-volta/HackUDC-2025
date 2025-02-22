@@ -15,10 +15,10 @@ export class UserMapper {
     return {
       email: dto.login,
       role: dto.role as Role,
-      completeName: dto.complete_name,
-      birthDate: new Date(dto.birth_date),
+      completeName: dto.completeName,
+      birthDate: new Date(dto.birthDate),
       occupation: dto.occupation,
-      nationality: dto.nationality,
+      nationality: dto.nacionality,
     };
   }
 
@@ -26,10 +26,10 @@ export class UserMapper {
     return {
       login: domain.email,
       role: domain.role,
-      complete_name: domain.completeName,
-      birth_date: domain.birthDate.toISOString().split("T")[0], // Convert to YYYY-MM-DD
+      completeName: domain.completeName,
+      birthDate: domain.birthDate.toISOString().split("T")[0], // Convert to YYYY-MM-DD
       occupation: domain.occupation,
-      nationality: domain.nationality,
+      nacionality: domain.nationality,
     };
   }
 }
@@ -49,10 +49,10 @@ export class UserRegisterRequestMapper {
       login: domain.email,
       password: domain.password,
       role: domain.role.toLowerCase(),
-      complete_name: domain.completeName,
-      birth_date: domain.birthDate.toISOString().split("T")[0], // Convert to YYYY-MM-DD
+      completeName: domain.completeName,
+      birthDate: domain.birthDate.toISOString().split("T")[0], // Convert to YYYY-MM-DD
       occupation: domain.occupation,
-      nationality: domain.nationality,
+      nacionality: domain.nationality,
     };
   }
 }

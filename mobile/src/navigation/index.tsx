@@ -10,19 +10,12 @@ import { HomeScreen } from "../screens/home";
 import { ProfileScreen } from "../screens/profile";
 import { ChatsParams, ChatsScreen } from "../screens/chats";
 import { ChatDetailParams, ChatDetailScreen } from "../screens/chat-detail";
-
-function SettingsScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Settings Screen</Text>
-    </SafeAreaView>
-  );
-}
+import { CalendarJournalScreen, JournalParams } from "../screens/journal";
 
 export type RootDrawerParamList = {
   Home: undefined;
   Profile: undefined;
-  Settings: undefined;
+  Journal: JournalParams;
   Chats: ChatsParams;
   ChatDetail: ChatDetailParams;
 };
@@ -88,11 +81,11 @@ export function AppNavigator() {
         }}
       />
       <Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Journal"
+        component={CalendarJournalScreen}
         options={{
           drawerIcon: ({ color }) => (
-            <Ionicons name="cog" size={24} color={color} />
+            <Ionicons name="calendar" size={24} color={color} />
           ),
         }}
       />
