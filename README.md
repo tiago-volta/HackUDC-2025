@@ -91,3 +91,61 @@ Ensure you have the following installed:
 #### 1️⃣ Clone the repository  
 ```bash
 git clone https://github.com/pintous66/hack-udc.git
+
+## 📌 Project Status
+
+### ✅ Current Features  
+✔️ Chat-based psychological support  
+✔️ Emotional Calendar  
+✔️ Client evaluation  
+✔️ Secure authentication and data handling  
+✔️ AI-powered user analysis  
+✔️ Emergency response mechanism  
+
+### 🚧 Work in Progress  
+🔄 Enhanced AI analysis capabilities  
+🔄 Advanced diary entry processing  
+🔄 New user engagement features  
+🔄 Improved crisis detection algorithms  
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 👥 Team  
+
+👨‍💻 **Frontend Developer** – Ricardo Freitas – [@rmotafreitas](https://github.com/rmotafreitas)  
+👨‍💻 **Backend Developer** – Rodrigo Pinto – [@pintous66](https://github.com/pintous66)  
+👨‍💻 **Prompt Engineer** – Tiago Volta – [@tiago-volta](https://github.com/tiago-volta)  
+
+🔗 **Project Repository**: [TerapIA GitHub](https://github.com/pintous66/hack-udc)  
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 💡 Support  
+
+If you encounter any issues or need assistance, contact us at:  
+📩 **security@terapia.com**  
+
+### 🆘 Crisis Resources  
+If you're experiencing a crisis or need immediate help, please contact professional mental health services:  
+
+📞 **Emergency**: 112 (EU) / 911 (US)  
+📞 **National Suicide Prevention Lifeline**: 988 (US)  
+
+> **Remember**: TerapIA is a support tool, not a replacement for professional mental health care.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 📜 License  
+
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for more details.  
+
+📄 Additional documentation can be found in: `server/docs/readme.md`.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
