@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="./main/mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
+    <img src=".mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
   </a>
   <h3 align="center">TerapIA</h3>
   <p align="center">
@@ -40,7 +40,7 @@
 </details>
 <!-- ABOUT THE PROJECT -->
 About The Project
-This app was developed to participate in the BubsByte 23/24 Hackathon and consists of an AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support! 🌍
+This app was developed to participate in the HackUdc 24/25 Hackathon and consists of an AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support! 🌍
 Key Features
 
 💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
@@ -110,7 +110,7 @@ Team
 Frontend Developer - Ricardo Freitas - @rmotafreitas
 Backend Developer - Rodrigo Pinto - @pintous66
 AI Engineer - Tiago Volta - @tiago-volta
-Project Link: https://github.com/your_username/terapia
+Project Link: (https://github.com/pintous66/hack-udc)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Support
 If you're experiencing a crisis or need immediate help, please contact professional mental health services:
