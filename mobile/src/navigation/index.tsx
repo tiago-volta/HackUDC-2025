@@ -10,14 +10,16 @@ import { HomeScreen } from "../screens/home";
 import { ProfileScreen } from "../screens/profile";
 import { ChatsParams, ChatsScreen } from "../screens/chats";
 import { ChatDetailParams, ChatDetailScreen } from "../screens/chat-detail";
-import { CalendarJournalScreen, JournalParams } from "../screens/journal";
+import { CalendarJournalScreen } from "../screens/journal";
+import { DayJournalParams, DayJournalScreen } from "../screens/day-journal";
 
 export type RootDrawerParamList = {
   Home: undefined;
   Profile: undefined;
-  Journal: JournalParams;
+  Journal: undefined;
   Chats: ChatsParams;
   ChatDetail: ChatDetailParams;
+  DayJournal: DayJournalParams;
 };
 
 const { Navigator, Screen } = createDrawerNavigator<RootDrawerParamList>();
@@ -92,6 +94,15 @@ export function AppNavigator() {
       <Screen
         name="ChatDetail"
         component={ChatDetailScreen}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Screen
+        name="DayJournal"
+        component={DayJournalScreen}
         options={{
           headerShown: true,
           headerTitleAlign: "center",

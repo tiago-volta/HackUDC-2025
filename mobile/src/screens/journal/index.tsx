@@ -5,6 +5,8 @@ import { Calendar } from "react-native-calendars";
 import { styles } from "./styles";
 import { THEME } from "../../constants/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerScreenProps } from "@react-navigation/drawer";
+import { RootDrawerParamList } from "../../navigation";
 
 type MoodEntry = {
   date: string;
@@ -29,7 +31,11 @@ const getMoodColor = (score: number): string => {
   return "#ef4444"; // Red
 };
 
-export function CalendarJournalScreen({ navigation }) {
+export type CalendarJournalParams = {};
+
+type Props = DrawerScreenProps<RootDrawerParamList, "Journal">;
+
+export function CalendarJournalScreen({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(
     selectedDate.toISOString().split("T")[0].slice(0, 7)
@@ -52,9 +58,11 @@ export function CalendarJournalScreen({ navigation }) {
   }, []);
 
   const handleDayPress = (day) => {
-    navigation.navigate("MoodDetail", {
-      date: day.dateString,
-      moodEntry: MOCK_MOOD_DATA.find((entry) => entry.date === day.dateString),
+    day = day.dateString;
+    day = new Date(day);
+    console.log("Selected day", day);
+    navigation.navigate("DayJournal", {
+      date: day,
     });
   };
 
