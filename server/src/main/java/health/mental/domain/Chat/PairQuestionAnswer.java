@@ -1,12 +1,19 @@
 package health.mental.domain.Chat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Lob;
+
 import java.time.LocalDateTime;
 
 @Embeddable
 public class PairQuestionAnswer {
 
     private String question;
+    // make the field huge
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String answer;
     private LocalDateTime date;
 

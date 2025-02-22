@@ -92,7 +92,7 @@ public class ChatController {
 
         try {
             if (chat.get().getChatMsgs().isEmpty()){
-                chat.get().setTitle(chatgptController.ask("Say the title of the chat based on the first message of our chat:"+msg.getMsg()+". Please answer only the title without puting it in any object").getBody());
+                chat.get().setTitle(chatgptController.ask("Say the title of the chat based on the first message of our chat:"+msg.getMsg()+". Please answer only the title without puting it in any object  (Exemplo: Primeira Mensagem: 'Gosto do Ronaldo', Possivel titulo:'O facto de eu gostar do ronaldo' é apenas um exemplo. Limite de 25-30 caracteres").getBody());
             }
 
             chat.get().addMsg(msg.getMsg(), answer.getBody());
