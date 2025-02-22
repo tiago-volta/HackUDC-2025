@@ -103,17 +103,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  chatHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 6,
-  },
-  chatTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: THEME.colors.foreground,
-  },
   chatPreview: {
     fontSize: 14,
     color: THEME.colors.mutedForeground,
@@ -152,5 +141,22 @@ export const styles = StyleSheet.create({
     color: THEME.colors.mutedForeground,
     textAlign: "center",
     lineHeight: 24,
+  },
+  deleteButton: {
+    padding: 8,
+    marginRight: -8,
+  },
+  chatHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 6,
+  },
+  chatTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: THEME.colors.foreground,
+    flex: 1, // This ensures the title takes up available space
+    marginRight: 8, // Add some spacing between title and delete button
   },
 });

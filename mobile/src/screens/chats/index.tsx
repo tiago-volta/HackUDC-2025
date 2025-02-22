@@ -16,6 +16,7 @@ import { ChatPreview, GroupedChats } from "../../core/domain/chat";
 import { chatService } from "../../core/services/chat.service";
 import { MainTabParamList, RootStackParamList } from "../../navigation";
 import { styles } from "./styles";
+import { DeleteConfirmationModal } from "../../components/delete-confirmation-modal";
 
 export type ChatsParams = {};
 type Props = CompositeScreenProps<
@@ -69,6 +70,29 @@ export function ChatsScreen({ navigation, route }: Props) {
     }, [fetchChats])
   );
 
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
+  const [selectedChat, setSelectedChat] = React.useState<ChatPreview | null>(
+    null
+  );
+
+  const handleDeletePress = (chat: ChatPreview) => {
+    setSelectedChat(chat);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedChat) return;
+
+    try {
+      await chatService.deleteChat(selectedChat.id);
+      await fetchChats();
+      setIsDeleteModalVisible(false);
+      setSelectedChat(null);
+    } catch (error) {
+      console.error("Failed to delete chat:", error);
+    }
+  };
+
   const renderChatItem = ({ item }: { item: ChatPreview }) => (
     <TouchableOpacity
       style={styles.chatCard}
@@ -85,6 +109,16 @@ export function ChatsScreen({ navigation, route }: Props) {
       <View style={styles.chatContent}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatTitle}>{item.title}</Text>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => handleDeletePress(item)}
+          >
+            <Ionicons
+              name="trash-outline"
+              size={20}
+              color={THEME.colors.destructive}
+            />
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.chatPreview} numberOfLines={1}>
@@ -186,6 +220,15 @@ export function ChatsScreen({ navigation, route }: Props) {
           <Text style={styles.fabText}>New Chat</Text>
         </TouchableOpacity>
       </View>
+      <DeleteConfirmationModal
+        isVisible={isDeleteModalVisible}
+        chatTitle={selectedChat?.title ?? ""}
+        onClose={() => {
+          setIsDeleteModalVisible(false);
+          setSelectedChat(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+      />
     </SafeAreaView>
   );
 }
