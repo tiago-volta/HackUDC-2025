@@ -88,14 +88,17 @@ public class ChatController {
         var chat =  chatRepository.findById(id);
         if(chat == null)
             return ResponseEntity.badRequest().body("Chat not found");
-        var answer = chatgptController.ask(chatService.buildQuestion(msg.getMsg()));
+        var answer = chatgptController.ask(chatService.buildQuestion(msg.getMsg(),user.getId(),chat.get().getId().toString()));
 
         try {
             if (chat.get().getChatMsgs().isEmpty()){
                 chat.get().setTitle(chatgptController.ask("Say the title of the chat based on the first message of our chat:"+msg.getMsg()+". Please answer only the title without puting it in any object  (Exemplo: Primeira Mensagem: 'Gosto do Ronaldo', Possivel titulo:'O facto de eu gostar do ronaldo' é apenas um exemplo. Limite de 25-30 caracteres").getBody());
             }
 
-            chat.get().addMsg(msg.getMsg(), answer.getBody());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(answer.getBody());
+            String formattedAnswer = rootNode.get("response").asText();
+            chat.get().addMsg(msg.getMsg(), formattedAnswer);
 
             chatRepository.save(chat.get());
         }catch(Exception e){
