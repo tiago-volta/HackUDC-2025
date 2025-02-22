@@ -1,117 +1,151 @@
+<a name="readme-top" id="readme-top"></a>
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="#">
-    <img src="./main/mobile/assets/TherapIA.png)g" alt="Logo" width="180" height="180">
+    <img src="./mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
   </a>
-
   <h3 align="center">TerapIA</h3>
-  
-TerapIA 🧠
-An AI-powered psychological support chatbot
+  <p align="center">
+    AI-powered psychological support at your fingertips
+  </p>
 </div>
-About The Project 🎯
-TerapIA was developed for the BubsByte 23/24 Hackathon! It's an innovative AI-powered psychological chatbot designed to support users by providing mental health guidance through personalized interactions and support.
-Key Features 🌟
 
-💭 AI-Powered Chat Support: Engage in meaningful conversations with our intelligent chatbot
-🔒 Secure Environment: Protected user data and encrypted conversations
-📝 Digital Diary: Track your emotional journey and progress
-🤖 Smart Analysis: Personalized insights based on your interactions
-🚨 Crisis Support: Emergency resources and professional guidance when needed
+---
 
-<div align="left">
-Built With 🛠️
-Front-end
+## 📖 Table of Contents
+<details>
+  <summary>Expand</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#key-features">Key Features</a></li>
+      </ul>
+    </li>
+    <li>
+        <a href="#built-with">Built With</a>
+        <ul>
+            <li><a href="#front-end">Front End</a></li>
+            <li><a href="#back-end">Back End</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+        </ul>
+    </li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#project-status">Project Status</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
-React ⚛️
-Tailwind CSS 🎨
-Shadcn UI 🎆
+---
 
-Back-end
+## 🧠 About The Project
 
-Spring Boot 🟢
-Java ☕
-OpenAI API 🧠
-MySQL Database 📊
+TerapIA is an AI-powered psychological chatbot designed to provide users with mental health guidance through personalized interactions and support.
 
-Authentication
+This project was developed for the **HackUdc 24/25 Hackathon** with the goal of making psychological support more accessible and engaging for users worldwide. 🌍  
 
-JWT Authentication 🔐
-Secure Session Management 🔑
+### 🔑 Key Features
 
-Getting Started 🚀
-Prerequisites 📋
-Before running TerapIA, ensure you have installed:
-bashCopyJava 17+
-Node.js 18+
-MySQL 8+
-Installation 💻
+✅ **AI-Powered Chat Support** – Engage in meaningful conversations with our intelligent chatbot.  
+✅ **Secure Environment** – Protected user data and encrypted conversations.  
+✅ **📝 Digital Diary** – Track your emotional journey and progress.  
+✅ **Smart Analysis** – Personalized insights based on your interactions.  
+✅ **Crisis Support** – Emergency resources and professional guidance when needed.  
 
-Clone the repository
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-bashCopygit clone https://github.com/your_username/terapia.git
+---
 
-Install frontend dependencies
+## ⚙️ Built With
 
-bashCopycd client
-npm install
+### 🔷 Front End  
+- **React Native** ⚛️  
+- **Expo Go** 🎆  
 
-Install backend dependencies
+### 🔶 Back End  
+- **Spring Boot** 🟢  
+- **Java** ☕  
+- **OpenAI API** 🧠  
 
-bashCopycd server
-mvn install
+### 🔒 Authentication  
+- **JWT Authentication** 🔐  
+- **Secure Session Management** 🔑  
 
-Configure environment variables
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-bashCopycp .env.example .env
-# Edit .env with your configurations
-Project Status 📊
-Current Features ✅
+---
 
-Chat-based psychological support
-Secure authentication and data handling
-AI-powered user analysis
-Emergency response mechanism
+## 🚀 Getting Started
 
-Work in Progress 🚧
+### 📌 Prerequisites  
+Ensure you have the following installed:  
+- **Spring Boot** 🟢  
+- **Java** ☕  
 
-Enhanced AI analysis capabilities
-Advanced diary entry processing
-New user engagement features
-Improved crisis detection algorithms
+### 🛠 Installation  
 
-Contributing 🤝
-We welcome contributions to improve TerapIA! Please read our Contributing Guidelines and Code of Conduct before getting started.
-How to Report Issues 🐛
+#### 1️⃣ Clone the repository  
 
-For bugs and feature requests, open an issue on GitHub
-For security vulnerabilities, email security@terapia.com
-For general questions, join our Discord community
+git clone https://github.com/pintous66/hack-udc.git
 
-Team 👥
+## 📌 Project Status
 
-Ricardo Freitas - Frontend Developer - @rmotafreitas
-Rodrigo Pinto - Backend Developer - @pintous66
-Tiago Volta - AI Engineer - @tiago-volta
+### ✅ Current Features  
+✔️ Chat-based psychological support  
+✔️ Emotional Calendar  
+✔️ Client evaluation  
+✔️ Secure authentication and data handling  
+✔️ AI-powered user analysis  
+✔️ Emergency response mechanism  
 
-Documentation 📚
+### 🚧 Work in Progress  
+🔄 Enhanced AI analysis capabilities  
+🔄 Advanced diary entry processing  
+🔄 New user engagement features  
+🔄 Improved crisis detection algorithms  
 
-API Documentation
-Security Policy
-Contributing Guidelines
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-License 📄
-This project is licensed under the MIT License - see the LICENSE file for details.
-Support 💪
-If you're experiencing a crisis or need immediate help, please contact professional mental health services:
+---
 
-Emergency: 112 (EU) / 911 (US)
-National Suicide Prevention Lifeline: 988 (US)
+## 👥 Team  
 
-Remember: TerapIA is a support tool, not a replacement for professional mental health care.
+👨‍💻 **Frontend Developer** – Ricardo Freitas – [@rmotafreitas](https://github.com/rmotafreitas)  
+👨‍💻 **Backend Developer** – Rodrigo Pinto – [@pintous66](https://github.com/pintous66)  
+👨‍💻 **Prompt Engineer** – Tiago Volta – [@tiago-volta](https://github.com/tiago-volta)  
 
-<div align="center">
-  Made with ❤️ by the TerapIA Team
-⬆ Back to top
-</div>
+🔗 **Project Repository**: [TerapIA GitHub](https://github.com/pintous66/hack-udc)  
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 💡 Support  
+
+If you encounter any issues or need assistance, contact us at:  
+📩 **security@terapia.com**  
+
+### 🆘 Crisis Resources  
+If you're experiencing a crisis or need immediate help, please contact professional mental health services:  
+
+📞 **Emergency**: 112 (EU) / 911 (US)  
+📞 **National Suicide Prevention Lifeline**: 988 (US)  
+
+> **Remember**: TerapIA is a support tool, not a replacement for professional mental health care.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 📜 License  
+
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for more details.  
+
+📄 Additional documentation can be found in: `server/docs/readme.md`.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
