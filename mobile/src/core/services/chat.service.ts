@@ -85,10 +85,34 @@ class ChatService {
         return null;
       }
       const chats = await chatApi.getGroupedChats();
+      if (!chats[date]) {
+        chats[date] = [];
+      }
       parsedResponse.chats = chats[date].map(ChatMapper.previewToDomain);
       return parsedResponse;
     } catch (error) {
       console.error("[ChatService] Failed to get calendar day:", error);
+      return null;
+    }
+  }
+
+  async saveCalendarDay(
+    date: string,
+    note: string
+  ): Promise<CalendarDay | null> {
+    try {
+      console.log("date", date);
+      console.log("note", note);
+      const response = await chatApi.saveCalendarDay(date, note);
+      const parsedResponse = ChatMapper.calendarDayToDomain(response);
+      const chats = await chatApi.getGroupedChats();
+      if (!chats[date]) {
+        chats[date] = [];
+      }
+      parsedResponse.chats = chats[date].map(ChatMapper.previewToDomain);
+      return parsedResponse;
+    } catch (error) {
+      console.error("[ChatService] Failed to save calendar day:", error);
       return null;
     }
   }

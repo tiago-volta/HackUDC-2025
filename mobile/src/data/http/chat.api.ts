@@ -35,6 +35,16 @@ class ChatApi {
     const response = await api.get<CalendarDayDTO>(`calendar/${date}`);
     return response.data;
   };
+
+  saveCalendarDay = async (
+    date: string,
+    note: string
+  ): Promise<CalendarDayDTO> => {
+    const response = await api.put<CalendarDayDTO>(`calendar/${date}`, {
+      note,
+    });
+    return response.data;
+  };
 }
 
 export const chatApi = new ChatApi();
