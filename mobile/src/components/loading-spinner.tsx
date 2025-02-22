@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { THEME } from "../constants/theme";
 
 interface LoadingSpinnerProps {
   size?: "small" | "large";
@@ -8,7 +9,7 @@ interface LoadingSpinnerProps {
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = "large",
-  color = "#0000ff",
+  color = THEME.colors.primary,
 }) => {
   return (
     <View style={styles.container}>

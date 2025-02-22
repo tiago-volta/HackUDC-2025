@@ -12,6 +12,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  scrollContainer: {
+    flex: 1,
+  },
+  chatListContainer: {},
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 20, // Add bottom padding for scroll content
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -61,10 +69,14 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 12,
+    borderColor: THEME.colors.border,
+    gap: 8,
   },
   clearButton: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: THEME.colors.destructive,
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -77,8 +89,10 @@ export const styles = StyleSheet.create({
     color: THEME.colors.destructiveForeground,
   },
   saveButton: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: THEME.colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -100,56 +114,167 @@ export const styles = StyleSheet.create({
     color: THEME.colors.foreground,
     marginBottom: 12,
   },
-  chatList: {
-    paddingBottom: 20,
-  },
-  chatMessageContainer: {
-    marginBottom: 12,
+  // Chat styles
+  chatList: {},
+  chatCard: {
     flexDirection: "row",
-  },
-  userMessage: {
-    justifyContent: "flex-end",
-  },
-  botMessage: {
-    justifyContent: "flex-start",
-  },
-  chatBubble: {
-    maxWidth: "80%",
-    borderRadius: 12,
-    padding: 12,
-    ...Platform.select({
-      ios: {
-        shadowColor: THEME.colors.foreground,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
-  userBubble: {
-    backgroundColor: THEME.colors.primary,
-  },
-  botBubble: {
     backgroundColor: THEME.colors.card,
+    borderRadius: THEME.radius.default,
+    padding: THEME.spacing.medium,
+    marginBottom: THEME.spacing.medium,
     borderWidth: 1,
     borderColor: THEME.colors.border,
+    shadowColor: THEME.colors.foreground,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  chatMessageText: {
+  chatIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: THEME.colors.muted,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: THEME.spacing.medium,
+  },
+  unreadBadge: {
+    position: "absolute",
+    top: -2,
+    right: -2,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: THEME.colors.accent,
+    borderWidth: 2,
+    borderColor: THEME.colors.background,
+  },
+  chatContent: {
+    flex: 1,
+  },
+  chatHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  chatTitle: {
     fontSize: 16,
-  },
-  userMessageText: {
-    color: THEME.colors.primaryForeground,
-  },
-  botMessageText: {
+    fontWeight: "600",
     color: THEME.colors.foreground,
   },
   chatTimestamp: {
     fontSize: 12,
     color: THEME.colors.mutedForeground,
-    textAlign: "right",
-    marginTop: 4,
+  },
+  chatPreview: {
+    fontSize: 14,
+    color: THEME.colors.mutedForeground,
+  },
+  emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: THEME.spacing.large,
+  },
+  emptyStateText: {
+    marginTop: THEME.spacing.medium,
+    fontSize: 16,
+    color: THEME.colors.mutedForeground,
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  dateSection: {
+    paddingHorizontal: THEME.spacing.medium,
+    marginVertical: THEME.spacing.small,
+  },
+  dateDivider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: THEME.spacing.small,
+  },
+  dateSectionTitle: {
+    fontSize: 14,
+    color: THEME.colors.mutedForeground,
+    fontWeight: "500",
+    paddingHorizontal: THEME.spacing.medium,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: THEME.colors.border,
+  },
+  // Evaluation
+  evaluationContainer: {
+    backgroundColor: THEME.colors.card,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: THEME.colors.foreground,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  evaluationHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  evaluationTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: THEME.colors.foreground,
+    marginLeft: 8,
+  },
+  moodIndicator: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: THEME.colors.muted,
+    padding: 8,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  moodScore: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginLeft: 8,
+  },
+  moodLabel: {
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  justificationHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 4,
+    borderTopWidth: 1,
+    borderTopColor: THEME.colors.border,
+    marginTop: 16,
+  },
+  justificationTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: THEME.colors.foreground,
+  },
+  justificationContent: {
+    paddingTop: 12,
+    paddingHorizontal: 4,
+  },
+  justificationText: {
+    fontSize: 14,
+    color: THEME.colors.mutedForeground,
+    lineHeight: 20,
   },
 });

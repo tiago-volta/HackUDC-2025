@@ -1,5 +1,5 @@
 import { api } from "./axios.client";
-import { ChatDTO, GroupedChatsDTO } from "./dto/chat.dto";
+import { CalendarDayDTO, ChatDTO, GroupedChatsDTO } from "./dto/chat.dto";
 
 class ChatApi {
   getHistory = async (): Promise<ChatDTO[]> => {
@@ -29,6 +29,11 @@ class ChatApi {
 
   deleteChat = async (chatId: string): Promise<void> => {
     await api.delete(`chat/${chatId}`);
+  };
+
+  getCalendarDay = async (date: string): Promise<CalendarDayDTO> => {
+    const response = await api.get<CalendarDayDTO>(`calendar/${date}`);
+    return response.data;
   };
 }
 

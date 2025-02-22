@@ -20,3 +20,11 @@ export type ChatPreviewDTO = {
 export type GroupedChatsDTO = {
   [date: string]: ChatPreviewDTO[];
 };
+
+export type CalendarDayDTO = {
+  day: string; // format: YYYY-MM-DD
+  note: string;
+  chats: ChatMessageDTO[];
+  justificative: string;
+  grade: number;
+};
