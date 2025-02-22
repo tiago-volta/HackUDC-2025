@@ -1,6 +1,3 @@
-Aqui está o arquivo Markdown gerado com base no código fornecido e no formato dos exemplos que você compartilhou:
-
-```markdown
 # Documentação dos Endpoints do CalendarController
 
 ## Base URL
@@ -18,40 +15,39 @@ GET /calendar/{date}
 ```
 
 **Descrição:**
-Obtém o calendário do usuário autenticado para uma data específica.
+Obtém o calendário do usuário para uma data específica, incluindo notas, mensagens de chat e avaliação do dia. O sistema pode gerar uma avaliação automática baseada nas interações do usuário.
 
-**Cabeçalhos:**
+**Cabeçalhos Necessários:**
 ```
 Authorization: Bearer <token>
 ```
 
-**Parâmetros de Caminho:**
-- `date` (string): Data no formato `yyyy-MM-dd`.
+**Parâmetros de Path:**
+- `date`: Data no formato YYYY-MM-DD
 
 **Respostas:**
-- `200 OK` - Retorna o calendário do usuário para a data especificada.
-- `401 UNAUTHORIZED` - Token inválido ou expirado.
+- `200 OK` - Retorna os dados do calendário
+- `401 UNAUTHORIZED` - Token inválido ou expirado
 
 **Exemplo de Resposta:**
 ```json
 {
-  "date": "2023-10-01",
-  "note": "No note",
-  "chats": [
-    {
-      "id": 1,
-      "message": "Exemplo de mensagem",
-      "date": "2023-10-01T10:00:00"
-    }
-  ],
-  "justificative": "No evaluation",
-  "grade": 0
+    "date": "2024-03-20",
+    "note": "Exemplo de nota do dia",
+    "chats": [
+        {
+            "message": "Exemplo de mensagem",
+            "date": "2024-03-20T10:30:00"
+        }
+    ],
+    "justificative": "Avaliação positiva baseada nas interações",
+    "grade": 8
 }
 ```
 
 ---
 
-### 2. Atualizar Calendário do Usuário
+### 2. Atualizar Nota do Calendário
 
 **Endpoint:**
 ```
@@ -59,74 +55,77 @@ PUT /calendar/{date}
 ```
 
 **Descrição:**
-Atualiza o calendário do usuário autenticado para uma data específica.
+Atualiza ou cria uma nota no calendário do usuário para uma data específica. Também pode disparar uma reavaliação automática do dia.
 
-**Cabeçalhos:**
+**Cabeçalhos Necessários:**
 ```
 Authorization: Bearer <token>
 ```
 
-**Parâmetros de Caminho:**
-- `date` (string): Data no formato `yyyy-MM-dd`.
+**Parâmetros de Path:**
+- `date`: Data no formato YYYY-MM-DD
 
-**Requisição:**
+**Corpo da Requisição:**
 ```json
 {
-  "note": "string"
+    "note": "string"
 }
 ```
 
 **Respostas:**
-- `200 OK` - Retorna o calendário atualizado do usuário.
-- `401 UNAUTHORIZED` - Token inválido ou expirado.
+- `200 OK` - Nota atualizada com sucesso
+- `401 UNAUTHORIZED` - Token inválido ou expirado
 
 **Exemplo de Resposta:**
 ```json
 {
-  "date": "2023-10-01",
-  "note": "Atualização de nota",
-  "chats": [
-    {
-      "id": 1,
-      "message": "Exemplo de mensagem",
-      "date": "2023-10-01T10:00:00"
-    }
-  ],
-  "justificative": "Justificativa atualizada",
-  "grade": 5
+    "date": "2024-03-20",
+    "note": "Nova nota atualizada",
+    "chats": [
+        {
+            "message": "Exemplo de mensagem",
+            "date": "2024-03-20T10:30:00"
+        }
+    ],
+    "justificative": "Nova avaliação baseada na nota atualizada",
+    "grade": 7
 }
 ```
 
----
+## Funcionalidades Especiais
 
-## Detalhes Adicionais
+### Avaliação Automática
+- O sistema realiza avaliações automáticas baseadas em:
+  - Mensagens de chat do dia
+  - Notas do usuário
+  - Conteúdo do arquivo prompt-dayevaluation.txt
 
-### 1. Lógica de Avaliação Automática
+### Reavaliação Periódica
+- As avaliações são atualizadas automaticamente após 15 minutos
+- Utiliza um sistema de IA para análise do conteúdo
+- Gera uma nota (grade) e justificativa baseada nas interações
 
-Se o usuário não tiver uma avaliação para a data especificada, o sistema tenta gerar uma avaliação automática com base nas mensagens do dia e no diário do usuário. A avaliação é feita utilizando um prompt armazenado no arquivo `prompt-dayevaluation.txt`.
+## Observações Técnicas
 
-### 2. Estrutura de Resposta do Calendário
+1. **Autenticação**
+   - Requer token JWT válido
+   - Token deve ser enviado no formato Bearer
 
-A resposta do calendário contém os seguintes campos:
-- `date` (string): Data do calendário.
-- `note` (string): Nota do usuário para o dia.
-- `chats` (array): Lista de mensagens do dia.
-- `justificative` (string): Justificativa da avaliação.
-- `grade` (integer): Nota da avaliação.
+2. **Formato de Dados**
+   - Datas devem seguir o padrão YYYY-MM-DD
+   - Notas são armazenadas como texto
+   - Avaliações incluem nota numérica e justificativa
 
-### 3. Erros Possíveis
+3. **Armazenamento**
+   - As notas e avaliações são persistidas no banco de dados
+   - Histórico de chat é mantido para referência
 
-- `401 UNAUTHORIZED`: O token de autenticação é inválido ou expirou.
-- `500 INTERNAL SERVER ERROR`: Erro interno no servidor ao processar a requisição.
+4. **Limitações**
+   - Avaliações automáticas dependem da qualidade dos dados fornecidos
+   - Sistema requer configuração adequada do arquivo prompt-dayevaluation.txt
 
----
+## Códigos de Erro
 
-## Observações
-
-- O sistema utiliza o ChatGPT para gerar avaliações automáticas com base nas mensagens e notas do usuário.
-- O arquivo `prompt-dayevaluation.txt` é essencial para a lógica de avaliação automática. Certifique-se de que ele esteja configurado corretamente.
-- O tempo limite para reavaliação automática é de 15 minutos após a última avaliação.
-
-``` 
-
-Se precisar de ajustes ou mais endpoints, é só me avisar! 😊
+- `401` - Problemas de autenticação
+- `400` - Requisição mal formatada
+- `500` - Erro interno do servidor
