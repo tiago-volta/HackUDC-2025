@@ -23,10 +23,10 @@ const BIG_FIVE_DATA = [
       "You show high curiosity and appreciation for art, emotion, adventure, unusual ideas, imagination, and variety of experience. This suggests you're creative, innovative, and always eager to learn new things in your therapeutic journey.",
   },
   {
-    label: "Conscientiousness",
+    label: "Responsibility",
     value: 85,
     description:
-      "Your high level of conscientiousness indicates strong self-discipline, aim for achievement, and planned behavior. This trait helps you maintain consistency in your mental health practices and follow through with therapeutic recommendations.",
+      "Your high level of conscientiousness/responsibility indicates strong self-discipline, aim for achievement, and planned behavior. This trait helps you maintain consistency in your mental health practices and follow through with therapeutic recommendations.",
   },
   {
     label: "Extraversion",
