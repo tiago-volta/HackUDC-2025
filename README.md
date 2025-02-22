@@ -3,15 +3,11 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src=".mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
+    <img src="./mobile/assets/TherapIA.png" alt="Logo" width="180" height="180">
   </a>
   <h3 align="center">TerapIA</h3>
   <p align="center">
     AI-powered psychological support at your fingertips
-    <br />
-    <a href="#"><strong>Start your journey with TerapIA »</strong></a>
-    <br />
-    <br />
   </p>
 </div>
 <!-- TABLE OF CONTENTS -->
