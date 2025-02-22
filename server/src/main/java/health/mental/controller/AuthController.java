@@ -47,13 +47,10 @@ public class AuthController {
     @Operation(summary = "Authenticate user", description = "Receives login and password and returns a JWT token.")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthDTO authDTO) {
-        System.out.println("Login request received");
-        System.out.println("Login: " + authDTO.login());
-        System.out.println("Password: " + authDTO.password());
-        System.out.println("Jose enabled: " + IS_ENABLE_JOSE);
+
         if (IS_ENABLE_JOSE && (userRepository.findByLogin(authDTO.login()) == null)) {
             System.out.println("Registering user");
-            register(new AuthRegisterDTO(authDTO.login(), authDTO.password(), UserRole.USER));
+            register(new AuthRegisterDTO(authDTO.login(), authDTO.password(), UserRole.USER,authDTO.completeName(),authDTO.birthDate(),authDTO.occupation(),authDTO.nacionality()));
         }
 
         try {
@@ -90,7 +87,8 @@ public class AuthController {
 
         String encodedPassword = new BCryptPasswordEncoder().encode(Utils.decodeJwt(authDTO.password()));
         try {
-            User user = new User(authDTO.login(), encodedPassword, authDTO.role());
+            System.out.println("Birthdate: " + authDTO.birthDate());
+            User user = new User(authDTO.login(), encodedPassword, authDTO.role(), authDTO.completeName(), authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality());
             userRepository.save(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(e.getMessage());

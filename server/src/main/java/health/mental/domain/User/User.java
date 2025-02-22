@@ -1,11 +1,9 @@
 package health.mental.domain.User;
 
 import health.mental.infra.security.PermissionService;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,30 +32,36 @@ public class User implements UserDetails {
 
 
     @Column(name = "login", unique = true)
+    @Nonnull
     private String login;
 
 
     @Column(name = "password")
+    @Nonnull
     private String password;
 
     @Column(name = "role")
+    @Nonnull
     private UserRole role;
 
     @Column(name = "complete_name")
+    @Nonnull
     private String CompleteName;
 
     //date in format yyyy-MM-dd
     @Column(name = "birth_date")
-
+    @Nonnull
     private String BirthDate;
 
     @Column(name = "Occupation")
+    @Nonnull
     private String Occupation;
 
     @Column(name = "Nacionality")
+    @Nonnull
     private String Nacionality;
 
-    public User(String login, String password, String role) {
+    public User(String login, String password, String role, String completeName, String birthDate, String occupation, String nacionality) {
         this.login = login;
         this.password = password;
         try{
@@ -65,6 +69,11 @@ public class User implements UserDetails {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role, please use one of the following: " + List.of(UserRole.values()));
         }
+        CompleteName = completeName;
+        BirthDate = birthDate;
+        Occupation = occupation;
+        Nacionality = nacionality;
+
 
     }
     @Override
