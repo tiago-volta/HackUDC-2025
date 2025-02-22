@@ -21,10 +21,16 @@ Supported Versions
 TerapIA provides security updates for all active versions, with long-term support (LTS) for major releases. Users are encouraged to keep their applications updated to ensure they receive the latest security patches.
 
 Reporting a Vulnerability
+Please report security vulnerabilities to security@terapia.com
+When reporting, include:
 
-If you discover a security vulnerability, please report it to our security team via security@terapia.com. Provide a detailed description of the issue, steps to reproduce it, and any potential impact it may have. 
+Detailed description of the vulnerability
+Steps to reproduce
+Potential impact
+Your contact information
+Any suggested fixes (optional)
 
-Our team will acknowledge the report and begin an investigation.
+You will receive an acknowledgment within 24 hours and a detailed response within 72 hours..
 
 
 Disclosure Policy
@@ -52,12 +58,13 @@ Communication – Users are notified of critical security updates via email and 
 Secure Interface
 
 
-Security summary:
+Verification
+All security updates undergo:
 
-Users grant permission for TerapIA to access relevant data.
-
-Authentication tokens are securely managed to prevent unauthorized access.
-
+Code review by security team
+Automated security testing
+Penetration testing for critical updates
+Deployment verification
 
 
 Emergency & Crisis Handling
@@ -69,6 +76,7 @@ Provide immediate crisis resources, such as national helpline numbers.
 Encourage the user to seek professional help.
 
 TerapIA is designed to support users but is not a replacement for professional psychological help. In cases of emergency, users are advised to contact licensed professionals.
+
 
 
 TerapIA continuously evolves to enhance security and user safety while providing a supportive mental health experience.
