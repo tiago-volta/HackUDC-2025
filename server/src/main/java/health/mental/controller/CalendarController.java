@@ -171,26 +171,51 @@ public class CalendarController {
             if(noteDay.getDate().equals(date)){
                 noteDay.setNote(calendarInsertDTO.note);
                 CalendarReturnDTO res = new CalendarReturnDTO(noteDay.getDate(), noteDay.getNote(), getChatsFromDay(date,userId),getEvaluationCalendar(getChatsFromDay(date,userId), noteDay.getNote()).toString());
-
+                boolean flag = true;
                 for(var eval : calendarUser.getEvaluationDay()){
                     if(eval.getDay().equals(date)) {
                         eval.setEvaluation(res.getGrade());
                         eval.setEvaluationJustification(res.getJustificative());
                         eval.setDateOfEvaluation(new Date().toString());
+                        flag = false;
                     }
+                }
+                if(flag){
+                    EvaluationDay newEval = new EvaluationDay(date,res.getGrade(),res.getJustificative(),new Date().toString());
+                    calendarUser.getEvaluationDay().add(newEval);
                 }
 
                 calendarRepo.save(calendarUser);
-                return ResponseEntity.ok(res);
+                return ResponseEntity.ok( res);
             }
         }
         PairNoteDay newNoteDay = new PairNoteDay(calendarInsertDTO.note, date);
         calendarUser.getNoteday().add(newNoteDay);
 
+        Object Evaluation = getEvaluationCalendar(getChatsFromDay(date,userId), calendarInsertDTO.note);
+        int grade = 0;
+        String justificative = "No evaluation";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
 
+            EvaluationDTO eval = objectMapper.readValue((JsonParser) Evaluation, EvaluationDTO.class);
+            grade = eval.getGrade();
+            justificative = eval.getJustification();
+        } catch (Exception e) {
+            grade = 0;
+            justificative = "Error parsing evaluation";
+        }
+        //refresh evaluation
+        for(var eval : calendarUser.getEvaluationDay()){
+            if(eval.getDay().equals(date)){
+                eval.setDateOfEvaluation(new Date().toString());
+                eval.setEvaluation(grade);
+                eval.setEvaluationJustification(justificative);
+            }
+        }
 
         calendarRepo.save(calendarUser);
-        return ResponseEntity.ok(new CalendarReturnDTO(date, calendarInsertDTO.note, "No chat", "No evaluation"));
+        return ResponseEntity.ok( new CalendarReturnDTO(date, calendarInsertDTO.note, "No chat", Evaluation.toString()));
 
     }
 
