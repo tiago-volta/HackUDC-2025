@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Setter
 @EqualsAndHashCode(of = {"id"})
 
 public class User implements UserDetails {
@@ -60,6 +60,8 @@ public class User implements UserDetails {
     @Column(name = "Nacionality")
     @Nonnull
     private String Nacionality;
+
+    private Profile profile;
 
     public User(String login, String password, String role, String completeName, String birthDate, String occupation, String nacionality) {
         this.login = login;
