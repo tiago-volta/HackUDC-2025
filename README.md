@@ -47,19 +47,19 @@ Key Features
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 ## Built With
-### Front-end
+
+#### Front-end
 
 -React native ⚛️
--Expo go
+-Expo go 🎆
 
-### Back-end
+#### Back-end
 
 -Spring Boot 🟢
 -Java ☕
 -OpenAI API 🧠
 
-
-### Authentication
+#### Authentication
 
 -JWT Authentication 🔐
 -Secure Session Management 🔑
@@ -70,7 +70,7 @@ Prerequisites
 Spring Boot 🟢
 Java ☕
 
-Installation
+#### Installation
 
 Clone the repository
 
