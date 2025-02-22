@@ -1,9 +1,14 @@
 import { api } from "./axios.client";
 import { JwtTokenValueDto } from "./dto/token.dto";
-import { UserAuthRequestDTO, UserDTO } from "./dto/user.dto";
+import {
+  UserAuthRequestDTO,
+  UserDTO,
+  UserRegisterRequestDTO,
+} from "./dto/user.dto";
 
 class AuthApi {
-  register = async (dto: UserAuthRequestDTO): Promise<void> => {
+  register = async (dto: UserRegisterRequestDTO): Promise<void> => {
+    console.log("Registering user", dto);
     await api.post<JwtTokenValueDto>("auth/register", dto);
   };
 
