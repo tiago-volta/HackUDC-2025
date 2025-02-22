@@ -1,68 +1,158 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  SectionList,
-  RefreshControl,
-  ScrollView,
-} from "react-native";
-import { styles } from "./styles";
-import { THEME } from "../../constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { RootDrawerParamList } from "../../navigation";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { LoadingSpinner } from "../../components/loading-spinner";
+import { THEME } from "../../constants/theme";
 import { CalendarDay, ChatPreview } from "../../core/domain/chat";
 import { chatService } from "../../core/services/chat.service";
-import { useFocusEffect } from "@react-navigation/native";
-import { FlatList } from "react-native-gesture-handler";
-import { LoadingSpinner } from "../../components/loading-spinner";
+import { styles } from "./styles";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation";
 
 export type DayJournalParams = {
   date: Date;
 };
 
-type Props = DrawerScreenProps<RootDrawerParamList, "DayJournal">;
+type Props = NativeStackScreenProps<RootStackParamList, "DayJournal">;
 
 export function DayJournalScreen({ navigation, route }: Props) {
   const { date } = route.params;
 
+  // State management
   const [note, setNote] = useState<string>("");
+  const [originalNote, setOriginalNote] = useState<string>("");
   const [data, setData] = useState<CalendarDay | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [showJustification, setShowJustification] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleClearNote = () => {
-    setNote("");
-  };
+  // Check if note has been modified
+  const hasNoteChanged = note !== originalNote;
 
-  const handleSaveNote = () => {
-    console.log("Saving note for date:", date, note);
-    // Replace with your saving logic
-  };
-
-  const fetchCalendarData = async (date: Date) => {
-    const dateString = date.toISOString().split("T")[0];
-    const data = await chatService.getCalendarDay(dateString);
-    console.log("Fetched data for date:", date, data);
-    setData(data);
-  };
-
+  // Fetch data on screen focus
   useFocusEffect(
     React.useCallback(() => {
+      setNote("");
+      setOriginalNote("");
       onRefresh();
-    }, [date])
+    }, [])
   );
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  // Update note when data is loaded
+  useEffect(() => {
+    if (data?.note) {
+      setNote(data.note);
+      setOriginalNote(data.note);
+    }
+  }, [data]);
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    await fetchCalendarData(date);
-    setRefreshing(false);
-  }, [date]);
+    try {
+      const dateString = date.toISOString().split("T")[0];
+      const fetchedData = await chatService.getCalendarDay(dateString);
+      console.log("Fetched data:", fetchedData);
+      setData(fetchedData);
+    } catch (error) {
+      console.error("Error fetching calendar data:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const handleSaveNote = async () => {
+    if (!hasNoteChanged) return;
+
+    setIsSaving(true);
+    try {
+      const dateString = date.toISOString().split("T")[0];
+      const updatedData = await chatService.saveCalendarDay(dateString, note);
+      if (updatedData) {
+        setData(updatedData);
+        setOriginalNote(note);
+      }
+    } catch (error) {
+      console.error("Error saving note:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <Ionicons name="chevron-back" size={24} color={THEME.colors.primary} />
+      </TouchableOpacity>
+      <Text style={styles.headerTitle}>
+        {date.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </Text>
+    </View>
+  );
+
+  const renderNoteSection = () => (
+    <View style={styles.noteContainer}>
+      <Text style={styles.noteLabel}>Journal Note</Text>
+      <TextInput
+        style={[styles.noteInput, hasNoteChanged && styles.noteInputModified]}
+        placeholder="How did this day go? Write your thoughts..."
+        placeholderTextColor={THEME.colors.mutedForeground}
+        multiline
+        value={note}
+        onChangeText={setNote}
+      />
+      <View style={styles.noteActions}>
+        <TouchableOpacity
+          style={[styles.clearButton, !hasNoteChanged && styles.buttonDisabled]}
+          onPress={() => setNote(originalNote)}
+          disabled={!hasNoteChanged}
+        >
+          <Ionicons
+            name="refresh-outline"
+            size={20}
+            color={THEME.colors.destructiveForeground}
+          />
+          <Text style={styles.clearButtonText}>Reset</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.saveButton, !hasNoteChanged && styles.buttonDisabled]}
+          onPress={handleSaveNote}
+          disabled={!hasNoteChanged || isSaving}
+        >
+          {isSaving ? (
+            <ActivityIndicator color={THEME.colors.primaryForeground} />
+          ) : (
+            <>
+              <Ionicons
+                name="save-outline"
+                size={20}
+                color={THEME.colors.primaryForeground}
+              />
+              <Text style={styles.saveButtonText}>Save Note</Text>
+            </>
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   const onChatPress = (chatId: string, title: string) => {
     navigation.navigate("ChatDetail", { chatId, title });
@@ -118,7 +208,9 @@ export function DayJournalScreen({ navigation, route }: Props) {
     </TouchableOpacity>
   );
 
-  const [showJustification, setShowJustification] = useState(false);
+  const handleClearNote = () => {
+    setNote("");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -126,26 +218,7 @@ export function DayJournalScreen({ navigation, route }: Props) {
         style={styles.keyboardContainer}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        {/* Day header - Keep outside ScrollView as fixed header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <Ionicons
-              name="chevron-back"
-              size={24}
-              color={THEME.colors.primary}
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>
-            {date.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Text>
-        </View>
+        {renderHeader()}
 
         <ScrollView
           style={styles.scrollContainer}
@@ -153,41 +226,7 @@ export function DayJournalScreen({ navigation, route }: Props) {
           showsVerticalScrollIndicator={false}
         >
           {/* Editable note area */}
-          <View style={styles.noteContainer}>
-            <Text style={styles.noteLabel}>Journal Note</Text>
-            <TextInput
-              style={styles.noteInput}
-              placeholder="How did this day go? Write your thoughts..."
-              placeholderTextColor={THEME.colors.mutedForeground}
-              multiline
-              value={note}
-              onChangeText={setNote}
-            />
-            <View style={styles.noteActions}>
-              <TouchableOpacity
-                style={styles.clearButton}
-                onPress={handleClearNote}
-              >
-                <Ionicons
-                  name="trash-outline"
-                  size={20}
-                  color={THEME.colors.destructiveForeground}
-                />
-                <Text style={styles.clearButtonText}>Clear All</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.saveButton}
-                onPress={handleSaveNote}
-              >
-                <Ionicons
-                  name="save-outline"
-                  size={20}
-                  color={THEME.colors.primaryForeground}
-                />
-                <Text style={styles.saveButtonText}>Save Note</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          {renderNoteSection()}
 
           {/* Evaluation Section */}
           {data === null && refreshing ? (

@@ -52,7 +52,7 @@ export class ChatMapper {
   static calendarDayToDomain(dto: CalendarDayDTO): CalendarDay {
     return {
       day: new Date(dto.day),
-      note: dto.note,
+      note: dto.note === "No note" ? "" : dto.note,
       chats: [],
       justificative: dto.justificative,
       grade: dto.grade,
