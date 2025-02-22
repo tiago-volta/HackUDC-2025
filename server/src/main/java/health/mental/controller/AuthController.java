@@ -112,6 +112,7 @@ public class AuthController {
         try {
 
             User user = new User(authDTO.login(), encodedPassword, authDTO.role(), authDTO.completeName(), authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality());
+            user.setDateOfCreation(new Date().toString());
             userRepository.save(user);
 
             calendarRepo.save(new Calendar(user));

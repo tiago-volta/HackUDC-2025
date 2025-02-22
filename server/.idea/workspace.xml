@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddc7e077-283d-4070-882b-a7e597865df1" name="Changes" comment="add endpoint auth">
+    <list default="true" id="ddc7e077-283d-4070-882b-a7e597865df1" name="Changes" comment="add endpoint calendar">
       <change beforePath="$PROJECT_DIR$/src/main/java/health/mental/controller/CalendarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/health/mental/controller/CalendarController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
@@ -202,7 +202,14 @@
       <option name="project" value="LOCAL" />
       <updated>1740263412016</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="add endpoint calendar">
+      <created>1740264487057</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1740264487057</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -230,6 +237,7 @@
     <MESSAGE value="Change calendar and prompt" />
     <MESSAGE value="save calendar" />
     <MESSAGE value="add endpoint auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="add endpoint auth" />
+    <MESSAGE value="add endpoint calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="add endpoint calendar" />
   </component>
 </project>

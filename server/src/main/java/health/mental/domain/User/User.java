@@ -63,6 +63,8 @@ public class User implements UserDetails {
 
     private Profile profile;
 
+    private String DateOfCreation;
+
     public User(String login, String password, String role, String completeName, String birthDate, String occupation, String nacionality) {
         this.login = login;
         this.password = password;
