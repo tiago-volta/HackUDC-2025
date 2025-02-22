@@ -332,4 +332,38 @@ export const styles = StyleSheet.create({
     lineHeight: 24,
     color: THEME.colors.foreground,
   },
+  evaluationCard: {
+    margin: 20,
+    backgroundColor: THEME.colors.card,
+    borderRadius: 20,
+    padding: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: THEME.colors.foreground,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  evaluationHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    gap: 8,
+  },
+  evaluationTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: THEME.colors.foreground,
+  },
+  evaluationText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: THEME.colors.mutedForeground,
+    textAlign: "justify",
+  },
 });
