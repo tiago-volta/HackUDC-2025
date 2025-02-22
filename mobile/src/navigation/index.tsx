@@ -8,6 +8,8 @@ import { useAuth } from "../contexts/auth";
 import { LoginScreen } from "../screens/auth";
 import { HomeScreen } from "../screens/home";
 import { ProfileScreen } from "../screens/profile";
+import { ChatsParams, ChatsScreen } from "../screens/chats";
+import { ChatDetailParams, ChatDetailScreen } from "../screens/chat-detail";
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +21,16 @@ function SettingsScreen() {
   );
 }
 
+export type RootDrawerParamList = {
+  Home: undefined;
+  Profile: undefined;
+  Settings: undefined;
+  Chats: ChatsParams;
+  ChatDetail: ChatDetailParams;
+};
+
+const { Navigator, Screen } = createDrawerNavigator<RootDrawerParamList>();
+
 export function AppNavigator() {
   const { user } = useAuth();
 
@@ -27,7 +39,7 @@ export function AppNavigator() {
   }
 
   return (
-    <Drawer.Navigator
+    <Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerStyle: {
@@ -48,7 +60,17 @@ export function AppNavigator() {
         drawerLabelStyle: {},
       }}
     >
-      <Drawer.Screen
+      <Screen
+        name="Chats"
+        component={ChatsScreen}
+        options={{
+          title: "Chats",
+          drawerIcon: ({ color }) => (
+            <Ionicons name="chatbox" size={24} color={color} />
+          ),
+        }}
+      />
+      <Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -58,7 +80,7 @@ export function AppNavigator() {
           ),
         }}
       />
-      <Drawer.Screen
+      <Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -67,7 +89,7 @@ export function AppNavigator() {
           ),
         }}
       />
-      <Drawer.Screen
+      <Screen
         name="Settings"
         component={SettingsScreen}
         options={{
@@ -76,7 +98,16 @@ export function AppNavigator() {
           ),
         }}
       />
-    </Drawer.Navigator>
+      <Screen
+        name="ChatDetail"
+        component={ChatDetailScreen}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+    </Navigator>
   );
 }
 

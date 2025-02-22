@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 import { CONFIG } from "../../constants/config";
@@ -34,8 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const refreshUser = async () => {
     try {
