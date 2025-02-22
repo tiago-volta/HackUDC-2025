@@ -18,6 +18,9 @@ class ChatService {
   async getGroupedChats(): Promise<GroupedChats> {
     try {
       const response = await chatApi.getGroupedChats();
+      Object.keys(response).forEach((key) => {
+        response[key] = response[key].reverse();
+      });
       return ChatMapper.groupedToDomain(response);
     } catch (error) {
       console.error("[ChatService] Failed to get grouped chats:", error);

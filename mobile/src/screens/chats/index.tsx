@@ -21,8 +21,14 @@ export type ChatsParams = {};
 type Props = DrawerScreenProps<RootDrawerParamList, "Chats">;
 
 const formatDate = (date: string) => {
+  date = date.replaceAll("-", "/");
+  date = date.split("/").reverse().join("/");
+  const parts = date.split("/");
+  date = `${parts[1]}/${parts[0]}/${parts[2]}`;
+  date = date.replace(/(^|\/)0+/g, "$1");
   const today = new Date().toLocaleDateString();
   const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+  console.log(today, yesterday, date);
 
   if (date === today) return "Today";
   if (date === yesterday) return "Yesterday";
