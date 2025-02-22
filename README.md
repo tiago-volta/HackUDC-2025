@@ -53,16 +53,15 @@ Key Features
 Built With
 Front-end
 
-React ⚛️
-Tailwind CSS 🎨
-Shadcn UI 🎆
+React native ⚛️
+Expo go
 
 Back-end
 
 Spring Boot 🟢
 Java ☕
 OpenAI API 🧠
-MySQL Database 📊
+
 
 Authentication
 
@@ -72,9 +71,9 @@ Secure Session Management 🔑
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 Getting Started
 Prerequisites
-bashCopyJava 17+
-Node.js 18+
-MySQL 8+
+Spring Boot 🟢
+Java ☕
+
 Installation
 
 Clone the repository
