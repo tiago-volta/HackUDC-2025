@@ -139,7 +139,7 @@ export function HomeScreen({ navigation }: Props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.actionItem}
-          onPress={() => navigation.navigate("Chats")}
+          onPress={() => navigation.navigate("Chats", {})}
         >
           <View style={styles.actionIcon}>
             <Ionicons

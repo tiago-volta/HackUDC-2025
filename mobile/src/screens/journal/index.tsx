@@ -19,12 +19,6 @@ type MoodEntry = {
   isMarked: boolean;
 };
 
-// Mock data with summaries
-const MOCK_MOOD_DATA: MoodEntry[] = [
-  { date: "2025-02-15", isMarked: true },
-  { date: "2025-02-21", isMarked: true },
-];
-
 export type CalendarJournalParams = {};
 
 type Props = DrawerScreenProps<RootDrawerParamList, "Journal">;
@@ -62,13 +56,13 @@ export function CalendarJournalScreen({ navigation }: Props) {
     const marks: Record<string, any> = {};
 
     // Mark entries
-    MOCK_MOOD_DATA.forEach((entry) => {
-      marks[entry.date] = {
-        marked: true,
-        dotColor: THEME.colors.primary,
-        activeOpacity: 0.5,
-      };
-    });
+    // MOCK_MOOD_DATA.forEach((entry) => {
+    //   marks[entry.date] = {
+    //     marked: true,
+    //     dotColor: THEME.colors.primary,
+    //     activeOpacity: 0.5,
+    //   };
+    // });
 
     // Mark today
     const todayStr = today.toISOString().split("T")[0];
@@ -83,12 +77,15 @@ export function CalendarJournalScreen({ navigation }: Props) {
   }, []);
 
   const handleDayPress = (day: { dateString: string }) => {
+    console.log(day);
     const selectedDate = new Date(day.dateString);
+    console.log(selectedDate);
+    console.log(today);
 
     // Prevent selection of future dates
-    if (selectedDate > today) {
-      return;
-    }
+    // if (selectedDate > today) {
+    //   return;
+    // }
 
     navigation.navigate("DayJournal", {
       date: selectedDate,
@@ -194,7 +191,7 @@ export function CalendarJournalScreen({ navigation }: Props) {
           </TouchableOpacity>
         </View>
         <Text style={styles.subtitle}>
-          {MOCK_MOOD_DATA.length} entries recorded
+          {/* {MOCK_MOOD_DATA.length} entries recorded */}
         </Text>
       </View>
 
@@ -224,16 +221,16 @@ export function CalendarJournalScreen({ navigation }: Props) {
 
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{MOCK_MOOD_DATA.length}</Text>
+          {/* <Text style={styles.statNumber}>{MOCK_MOOD_DATA.length}</Text> */}
           <Text style={styles.statLabel}>Total Entries</Text>
         </View>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>
-            {
+            {/* {
               MOCK_MOOD_DATA.filter(
                 (entry) => new Date(entry.date).getMonth() === today.getMonth()
               ).length
-            }
+            } */}
           </Text>
           <Text style={styles.statLabel}>This Month</Text>
         </View>

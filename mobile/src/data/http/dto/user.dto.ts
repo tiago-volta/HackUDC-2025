@@ -21,3 +21,23 @@ export type UserRegisterRequestDTO = {
   birthDate: string; // format: yyyy-MM-dd
   occupation: string;
 };
+
+export type UserProfileDTO = {
+  evaluation: string;
+  ocean: {
+    neurocitismLevel: string;
+    neurocistismDescription: string;
+    extroversionLevel: string;
+    extroversionDescription: string;
+    openessLevel: string;
+    openessDescription: string;
+    agreeablenessLevel: string;
+    agreeablenessDescription: string;
+    conscientiousnessLevel: string;
+    conscientiousnessDescription: string;
+  };
+  eneagrama: {
+    type: string;
+    description: string;
+  };
+};
