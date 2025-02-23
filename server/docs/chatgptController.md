@@ -1,4 +1,4 @@
-# Documentação dos Endpoints do ChatgptController
+# ChatGPT Controller Endpoints Documentation
 
 ## Base URL
 ```
@@ -7,29 +7,30 @@
 
 ## Endpoints
 
-### 1. Perguntar ao ChatGPT
+### 1. Ask ChatGPT
 
 **Endpoint:**
 ```
 GET /gpt/ask
 ```
 
-**Descrição:**
-Faz uma pergunta ao ChatGPT e retorna a resposta.
+**Description:**
+Makes a query to ChatGPT and returns the response.
 
-**Requisição:**
+**Request:**
 ```json
 {
   "query": "string"
 }
 ```
 
-**Respostas:**
-- `200 OK` - Retorna a resposta do ChatGPT.
-- `400 BAD REQUEST` - Erro na requisição.
+**Responses:**
+- `200 OK` - Returns ChatGPT's response.
+- `400 BAD REQUEST` - Request error.
 
-**Exemplo de Resposta:**
+**Response Example:**
 ```json
 {
-  "response": "Aqui está a resposta da IA..."
+  "response": "Here is the AI's response..."
 }
+```
