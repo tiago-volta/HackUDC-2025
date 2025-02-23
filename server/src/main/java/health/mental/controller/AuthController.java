@@ -78,7 +78,8 @@ public class AuthController {
 
         if (IS_ENABLE_JOSE && (userRepository.findByLogin(authDTO.login()) == null)) {
             System.out.println("Registering user");
-            register(new AuthRegisterDTO(authDTO.login(), authDTO.password(), UserRole.USER,authDTO.completeName(),authDTO.birthDate(),authDTO.occupation(),authDTO.nacionality()));
+            register(new AuthRegisterDTO(authDTO.login(), authDTO.password(), UserRole.USER, authDTO.completeName(),
+                    authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality()));
         }
 
         try {
@@ -116,7 +117,8 @@ public class AuthController {
         String encodedPassword = new BCryptPasswordEncoder().encode(Utils.decodeJwt(authDTO.password()));
         try {
 
-            User user = new User(authDTO.login(), encodedPassword, authDTO.role(), authDTO.completeName(), authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality());
+            User user = new User(authDTO.login(), encodedPassword, authDTO.role(), authDTO.completeName(),
+                    authDTO.birthDate(), authDTO.occupation(), authDTO.nacionality());
             user.setDateOfCreation(new Date().toString());
             userRepository.save(user);
 
@@ -151,12 +153,13 @@ public class AuthController {
         try {
             lastChangeMillis = Long.parseLong(profile.getLastChange());
         } catch (NumberFormatException e) {
-            // Se "lastChange" não for um número válido, assume que precisa de ser atualizado
+            // Se "lastChange" não for um número válido, assume que precisa de ser
+            // atualizado
             return atualizarPerfil(user);
         }
 
         // Verifica se passaram mais de 15 minutos desde a última atualização do perfil
-        if (new Date(lastChangeMillis + (15 * 60 )).before(new Date())) {
+        if (new Date(lastChangeMillis + (15 * 60 * 1000)).before(new Date())) {
             return atualizarPerfil(user);
         }
 
@@ -186,7 +189,8 @@ public class AuthController {
             res = res.replace("ola", "");
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> map = objectMapper.readValue(res, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> map = objectMapper.readValue(res, new TypeReference<Map<String, Object>>() {
+            });
 
             Profile profile = new Profile(map);
             user.setProfile(profile);
@@ -197,10 +201,10 @@ public class AuthController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao ler o ficheiro " + txt_prompt);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado ao atualizar o perfil.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro inesperado ao atualizar o perfil.");
         }
     }
-
 
     private static final String PDF_DIRECTORY = "src/main/resources/static/pdf/";
 
@@ -262,10 +266,14 @@ public class AuthController {
                             " - " + user.getProfile().getOcean().getExtroversionDescription(), infoFont));
                     document.add(new Paragraph("Openness: " + user.getProfile().getOcean().getOpenessLevel() +
                             " - " + user.getProfile().getOcean().getOpenessDescription(), infoFont));
-                    document.add(new Paragraph("Agreeableness: " + user.getProfile().getOcean().getAgreeablenessLevel() +
-                            " - " + user.getProfile().getOcean().getAgreeablenessDescription(), infoFont));
-                    document.add(new Paragraph("Conscientiousness: " + user.getProfile().getOcean().getConscientiousnessLevel() +
-                            " - " + user.getProfile().getOcean().getConscientiousnessDescription(), infoFont));
+                    document.add(
+                            new Paragraph("Agreeableness: " + user.getProfile().getOcean().getAgreeablenessLevel() +
+                                    " - " + user.getProfile().getOcean().getAgreeablenessDescription(), infoFont));
+                    document.add(
+                            new Paragraph(
+                                    "Conscientiousness: " + user.getProfile().getOcean().getConscientiousnessLevel() +
+                                            " - " + user.getProfile().getOcean().getConscientiousnessDescription(),
+                                    infoFont));
                     document.add(new Paragraph("\n"));
                 }
 
@@ -273,7 +281,8 @@ public class AuthController {
                 if (user.getProfile().getEneagrama() != null) {
                     document.add(new Paragraph("🔹 Enneagram Type", infoFont));
                     document.add(new Paragraph("Type: " + user.getProfile().getEneagrama().getType(), infoFont));
-                    document.add(new Paragraph("Description: " + user.getProfile().getEneagrama().getDescription(), infoFont));
+                    document.add(new Paragraph("Description: " + user.getProfile().getEneagrama().getDescription(),
+                            infoFont));
                 }
             }
 
@@ -292,6 +301,5 @@ public class AuthController {
         String userLogin = tokenService.validateToken(token);
         return (User) userRepository.findByLogin(userLogin);
     }
-
 
 }

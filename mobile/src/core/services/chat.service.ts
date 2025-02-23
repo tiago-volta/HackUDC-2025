@@ -8,7 +8,11 @@ class ChatService {
   async getHistory(): Promise<Chat[]> {
     try {
       const response = await chatApi.getHistory();
-      return response.map(ChatMapper.toDomain);
+      const parsedResponse: Chat[] = [];
+      response.forEach((chat) => {
+        parsedResponse.push(ChatMapper.toDomain(chat));
+      });
+      return parsedResponse;
     } catch (error) {
       console.error("[ChatService] Failed to get history:", error);
       return [];
@@ -114,6 +118,41 @@ class ChatService {
     } catch (error) {
       console.error("[ChatService] Failed to save calendar day:", error);
       return null;
+    }
+  }
+
+  async getCalendarEntries(): Promise<Date[]> {
+    try {
+      const response = await chatApi.getCalendarEntries();
+      const uniqueDates = new Set(response);
+      const parsedDates = Array.from(uniqueDates).map((date) => new Date(date));
+      return parsedDates;
+    } catch (error) {
+      console.error("[ChatService] Failed to get calendar entries:", error);
+      return [];
+    }
+  }
+
+  async getEntriesFromTodayWeek(): Promise<Date[]> {
+    try {
+      const allEntries = await this.getCalendarEntries();
+      const today = new Date();
+      const todayWeek = today.getDay();
+      const todayDate = today.getDate();
+      const todayMonth = today.getMonth();
+      const todayYear = today.getFullYear();
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(todayYear, todayMonth, todayDate + i - todayWeek);
+        weekDates.push(date);
+      }
+      return weekDates.filter((date) => allEntries.includes(date));
+    } catch (error) {
+      console.error(
+        "[ChatService] Failed to get entries from today week:",
+        error
+      );
+      return [];
     }
   }
 }

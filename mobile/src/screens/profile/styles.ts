@@ -155,16 +155,17 @@ export const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginHorizontal: 20,
     marginBottom: 20,
+    gap: 16,
   },
   statCard: {
     backgroundColor: THEME.colors.card,
     borderRadius: 15,
     padding: 16,
+    flex: 1,
     alignItems: "center",
-    width: "30%",
     ...Platform.select({
       ios: {
         shadowColor: THEME.colors.foreground,

@@ -21,6 +21,7 @@ export class UserMapper {
       birthDate: new Date(dto.birthDate),
       occupation: dto.occupation,
       nationality: dto.nacionality,
+      dateOfCreation: new Date(dto.dateOfCreation),
     };
   }
 
@@ -32,6 +33,7 @@ export class UserMapper {
       birthDate: domain.birthDate.toISOString().split("T")[0], // Convert to YYYY-MM-DD
       occupation: domain.occupation,
       nacionality: domain.nationality,
+      dateOfCreation: domain.dateOfCreation.toISOString().split("T")[0],
     };
   }
 }

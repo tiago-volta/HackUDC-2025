@@ -8,6 +8,7 @@ export type User = {
   birthDate: Date;
   occupation: string;
   nationality: string;
+  dateOfCreation: Date;
 };
 
 export type UserAuthRequest = {

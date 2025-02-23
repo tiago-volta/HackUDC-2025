@@ -23,6 +23,7 @@ import {
   EvaluationSkeleton,
 } from "../../components/profile-skeletons";
 import * as WebBrowser from "expo-web-browser";
+import { chatService } from "../../core/services/chat.service";
 
 export function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -62,6 +63,9 @@ export function ProfileScreen() {
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [numberOfSessions, setNumberOfSessions] = useState(0);
+  const [numberOfEntriedInJournal, setNumberOfEntriesInJournal] = useState(0);
+  const [howOld, setHowOld] = useState(0);
 
   const fetchProfile = async () => {
     try {
@@ -69,6 +73,17 @@ export function ProfileScreen() {
       setIsFetching(true);
       const res = await authService.getProfile();
       if (res) setProfile(res);
+      const allSessions = await chatService.getHistory();
+      if (allSessions) setNumberOfSessions(allSessions.length);
+      const allentries = await chatService.getCalendarEntries();
+      if (allentries) setNumberOfEntriesInJournal(allentries.length);
+      const dateOfBirth = user.dateOfCreation;
+      const today = new Date();
+      const diff = today.getTime() - dateOfBirth.getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const months = Math.floor(days / 30);
+      const years = Math.floor(months / 12);
+      setHowOld(years);
     } catch (error) {
       setError("Failed to load profile data");
       console.error("Failed to fetch profile:", error);
@@ -206,20 +221,14 @@ export function ProfileScreen() {
               size={24}
               color={THEME.colors.primary}
             />
-            <Text style={styles.statNumber}>24</Text>
+            <Text style={styles.statNumber}>{numberOfSessions}</Text>
             <Text style={styles.statLabel}>Sessions</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Ionicons name="calendar" size={24} color={THEME.colors.primary} />
-            <Text style={styles.statNumber}>3</Text>
-            <Text style={styles.statLabel}>Months</Text>
-          </View>
-
-          <View style={styles.statCard}>
             <Ionicons name="star" size={24} color={THEME.colors.primary} />
-            <Text style={styles.statNumber}>12</Text>
-            <Text style={styles.statLabel}>Goals</Text>
+            <Text style={styles.statNumber}>{numberOfEntriedInJournal}</Text>
+            <Text style={styles.statLabel}>Entries</Text>
           </View>
         </View>
 

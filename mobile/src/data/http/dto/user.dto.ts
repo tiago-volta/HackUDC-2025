@@ -5,6 +5,7 @@ export type UserDTO = {
   birthDate: string; // format: yyyy-MM-dd
   occupation: string;
   nacionality: string;
+  dateOfCreation: string;
 };
 
 export type UserAuthRequestDTO = {
