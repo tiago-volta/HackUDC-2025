@@ -1,4 +1,4 @@
-# Documentação dos Endpoints do AuthController
+# Auth Controller Endpoints Documentation
 
 ## Base URL
 ```
@@ -14,10 +14,10 @@
 POST /auth/login
 ```
 
-**Descrição:**
-Autentica um utilizador e retorna um token JWT.
+**Description:**
+Authenticates a user and returns a JWT token.
 
-**Requisição:**
+**Request:**
 ```json
 {
   "login": "string",
@@ -25,11 +25,11 @@ Autentica um utilizador e retorna um token JWT.
 }
 ```
 
-**Respostas:**
-- `200 OK` - Retorna um token JWT.
-- `401 UNAUTHORIZED` - Login ou palavra-passe inválidos.
+**Responses:**
+- `200 OK` - Returns a JWT token.
+- `401 UNAUTHORIZED` - Invalid login or password.
 
-**Exemplo de Resposta:**
+**Response Example:**
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -38,26 +38,26 @@ Autentica um utilizador e retorna um token JWT.
 
 ---
 
-### 2. Obter Utilizador Autenticado
+### 2. Get Authenticated User
 
 **Endpoint:**
 ```
 GET /auth/me
 ```
 
-**Descrição:**
-Retorna os dados do utilizador autenticado.
+**Description:**
+Returns the authenticated user's data.
 
-**Cabeçalhos:**
+**Headers:**
 ```
 Authorization: Bearer <token>
 ```
 
-**Respostas:**
-- `200 OK` - Retorna os dados do utilizador autenticado.
-- `401 UNAUTHORIZED` - Token inválido ou expirado.
+**Responses:**
+- `200 OK` - Returns the authenticated user's data.
+- `401 UNAUTHORIZED` - Invalid or expired token.
 
-**Exemplo de Resposta:**
+**Response Example:**
 ```json
 {
   "id": 1,
@@ -68,18 +68,17 @@ Authorization: Bearer <token>
 
 ---
 
-### 3. Registar Utilizador
+### 3. Register User
 
 **Endpoint:**
 ```
 POST /auth/register
 ```
 
-**Descrição:**
-Regista um novo utilizador na plataforma.
+**Description:**
+Registers a new user on the platform.
 
-**Requisição:**
-
+**Request:**
 ```json
 {
   "login": "string",
@@ -88,12 +87,13 @@ Regista um novo utilizador na plataforma.
 }
 ```
 
-**Respostas:**
-- `200 OK` - Utilizador registado com sucesso.
-- `400 BAD REQUEST` - Nome de utilizador já em uso.
+**Responses:**
+- `200 OK` - User successfully registered.
+- `400 BAD REQUEST` - Username already in use.
 
-**Exemplo de Resposta em caso de erro:**
+**Error Response Example:**
 ```json
 {
   "error": "Login/Username already in use"
 }
+```
