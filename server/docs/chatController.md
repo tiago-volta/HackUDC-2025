@@ -1,80 +1,194 @@
-Documentação dos Endpoints do CalendarController
+# Chat Controller Endpoints Documentation
 
-Base URL
+## Base URL
+```
+/chat
+```
 
-/calendar
+## Endpoints
 
-Endpoints
+### 1. Create New Chat
 
-1. Obter Calendário do Utilizador
+**Endpoint:**
+```
+POST /chat/new
+```
 
-Endpoint:
+**Description:**
+Creates a new chat session for the authenticated user.
 
-GET /calendar/{date}
-
-Descrição:
-Retorna as informações do calendário do utilizador para uma data específica, incluindo notas, chats, avaliação e justificativa.
-
-Cabeçalhos:
-
+**Headers:**
+```
 Authorization: Bearer <token>
+```
 
-Parâmetros de Caminho:
+**Responses:**
+- `200 OK` - Chat created successfully
+- `400 BAD REQUEST` - User not found
 
-date (string): Data no formato yyyy-MM-dd.
-
-Respostas:
-
-200 OK - Retorna os dados do calendário.
-
-401 UNAUTHORIZED - Token inválido ou expirado.
-
-404 NOT FOUND - Dados do calendário não encontrados.
-
-Exemplo de Resposta:
-
+**Response Example:**
+```json
 {
-  "date": "2024-02-22",
-  "note": "Reunião com terapeuta às 10h",
-  "chats": [
+  "chatId": "123456789"
+}
+```
+
+---
+
+### 2. Get Chat
+
+**Endpoint:**
+```
+GET /chat/{id}
+```
+
+**Description:**
+Retrieves a specific chat by its ID.
+
+**Path Parameters:**
+- `id`: Chat ID
+
+**Responses:**
+- `200 OK` - Returns chat details
+- `400 BAD REQUEST` - Chat not found
+
+**Response Example:**
+```json
+{
+  "id": "123456789",
+  "messages": [],
+  "userId": "987654321"
+}
+```
+
+---
+
+### 3. Send Message
+
+**Endpoint:**
+```
+POST /chat/{id}
+```
+
+**Description:**
+Sends a message to a specific chat and receives an AI response.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Path Parameters:**
+- `id`: Chat ID
+
+**Request Body:**
+```json
+{
+  "msg": "string"
+}
+```
+
+**Responses:**
+- `200 OK` - Returns AI response
+- `400 BAD REQUEST` - Chat/User not found or error in response
+
+---
+
+### 4. Delete Chat
+
+**Endpoint:**
+```
+DELETE /chat/{id}
+```
+
+**Description:**
+Deletes a specific chat.
+
+**Path Parameters:**
+- `id`: Chat ID
+
+**Responses:**
+- `200 OK` - Chat deleted successfully
+
+---
+
+### 5. Get Chat History
+
+**Endpoint:**
+```
+GET /chat/history
+```
+
+**Description:**
+Retrieves chat history for the authenticated user.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Responses:**
+- `200 OK` - Returns list of chats
+- `400 BAD REQUEST` - User not found
+
+**Response Example:**
+```json
+[
+  {
+    "id": "123456789",
+    "title": "Chat Title",
+    "messages": []
+  }
+]
+```
+
+---
+
+### 6. Get Grouped Chats
+
+**Endpoint:**
+```
+GET /chat/group
+```
+
+**Description:**
+Retrieves chats grouped by day for the authenticated user.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Responses:**
+- `200 OK` - Returns chats grouped by date
+- `400 BAD REQUEST` - User not found
+
+**Response Example:**
+```json
+{
+  "2024-03-20": [
     {
-      "id": "chat1",
-      "message": "Como foi o seu dia?",
-      "date": "2024-02-22"
+      "chatId": "123456789",
+      "messages": []
     }
-  ],
-  "justificative": "Paciente relatou ansiedade moderada.",
-  "grade": 3
+  ]
 }
+```
 
-2. Atualizar Calendário do Utilizador
+## Technical Notes
 
-Endpoint:
+1. **Authentication**
+   - All endpoints require JWT authentication
+   - Token must be provided in Bearer format
 
-PUT /calendar/{date}
+2. **Chat Title Generation**
+   - First message in a chat automatically generates a title
+   - Title length is limited to 25-30 characters
 
-Descrição:
-Atualiza as notas e a avaliação do utilizador para uma data específica.
+3. **Error Handling**
+   - Returns appropriate error messages for invalid requests
+   - Handles AI response formatting errors
 
-Cabeçalhos:
-
-Authorization: Bearer <token>
-
-Parâmetros de Caminho:
-
-date (string): Data no formato yyyy-MM-dd.
-
-Requisição:
-
-{
-  "note": "Atualização da nota do dia."
-}
-
-Respostas:
-
-200 OK - Calendário atualizado com sucesso.
-
-400 BAD REQUEST - Dados inválidos.
-
-401 UNAUTHORIZED - Token inválido ou expirado.
-
+4. **Response Format**
+   - All successful responses return JSON format
+   - Error responses include descriptive messages
