@@ -3,10 +3,15 @@ import { JwtTokenValueDto } from "./dto/token.dto";
 import {
   UserAuthRequestDTO,
   UserDTO,
+  UserProfileDTO,
   UserRegisterRequestDTO,
 } from "./dto/user.dto";
 
 class AuthApi {
+  getPdfCompleteUrl = async () => {
+    const response = await api.get<string>("auth/pdf");
+    return response.data;
+  };
   register = async (dto: UserRegisterRequestDTO): Promise<void> => {
     console.log("Registering user", dto);
     await api.post<JwtTokenValueDto>("auth/register", dto);
@@ -28,6 +33,11 @@ class AuthApi {
 
   getUserInfo = async (): Promise<UserDTO> => {
     const response = await api.get<UserDTO>("auth/me");
+    return response.data;
+  };
+
+  getProfile = async (): Promise<UserProfileDTO> => {
+    const response = await api.get<UserProfileDTO>("auth/profile");
     return response.data;
   };
 }

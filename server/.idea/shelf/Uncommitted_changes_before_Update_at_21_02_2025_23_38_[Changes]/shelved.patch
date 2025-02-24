@@ -1,0 +1,338 @@
+Index: src/main/java/health/mental/domain/Chat/prompt-msg.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>Termina a tua resposta sempre com um ponto final.\r\nResponde a isto:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/prompt-msg.txt b/src/main/java/health/mental/domain/Chat/prompt-msg.txt
+--- a/src/main/java/health/mental/domain/Chat/prompt-msg.txt	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/java/health/mental/domain/Chat/prompt-msg.txt	(date 1740179329781)
+@@ -1,2 +1,2 @@
+ Termina a tua resposta sempre com um ponto final.
+-Responde a isto:
+\ No newline at end of file
++Responde a isto:
+Index: src/main/java/health/mental/controller/ChatController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package health.mental.controller;\r\n\r\n\r\n\r\nimport com.fasterxml.jackson.databind.JsonNode;\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport health.mental.domain.Chat.Chat;\r\nimport health.mental.domain.Chat.ChatCreatedDTO;\r\nimport health.mental.domain.Chat.ChatReturnDTO;\r\nimport health.mental.domain.Chat.ChatService;\r\nimport health.mental.domain.Product.Product;\r\nimport health.mental.domain.Product.ProductMapper;\r\nimport health.mental.domain.Product.ProductRequestDTO;\r\nimport health.mental.domain.Product.ProductResponseDTO;\r\nimport health.mental.domain.User.User;\r\nimport health.mental.domain.User.UserMapper;\r\nimport health.mental.infra.security.TokenService;\r\nimport health.mental.repositories.ChatRepository;\r\nimport health.mental.repositories.ProductRepository;\r\n\r\nimport health.mental.repositories.UserRepository;\r\nimport io.swagger.v3.oas.annotations.Operation;\r\nimport io.swagger.v3.oas.annotations.tags.Tag;\r\nimport jakarta.validation.Valid;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n@RestController\r\n@RequestMapping(\"/chat\")\r\n@Tag(name = \"Chat\", description = \"Endpoints to interact with chat\")\r\npublic class ChatController {\r\n\r\n\r\n    @Autowired\r\n    private ChatRepository chatRepository;\r\n\r\n    @Autowired\r\n    private ChatgptController chatgptController;\r\n    @Autowired\r\n    private UserRepository userRepository;\r\n    @Autowired\r\n    private TokenService tokenService;\r\n\r\n    @Autowired\r\n    private ChatService chatService;\r\n\r\n    @PostMapping(\"/new\")\r\n    @Operation(summary = \"Create a new chat\", description = \"Create a new chat associated with the user who is creating it\")\r\n    public ResponseEntity createChat(@RequestHeader(\"Authorization\") String bearerToken) {\r\n\r\n\r\n        String token = bearerToken.substring(7);\r\n        String userLogin = tokenService.validateToken(token);\r\n        var user =  (User) userRepository.findByLogin(userLogin);\r\n        if(user == null)\r\n            return ResponseEntity.badRequest().body(\"User not found\");\r\n\r\n        var chat = chatRepository.save(new Chat(user));\r\n\r\n        return ResponseEntity.ok(new ChatCreatedDTO(chat.getId().toString()));\r\n\r\n\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    @Operation(summary = \"Get chat by id\", description = \"Get chat by id\")\r\n    public ResponseEntity getChat(@PathVariable Long id) {\r\n        var chat = chatRepository.findById(id);\r\n        if(chat.isEmpty())\r\n            return ResponseEntity.badRequest().body(\"Chat not found\");\r\n\r\n        return ResponseEntity.ok(new ChatReturnDTO(chat.get().getId().toString(),chat.get().getChatMsgs(),chat.get().getUser().getId().toString()));\r\n    }\r\n\r\n    @PostMapping(\"/{id}\")\r\n    @Operation(summary = \"Send message to chat\", description = \"Send message to chat and get an answer\")\r\n    public ResponseEntity sendMessage(@PathVariable Long id, @RequestHeader(\"Authorization\") String bearerToken, @RequestBody String msg) {\r\n        String token = bearerToken.substring(7);\r\n        String userLogin = tokenService.validateToken(token);\r\n        var user =  (User) userRepository.findByLogin(userLogin);\r\n        if(user == null)\r\n            return ResponseEntity.badRequest().body(\"User not found\");\r\n\r\n        var chat =  chatRepository.findById(id);\r\n        if(chat == null)\r\n            return ResponseEntity.badRequest().body(\"Chat not found\");\r\n        var answer = chatgptController.ask(chatService.buildQuestion(msg));\r\n\r\n        try {\r\n\r\n            chat.get().addMsg(msg, answer.getBody());\r\n        }catch(Exception e){\r\n            ResponseEntity.badRequest().body(\"Error in the answer\");\r\n        }\r\n\r\n\r\n\r\n        return ResponseEntity.ok(answer.getBody());\r\n    }\r\n\r\n    @DeleteMapping(\"/{id}\")\r\n    @Operation(summary = \"Delete chat by id\", description = \"Delete chat by id\")\r\n    public ResponseEntity deleteChat(@PathVariable Long id) {\r\n        chatRepository.deleteById(id);\r\n        return ResponseEntity.ok().build();\r\n    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/controller/ChatController.java b/src/main/java/health/mental/controller/ChatController.java
+--- a/src/main/java/health/mental/controller/ChatController.java	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/java/health/mental/controller/ChatController.java	(date 1740181124590)
+@@ -4,10 +4,7 @@
+ 
+ import com.fasterxml.jackson.databind.JsonNode;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+-import health.mental.domain.Chat.Chat;
+-import health.mental.domain.Chat.ChatCreatedDTO;
+-import health.mental.domain.Chat.ChatReturnDTO;
+-import health.mental.domain.Chat.ChatService;
++import health.mental.domain.Chat.*;
+ import health.mental.domain.Product.Product;
+ import health.mental.domain.Product.ProductMapper;
+ import health.mental.domain.Product.ProductRequestDTO;
+@@ -26,6 +23,7 @@
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
+ 
++import java.util.ArrayList;
+ import java.util.List;
+ import java.util.Map;
+ 
+@@ -59,6 +57,8 @@
+         if(user == null)
+             return ResponseEntity.badRequest().body("User not found");
+ 
++
++
+         var chat = chatRepository.save(new Chat(user));
+ 
+         return ResponseEntity.ok(new ChatCreatedDTO(chat.getId().toString()));
+@@ -78,7 +78,7 @@
+ 
+     @PostMapping("/{id}")
+     @Operation(summary = "Send message to chat", description = "Send message to chat and get an answer")
+-    public ResponseEntity sendMessage(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken, @RequestBody String msg) {
++    public ResponseEntity sendMessage(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken, @RequestBody MessageRequestDTO msg) {
+         String token = bearerToken.substring(7);
+         String userLogin = tokenService.validateToken(token);
+         var user =  (User) userRepository.findByLogin(userLogin);
+@@ -88,11 +88,16 @@
+         var chat =  chatRepository.findById(id);
+         if(chat == null)
+             return ResponseEntity.badRequest().body("Chat not found");
+-        var answer = chatgptController.ask(chatService.buildQuestion(msg));
++        var answer = chatgptController.ask(chatService.buildQuestion(msg.getMsg()));
+ 
+         try {
++            if (chat.get().getChatMsgs().isEmpty()){
++                chat.get().setTitle(chatgptController.ask("Say the title of the chat based on the first message of our chat:"+msg.getMsg()+". Please answer only the title without puting it in any object").getBody());
++            }
+ 
+-            chat.get().addMsg(msg, answer.getBody());
++            chat.get().addMsg(msg.getMsg(), answer.getBody());
++
++            chatRepository.save(chat.get());
+         }catch(Exception e){
+             ResponseEntity.badRequest().body("Error in the answer");
+         }
+@@ -109,6 +114,25 @@
+         return ResponseEntity.ok().build();
+     }
+ 
++    @GetMapping("/history")
++    @Operation(summary = "Get chat history", description = "Get chat history by user")
++    public ResponseEntity getChatHistory(@RequestHeader("Authorization") String bearerToken) {
++        String token = bearerToken.substring(7);
++        String userLogin = tokenService.validateToken(token);
++        var user =  (User) userRepository.findByLogin(userLogin);
++        if(user == null)
++            return ResponseEntity.badRequest().body("User not found");
++
++        var chats = chatRepository.findByUser(user);
++        List<ChatHistoryDTO> chatHistory = new ArrayList<>();
++        for(Chat chat: chats){
++            if(chat.getChatMsgs().isEmpty())
++                continue;
++            chatHistory.add(new ChatHistoryDTO(chat.getId().toString(), chat.getTitle(), chat.getChatMsgs()));
++        }
++        return ResponseEntity.ok(chatHistory);
++    }
++
+ 
+ 
+ }
+Index: src/main/java/health/mental/domain/Chat/Chat.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package health.mental.domain.Chat;\r\n\r\nimport health.mental.domain.User.User;\r\nimport jakarta.persistence.*;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Data;\r\nimport lombok.NoArgsConstructor;\r\n\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\nimport java.util.UUID;\r\n\r\n\r\n@Entity(name = \"chat\")\r\n@Table(name = \"chat\")\r\n@AllArgsConstructor\r\n@NoArgsConstructor\r\n@Data\r\npublic class Chat {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private Long id;\r\n\r\n    @ElementCollection\r\n    private Map<String,String> chatMsgs;\r\n\r\n    @ManyToOne\r\n    private User user;\r\n\r\n    public Chat(User user) {\r\n        this.user = user;\r\n        this.chatMsgs = new HashMap<String,String>();\r\n    }\r\n\r\n    public void addMsg(String question, String answer){\r\n        // we put the uuid to avoid duplicate keys, since the user can ask the same question multiple times, in alternative we could use a list of answers but we would lose the order of the questions\r\n        this.chatMsgs.put(question + \"$\" + UUID.randomUUID(),answer);\r\n    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/Chat.java b/src/main/java/health/mental/domain/Chat/Chat.java
+--- a/src/main/java/health/mental/domain/Chat/Chat.java	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/java/health/mental/domain/Chat/Chat.java	(date 1740180024251)
+@@ -7,9 +7,7 @@
+ import lombok.NoArgsConstructor;
+ 
+ 
+-import java.util.HashMap;
+-import java.util.Map;
+-import java.util.UUID;
++import java.util.*;
+ 
+ 
+ @Entity(name = "chat")
+@@ -24,19 +22,22 @@
+     private Long id;
+ 
+     @ElementCollection
+-    private Map<String,String> chatMsgs;
++    private List<PairQuestionAnswer> chatMsgs;
+ 
+     @ManyToOne
+     private User user;
+ 
++    @Column(name = "title")
++    private String title;
++
+     public Chat(User user) {
+         this.user = user;
+-        this.chatMsgs = new HashMap<String,String>();
++        this.chatMsgs = new ArrayList<>();
+     }
+ 
+     public void addMsg(String question, String answer){
+         // we put the uuid to avoid duplicate keys, since the user can ask the same question multiple times, in alternative we could use a list of answers but we would lose the order of the questions
+-        this.chatMsgs.put(question + "$" + UUID.randomUUID(),answer);
++        this.chatMsgs.add(new PairQuestionAnswer(question, answer));
+     }
+ 
+ }
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=mental\r\n\r\n# SERVER CONFIGURATION\r\nspring.datasource.url=jdbc:mysql://localhost:3306/teste\r\nspring.datasource.username=root\r\nspring.datasource.password=\r\nspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver\r\n\r\n# JPA CONFIGURATION ( choose: create, update, validate, none )\r\nspring.jpa.hibernate.ddl-auto=update\r\n\r\n# SECURITY\r\napi.security.token.secret=secret\r\n\r\n#Jose\r\njose.is.enable.jose=true\r\n\r\n#ChatGpt\r\nchatgpt.model=gpt-3.5-turbo\r\nchatgpt.api.url=https://api.openai.com/v1/chat/completions\r\nchatgpt.api.key=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\r\n\r\n#Swagger\r\nspringdoc.swagger-ui.path=/api-docs\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/resources/application.properties	(date 1740180971331)
+@@ -1,7 +1,7 @@
+ spring.application.name=mental
+ 
+ # SERVER CONFIGURATION
+-spring.datasource.url=jdbc:mysql://localhost:3306/teste
++spring.datasource.url=jdbc:mysql://localhost:3306/hackathon
+ spring.datasource.username=root
+ spring.datasource.password=
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+Index: src/main/java/health/mental/domain/Chat/PairQuestionAnswer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/PairQuestionAnswer.java b/src/main/java/health/mental/domain/Chat/PairQuestionAnswer.java
+new file mode 100644
+--- /dev/null	(date 1740178339569)
++++ b/src/main/java/health/mental/domain/Chat/PairQuestionAnswer.java	(date 1740178339569)
+@@ -0,0 +1,34 @@
++package health.mental.domain.Chat;
++
++import jakarta.persistence.Embeddable;
++import java.time.LocalDateTime;
++
++@Embeddable
++public class PairQuestionAnswer {
++
++    private String question;
++    private String answer;
++    private LocalDateTime date;
++
++    public PairQuestionAnswer() {
++        this.date = LocalDateTime.now();
++    }
++
++    public PairQuestionAnswer(String question, String answer) {
++        this.question = question;
++        this.answer = answer;
++        this.date = LocalDateTime.now();
++    }
++
++    public String getQuestion() {
++        return question;
++    }
++
++    public String getAnswer() {
++        return answer;
++    }
++
++    public LocalDateTime getDate() {
++        return date;
++    }
++}
+Index: src/main/java/health/mental/domain/Chat/ChatReturnDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package health.mental.domain.Chat;\r\n\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\n\r\nimport java.util.Map;\r\n\r\n@AllArgsConstructor\r\n@NoArgsConstructor\r\n@Setter\r\n@Getter\r\npublic class ChatReturnDTO {\r\n\r\n    public String id;\r\n    public Map<String,String> msgs;\r\n\r\n    public String userId;\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/ChatReturnDTO.java b/src/main/java/health/mental/domain/Chat/ChatReturnDTO.java
+--- a/src/main/java/health/mental/domain/Chat/ChatReturnDTO.java	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/java/health/mental/domain/Chat/ChatReturnDTO.java	(date 1740178091072)
+@@ -4,18 +4,27 @@
+ import lombok.Getter;
+ import lombok.NoArgsConstructor;
+ import lombok.Setter;
++import org.antlr.v4.runtime.misc.Pair;
+ 
++import java.util.HashMap;
++import java.util.List;
+ import java.util.Map;
+ 
+-@AllArgsConstructor
++
+ @NoArgsConstructor
+ @Setter
+ @Getter
+ public class ChatReturnDTO {
+ 
+     public String id;
+-    public Map<String,String> msgs;
++    public List<PairQuestionAnswer> msgs;
+ 
+     public String userId;
+ 
++    public ChatReturnDTO(String id, List<PairQuestionAnswer> msgs, String userId) {
++        this.id = id;
++        this.msgs = msgs;
++        this.userId = userId;
++    }
++
+ }
+Index: src/main/java/health/mental/domain/Chat/ChatHistoryDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/ChatHistoryDTO.java b/src/main/java/health/mental/domain/Chat/ChatHistoryDTO.java
+new file mode 100644
+--- /dev/null	(date 1740180422282)
++++ b/src/main/java/health/mental/domain/Chat/ChatHistoryDTO.java	(date 1740180422282)
+@@ -0,0 +1,17 @@
++package health.mental.domain.Chat;
++import health.mental.domain.Chat.PairQuestionAnswer;
++
++import java.util.List;
++
++public class ChatHistoryDTO {
++    public String id;
++
++    public String title;
++    public List<PairQuestionAnswer> msgs;
++
++    public ChatHistoryDTO(String id, String title, List<PairQuestionAnswer> msgs) {
++        this.id = id;
++        this.title = title;
++        this.msgs = msgs;
++    }
++}
+Index: src/main/java/health/mental/domain/Chat/MessageRequestDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/domain/Chat/MessageRequestDTO.java b/src/main/java/health/mental/domain/Chat/MessageRequestDTO.java
+new file mode 100644
+--- /dev/null	(date 1740178500314)
++++ b/src/main/java/health/mental/domain/Chat/MessageRequestDTO.java	(date 1740178500314)
+@@ -0,0 +1,19 @@
++package health.mental.domain.Chat;
++
++public class MessageRequestDTO {
++    private String msg;
++
++    public MessageRequestDTO() {}
++
++    public MessageRequestDTO(String msg) {
++        this.msg = msg;
++    }
++
++    public String getMsg() {
++        return msg;
++    }
++
++    public void setMsg(String msg) {
++        this.msg = msg;
++    }
++}
+Index: src/main/java/health/mental/repositories/ChatRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package health.mental.repositories;\r\n\r\nimport health.mental.domain.Chat.Chat;\r\n\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\n\r\n@Repository\r\npublic interface ChatRepository extends JpaRepository<Chat, Long> {\r\n\r\n\r\n\r\n    public List<Chat> findAll();\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/health/mental/repositories/ChatRepository.java b/src/main/java/health/mental/repositories/ChatRepository.java
+--- a/src/main/java/health/mental/repositories/ChatRepository.java	(revision 0bbe4b0faba529a7c911be9cb5e3da6cf792e7b1)
++++ b/src/main/java/health/mental/repositories/ChatRepository.java	(date 1740179372673)
+@@ -2,6 +2,7 @@
+ 
+ import health.mental.domain.Chat.Chat;
+ 
++import health.mental.domain.User.User;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+ 
+@@ -15,4 +16,5 @@
+     public List<Chat> findAll();
+ 
+ 
++    public List<Chat> findByUser(User user);
+ }

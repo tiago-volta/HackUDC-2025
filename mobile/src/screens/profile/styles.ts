@@ -155,16 +155,17 @@ export const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginHorizontal: 20,
     marginBottom: 20,
+    gap: 16,
   },
   statCard: {
     backgroundColor: THEME.colors.card,
     borderRadius: 15,
     padding: 16,
+    flex: 1,
     alignItems: "center",
-    width: "30%",
     ...Platform.select({
       ios: {
         shadowColor: THEME.colors.foreground,
@@ -273,6 +274,20 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: THEME.colors.destructiveForeground,
   },
+  downloadButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: THEME.colors.primary,
+    padding: 16,
+    borderRadius: THEME.radius.default,
+    gap: 8,
+  },
+  downloadText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: THEME.colors.primaryForeground,
+  },
   // Modal styles
   modal: {
     margin: 20,
@@ -364,6 +379,30 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: THEME.colors.mutedForeground,
-    textAlign: "justify",
+  },
+
+  errorContainer: {
+    margin: 20,
+    padding: 20,
+    backgroundColor: THEME.colors.destructive + "20",
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  errorText: {
+    color: THEME.colors.destructive,
+    fontSize: 16,
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  retryButton: {
+    backgroundColor: THEME.colors.destructive,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: THEME.radius.default,
+  },
+  retryText: {
+    color: THEME.colors.destructiveForeground,
+    fontSize: 14,
+    fontWeight: "600",
   },
 });

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ddc7e077-283d-4070-882b-a7e597865df1" name="Changes" comment="add endpoint calendar">
+      <change beforePath="$PROJECT_DIR$/src/main/java/health/mental/controller/CalendarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/health/mental/controller/CalendarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2tMOht94kZBY0jxWiRVP7KYhyRv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowRun.ShowToolbar": "false",
+    "last_opened_file_path": "C:/Users/marci/OneDrive/Área de Trabalho/hackathon/hack-udc/server/src/main/resources/static"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marci\OneDrive\Área de Trabalho\hackathon\hack-udc\server\src\main\resources\static" />
+      <recent name="C:\Users\marci\OneDrive\Área de Trabalho\hackathon\hack-udc\server\src\main\java\health\mental\domain\Calendar" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="server" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ddc7e077-283d-4070-882b-a7e597865df1" name="Changes" comment="" />
+      <created>1740158612370</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740158612370</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Adding the concept of &quot;Chat&quot;">
+      <created>1740177479020</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740177479020</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding title and promp engineering fix">
+      <created>1740181605853</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740181605853</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fix column max">
+      <created>1740183387868</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740183387868</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adding sort by day">
+      <created>1740186587365</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740186587366</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Adding details to user">
+      <created>1740191938441</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740191938441</updated>
+    </task>
+    <task id="LOCAL-00006" summary="prompt update, updating service to group">
+      <created>1740195871059</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740195871059</updated>
+    </task>
+    <task id="LOCAL-00007" summary="format update">
+      <created>1740196385983</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740196385983</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Calendar evaluation">
+      <created>1740205360380</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1740205360380</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Adding personal feelings to profile">
+      <created>1740208871037</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1740208871037</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Change calendar">
+      <created>1740235058987</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1740235058987</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Change calendar and prompt">
+      <created>1740238184637</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1740238184637</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Change calendar and prompt">
+      <created>1740239417389</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1740239417389</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Change calendar and prompt">
+      <created>1740243047875</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1740243047876</updated>
+    </task>
+    <task id="LOCAL-00014" summary="save calendar">
+      <created>1740249132776</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1740249132776</updated>
+    </task>
+    <task id="LOCAL-00015" summary="save calendar">
+      <created>1740250406010</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1740250406010</updated>
+    </task>
+    <task id="LOCAL-00016" summary="save calendar">
+      <created>1740250584116</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1740250584116</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add endpoint auth">
+      <created>1740263412016</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1740263412016</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add endpoint calendar">
+      <created>1740264487057</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1740264487057</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adding the concept of &quot;Chat&quot;" />
+    <MESSAGE value="Adding title and promp engineering fix" />
+    <MESSAGE value="Fix column max" />
+    <MESSAGE value="Adding sort by day" />
+    <MESSAGE value="Adding details to user" />
+    <MESSAGE value="prompt update, updating service to group" />
+    <MESSAGE value="format update" />
+    <MESSAGE value="Calendar evaluation" />
+    <MESSAGE value="Adding personal feelings to profile" />
+    <MESSAGE value="Change calendar" />
+    <MESSAGE value="Change calendar and prompt" />
+    <MESSAGE value="save calendar" />
+    <MESSAGE value="add endpoint auth" />
+    <MESSAGE value="add endpoint calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="add endpoint calendar" />
+  </component>
+</project>

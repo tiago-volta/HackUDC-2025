@@ -2,6 +2,10 @@ import { api } from "./axios.client";
 import { CalendarDayDTO, ChatDTO, GroupedChatsDTO } from "./dto/chat.dto";
 
 class ChatApi {
+  getCalendarEntries = async (): Promise<string[]> => {
+    const response = await api.get<string[]>("calendar/full");
+    return response.data;
+  };
   getHistory = async (): Promise<ChatDTO[]> => {
     const response = await api.get<ChatDTO[]>("chat/history");
     return response.data;
@@ -33,6 +37,16 @@ class ChatApi {
 
   getCalendarDay = async (date: string): Promise<CalendarDayDTO> => {
     const response = await api.get<CalendarDayDTO>(`calendar/${date}`);
+    return response.data;
+  };
+
+  saveCalendarDay = async (
+    date: string,
+    note: string
+  ): Promise<CalendarDayDTO> => {
+    const response = await api.put<CalendarDayDTO>(`calendar/${date}`, {
+      note,
+    });
     return response.data;
   };
 }

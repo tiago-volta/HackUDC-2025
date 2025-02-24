@@ -14,49 +14,16 @@ import { useAuth } from "../../contexts/auth";
 import { styles } from "./styles";
 import { THEME } from "../../constants/theme";
 import { COUNTRIES } from "../../@types/country";
-
-// Mock Big Five data
-const BIG_FIVE_DATA = [
-  {
-    label: "Openness",
-    value: 75,
-    description:
-      "You show high curiosity and appreciation for art, emotion, adventure, unusual ideas, imagination, and variety of experience. This suggests you're creative, innovative, and always eager to learn new things in your therapeutic journey.",
-  },
-  {
-    label: "Responsibility",
-    value: 85,
-    description:
-      "Your high level of conscientiousness/responsibility indicates strong self-discipline, aim for achievement, and planned behavior. This trait helps you maintain consistency in your mental health practices and follow through with therapeutic recommendations.",
-  },
-  {
-    label: "Extraversion",
-    value: 60,
-    description:
-      "Your moderate extraversion score suggests a balanced approach to social interactions. You can engage well with others while also being comfortable with solitude, which is valuable for mental well-being.",
-  },
-  {
-    label: "Agreeableness",
-    value: 80,
-    description:
-      "Your high agreeableness shows strong empathy and concern for others' well-being. This trait helps you build supportive relationships and engage positively in therapy sessions.",
-  },
-  {
-    label: "Neuroticism",
-    value: 45,
-    description:
-      "Your moderate-low neuroticism suggests relatively stable emotions and good stress management. While you experience normal emotional responses, you generally handle pressure well.",
-  },
-];
-
-// Mock Enneagram data – replace these with dynamic values when available
-const MOCK_ENNEAGRAM = {
-  type: 4,
-  title: "The Individualist (The Romantic)",
-  emoji: "🎨",
-  description:
-    "As an Individualist, you are creative, introspective, and emotionally deep. You value authenticity and uniqueness; however, sometimes you may feel misunderstood or overly self-absorbed. Embracing your individuality can help enrich your personal growth and therapy journey.",
-};
+import { useFocusEffect } from "@react-navigation/native";
+import { authService } from "../../core/services/auth.service";
+import { UserProfile } from "../../core/domain/user";
+import { LoadingSpinner } from "../../components/loading-spinner";
+import {
+  EnneagramSkeleton,
+  EvaluationSkeleton,
+} from "../../components/profile-skeletons";
+import * as WebBrowser from "expo-web-browser";
+import { chatService } from "../../core/services/chat.service";
 
 export function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -93,8 +60,61 @@ export function ProfileScreen() {
     return age;
   };
 
-  const handleTraitPress = (index: number) => {
-    setSelectedTrait(BIG_FIVE_DATA[index]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [numberOfSessions, setNumberOfSessions] = useState(0);
+  const [numberOfEntriedInJournal, setNumberOfEntriesInJournal] = useState(0);
+  const [howOld, setHowOld] = useState(0);
+
+  const fetchProfile = async () => {
+    try {
+      setError(null);
+      setIsFetching(true);
+      const res = await authService.getProfile();
+      if (res) setProfile(res);
+      const allSessions = await chatService.getHistory();
+      if (allSessions) setNumberOfSessions(allSessions.length);
+      const allentries = await chatService.getCalendarEntries();
+      if (allentries) setNumberOfEntriesInJournal(allentries.length);
+      const dateOfBirth = user.dateOfCreation;
+      const today = new Date();
+      const diff = today.getTime() - dateOfBirth.getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const months = Math.floor(days / 30);
+      const years = Math.floor(months / 12);
+      setHowOld(years);
+    } catch (error) {
+      setError("Failed to load profile data");
+      console.error("Failed to fetch profile:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  // Add error handling UI
+  {
+    error && (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={fetchProfile}>
+          <Text style={styles.retryText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("Fetching profile...");
+      fetchProfile();
+    }, [])
+  );
+
+  console.log(profile);
+
+  const handleTraitPress = (trait: any) => {
+    setSelectedTrait(trait);
   };
 
   return (
@@ -155,37 +175,43 @@ export function ProfileScreen() {
           </View>
         </View>
 
-        <View style={styles.evaluationCard}>
-          <View style={styles.evaluationHeader}>
-            <Ionicons name="medal" size={24} color={THEME.colors.primary} />
-            <Text style={styles.evaluationTitle}>Global Evaluation</Text>
+        {isFetching ? (
+          <EvaluationSkeleton />
+        ) : (
+          <View style={styles.evaluationCard}>
+            <View style={styles.evaluationHeader}>
+              <Ionicons name="medal" size={24} color={THEME.colors.primary} />
+              <Text style={styles.evaluationTitle}>Global Evaluation</Text>
+            </View>
+            <Text style={styles.evaluationText}>{profile?.evaluation}</Text>
           </View>
-
-          <Text style={styles.evaluationText}>
-            {`Based on your progress and engagement, you're doing an excellent job managing your mental health. Your consistency in sessions and proactive approach to personal growth are commendable. Keep up the great work!`}
-          </Text>
-        </View>
+        )}
 
         {/* ENNEAGRAM SECTION */}
-        <TouchableOpacity
-          style={styles.enneagramCard}
-          onPress={() => setShowEnneagramModal(true)}
-        >
-          <View style={styles.enneagramContent}>
-            <Text style={styles.enneagramEmoji}>{MOCK_ENNEAGRAM.emoji}</Text>
-            <View style={styles.enneagramTextContainer}>
-              <Text style={styles.enneagramTitle}>
-                Type {MOCK_ENNEAGRAM.type}: {MOCK_ENNEAGRAM.title}
-              </Text>
-              <Text style={styles.enneagramSub}>Tap for more information</Text>
+        {!isFetching ? (
+          <TouchableOpacity
+            style={styles.enneagramCard}
+            onPress={() => setShowEnneagramModal(true)}
+          >
+            <View style={styles.enneagramContent}>
+              <View style={styles.enneagramTextContainer}>
+                <Text style={styles.enneagramTitle}>
+                  Type {profile?.eneagrama.type}
+                </Text>
+                <Text style={styles.enneagramSub}>
+                  Tap for more information
+                </Text>
+              </View>
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={THEME.colors.mutedForeground}
+              />
             </View>
-            <Ionicons
-              name="chevron-forward"
-              size={20}
-              color={THEME.colors.mutedForeground}
-            />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        ) : (
+          <EnneagramSkeleton />
+        )}
 
         {/* USER STATS */}
         <View style={styles.statsContainer}>
@@ -195,88 +221,114 @@ export function ProfileScreen() {
               size={24}
               color={THEME.colors.primary}
             />
-            <Text style={styles.statNumber}>24</Text>
+            <Text style={styles.statNumber}>{numberOfSessions}</Text>
             <Text style={styles.statLabel}>Sessions</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Ionicons name="calendar" size={24} color={THEME.colors.primary} />
-            <Text style={styles.statNumber}>3</Text>
-            <Text style={styles.statLabel}>Months</Text>
-          </View>
-
-          <View style={styles.statCard}>
             <Ionicons name="star" size={24} color={THEME.colors.primary} />
-            <Text style={styles.statNumber}>12</Text>
-            <Text style={styles.statLabel}>Goals</Text>
+            <Text style={styles.statNumber}>{numberOfEntriedInJournal}</Text>
+            <Text style={styles.statLabel}>Entries</Text>
           </View>
         </View>
 
         {/* BIG FIVE RADAR CHART */}
-        <View style={styles.personalityCard}>
-          <View style={styles.infoHeader}>
-            <Ionicons name="analytics" size={24} color={THEME.colors.primary} />
-            <Text style={styles.infoTitle}>Personality Insights</Text>
+        {isFetching ? (
+          <LoadingSpinner />
+        ) : (
+          <View style={styles.personalityCard}>
+            <View style={styles.infoHeader}>
+              <Ionicons
+                name="analytics"
+                size={24}
+                color={THEME.colors.primary}
+              />
+              <Text style={styles.infoTitle}>Personality Insights</Text>
+            </View>
+
+            <View style={styles.chartContainer}>
+              <RadarChart
+                data={
+                  profile?.ocean
+                    ? Object.values(profile.ocean).map((trait) => ({
+                        label: trait.label,
+                        value: trait.value,
+                      }))
+                    : []
+                }
+                size={screenWidth - 80}
+                maxValue={100}
+                scale={0.9}
+                fillColor={THEME.colors.background}
+                gradientColor={{
+                  startColor: THEME.colors.primary,
+                  endColor: THEME.colors.background,
+                  count: 5,
+                }}
+                stroke={[
+                  THEME.colors.border,
+                  THEME.colors.border,
+                  THEME.colors.border,
+                  THEME.colors.border,
+                  THEME.colors.primary,
+                ]}
+                strokeWidth={[0.5, 0.5, 0.5, 0.5, 1.5]}
+                strokeOpacity={[0.3, 0.3, 0.3, 0.3, 0.2]}
+                labelSize={14}
+                labelColor={THEME.colors.mutedForeground}
+                labelDistance={1.2}
+                dataFillColor={THEME.colors.primary}
+                dataFillOpacity={0.15}
+                dataStroke={THEME.colors.primary}
+                dataStrokeWidth={2}
+                dataStrokeOpacity={0.8}
+                divisionStroke={THEME.colors.border}
+                divisionStrokeWidth={1}
+                divisionStrokeOpacity={0.3}
+                isCircle
+              />
+            </View>
+
+            <Text style={styles.chartHelper}>
+              Tap on any trait to learn more about your personality profile
+            </Text>
+
+            <View style={styles.traitsLegend}>
+              {profile ? (
+                Object.values(profile.ocean).map((trait, index) => (
+                  <TouchableOpacity
+                    key={trait.label}
+                    style={styles.traitItem}
+                    onPress={() => handleTraitPress(trait)}
+                  >
+                    <View style={styles.traitScore}>
+                      <Text style={styles.traitScoreText}>{trait.value}%</Text>
+                    </View>
+                    <Text style={styles.traitLabel}>{trait.label}</Text>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <LoadingSpinner />
+              )}
+            </View>
           </View>
-
-          <View style={styles.chartContainer}>
-            <RadarChart
-              data={BIG_FIVE_DATA}
-              size={screenWidth - 80}
-              maxValue={100}
-              scale={0.9}
-              fillColor={THEME.colors.background}
-              gradientColor={{
-                startColor: THEME.colors.primary,
-                endColor: THEME.colors.background,
-                count: 5,
-              }}
-              stroke={[
-                THEME.colors.border,
-                THEME.colors.border,
-                THEME.colors.border,
-                THEME.colors.border,
-                THEME.colors.primary,
-              ]}
-              strokeWidth={[0.5, 0.5, 0.5, 0.5, 1.5]}
-              strokeOpacity={[0.3, 0.3, 0.3, 0.3, 0.2]}
-              labelSize={14}
-              labelColor={THEME.colors.mutedForeground}
-              labelDistance={1.2}
-              dataFillColor={THEME.colors.primary}
-              dataFillOpacity={0.15}
-              dataStroke={THEME.colors.primary}
-              dataStrokeWidth={2}
-              dataStrokeOpacity={0.8}
-              divisionStroke={THEME.colors.border}
-              divisionStrokeWidth={1}
-              divisionStrokeOpacity={0.3}
-              isCircle
-            />
-          </View>
-
-          <Text style={styles.chartHelper}>
-            Tap on any trait to learn more about your personality profile
-          </Text>
-
-          <View style={styles.traitsLegend}>
-            {BIG_FIVE_DATA.map((trait, index) => (
-              <TouchableOpacity
-                key={trait.label}
-                style={styles.traitItem}
-                onPress={() => handleTraitPress(index)}
-              >
-                <View style={styles.traitScore}>
-                  <Text style={styles.traitScoreText}>{trait.value}%</Text>
-                </View>
-                <Text style={styles.traitLabel}>{trait.label}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
+        )}
         {/* ACTION BUTTONS */}
         <View style={styles.actionButtons}>
+          <TouchableOpacity
+            onPress={async () => {
+              const url = await authService.getPdfCompleteUrl();
+              await WebBrowser.openBrowserAsync(url);
+            }}
+            style={styles.downloadButton}
+          >
+            <Ionicons
+              name="document-text"
+              size={20}
+              color={THEME.colors.primaryForeground}
+            />
+            <Text style={styles.downloadText}>Download Medical Record</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Ionicons
               name="log-out"
@@ -334,7 +386,7 @@ export function ProfileScreen() {
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>
-                Enneagram Type {MOCK_ENNEAGRAM.type}: {MOCK_ENNEAGRAM.title}
+                Enneagram Type {profile?.eneagrama.type}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowEnneagramModal(false)}
@@ -351,7 +403,7 @@ export function ProfileScreen() {
               <Text style={styles.modalScoreLabel}>Details</Text>
             </View>
             <Text style={styles.modalDescription}>
-              {MOCK_ENNEAGRAM.description}
+              {profile?.eneagrama.description}
             </Text>
           </View>
         </Modal>

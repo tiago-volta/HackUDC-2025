@@ -6,7 +6,8 @@ public record UserMeDTO(
         String completeName,
         String birthDate,
         String occupation,
-        String nacionality
+        String nacionality,
+        String dateOfCreation
 ) {
 
 

@@ -277,4 +277,11 @@ export const styles = StyleSheet.create({
     color: THEME.colors.mutedForeground,
     lineHeight: 20,
   },
+  noteInputModified: {
+    borderWidth: 2,
+    borderColor: THEME.colors.primary,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+  },
 });

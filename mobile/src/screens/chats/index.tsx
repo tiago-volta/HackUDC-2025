@@ -1,24 +1,28 @@
+import { Ionicons } from "@expo/vector-icons";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps, useFocusEffect } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  SectionList,
   RefreshControl,
+  SafeAreaView,
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { styles } from "./styles";
 import { THEME } from "../../constants/theme";
-import { Ionicons } from "@expo/vector-icons";
-import { DrawerScreenProps } from "@react-navigation/drawer";
-import { RootDrawerParamList } from "../../navigation";
-import { chatService } from "../../core/services/chat.service";
 import { ChatPreview, GroupedChats } from "../../core/domain/chat";
-import { useFocusEffect } from "@react-navigation/native";
+import { chatService } from "../../core/services/chat.service";
+import { MainTabParamList, RootStackParamList } from "../../navigation";
+import { styles } from "./styles";
+import { DeleteConfirmationModal } from "../../components/delete-confirmation-modal";
 
 export type ChatsParams = {};
-
-type Props = DrawerScreenProps<RootDrawerParamList, "Chats">;
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, "Chats">,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 const formatDate = (date: string) => {
   date = date.replaceAll("-", "/");
@@ -66,6 +70,29 @@ export function ChatsScreen({ navigation, route }: Props) {
     }, [fetchChats])
   );
 
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
+  const [selectedChat, setSelectedChat] = React.useState<ChatPreview | null>(
+    null
+  );
+
+  const handleDeletePress = (chat: ChatPreview) => {
+    setSelectedChat(chat);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedChat) return;
+
+    try {
+      await chatService.deleteChat(selectedChat.id);
+      await fetchChats();
+      setIsDeleteModalVisible(false);
+      setSelectedChat(null);
+    } catch (error) {
+      console.error("Failed to delete chat:", error);
+    }
+  };
+
   const renderChatItem = ({ item }: { item: ChatPreview }) => (
     <TouchableOpacity
       style={styles.chatCard}
@@ -82,6 +109,16 @@ export function ChatsScreen({ navigation, route }: Props) {
       <View style={styles.chatContent}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatTitle}>{item.title}</Text>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => handleDeletePress(item)}
+          >
+            <Ionicons
+              name="trash-outline"
+              size={20}
+              color={THEME.colors.destructive}
+            />
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.chatPreview} numberOfLines={1}>
@@ -129,45 +166,68 @@ export function ChatsScreen({ navigation, route }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Your Conversations</Text>
-        <Text style={styles.subtitle}>
-          Continue your journey to better mental health
-        </Text>
-      </View>
-
-      <TouchableOpacity style={styles.newChatButton} onPress={onNewChatPress}>
-        <Ionicons name="add" size={24} color={THEME.colors.primaryForeground} />
-        <Text style={styles.newChatButtonText}>Start New Conversation</Text>
-      </TouchableOpacity>
-
-      <SectionList
-        sections={getSectionData()}
-        renderItem={renderChatItem}
-        renderSectionHeader={renderDateSection}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.chatList}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={THEME.colors.primary}
-            colors={[THEME.colors.primary]}
-          />
-        }
-        ListEmptyComponent={() => (
-          <View style={styles.emptyState}>
-            <Ionicons
-              name="chatbubble-outline"
-              size={48}
-              color={THEME.colors.mutedForeground}
+      <View style={styles.content}>
+        <SectionList
+          sections={getSectionData()}
+          renderItem={renderChatItem}
+          renderSectionHeader={renderDateSection}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.chatList}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => (
+            <View style={styles.header}>
+              <Text style={styles.title}>Your Conversations</Text>
+              <Text style={styles.subtitle}>
+                Continue your journey to better mental health
+              </Text>
+            </View>
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={THEME.colors.primary}
+              colors={[THEME.colors.primary]}
             />
-            <Text style={styles.emptyStateText}>
-              No conversations yet.{"\n"}Start a new chat to begin.
-            </Text>
+          }
+          ListEmptyComponent={() => (
+            <View style={styles.emptyState}>
+              <Ionicons
+                name="chatbubble-outline"
+                size={48}
+                color={THEME.colors.mutedForeground}
+              />
+              <Text style={styles.emptyStateText}>
+                No conversations yet.{"\n"}Tap + to start a new chat.
+              </Text>
+            </View>
+          )}
+        />
+
+        {/* Floating Action Button */}
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={onNewChatPress}
+          activeOpacity={0.8}
+        >
+          <View style={styles.fabIcon}>
+            <Ionicons
+              name="add"
+              size={28}
+              color={THEME.colors.primaryForeground}
+            />
           </View>
-        )}
+          <Text style={styles.fabText}>New Chat</Text>
+        </TouchableOpacity>
+      </View>
+      <DeleteConfirmationModal
+        isVisible={isDeleteModalVisible}
+        chatTitle={selectedChat?.title ?? ""}
+        onClose={() => {
+          setIsDeleteModalVisible(false);
+          setSelectedChat(null);
+        }}
+        onConfirm={handleDeleteConfirm}
       />
     </SafeAreaView>
   );

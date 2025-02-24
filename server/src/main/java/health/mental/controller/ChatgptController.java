@@ -55,7 +55,7 @@ public class ChatgptController {
         String res = chatgptResponse.getChoices().get(0).getMessage().getContent().toString();
        res = res.replace("```json", "");
         res = res.replace("```", "");
-        System.err.println(res + "res");
+
         return ResponseEntity.ok(res + " Ola");
     }
 

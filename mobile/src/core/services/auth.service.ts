@@ -1,12 +1,19 @@
 import { JwtTokenValue } from "../../@types/jwt-token";
+import { CONFIG } from "../../constants/config";
 import { authApi } from "../../data/http/auth.api";
 import { JwtTokenValueMapper } from "../../data/mappers/token.mapper";
 import {
   UserAuthRequestMapper,
   UserMapper,
+  UserProfileMapper,
   UserRegisterRequestMapper,
 } from "../../data/mappers/user.mapper";
-import { User, UserAuthRequest, UserRegisterRequest } from "../domain/user";
+import {
+  User,
+  UserAuthRequest,
+  UserProfile,
+  UserRegisterRequest,
+} from "../domain/user";
 
 class AuthService {
   private currentUser: User | null = null;
@@ -54,6 +61,21 @@ class AuthService {
     const res = await authApi.getUserInfo();
     const user = UserMapper.toDomain(res);
     return user;
+  }
+
+  async getProfile(): Promise<UserProfile | null> {
+    try {
+      const response = await authApi.getProfile();
+      return UserProfileMapper.toDomain(response);
+    } catch (error) {
+      console.error("[AuthService] Failed to get profile:", error);
+      return null;
+    }
+  }
+
+  async getPdfCompleteUrl(): Promise<string> {
+    const res = await authApi.getPdfCompleteUrl();
+    return CONFIG.API.BASE_URL + "/static" + res;
   }
 }
 

@@ -1,0 +1,19 @@
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=mental\r\n\r\n# SERVER CONFIGURATION\r\nspring.datasource.url=jdbc:mysql://localhost:3306/hackathon\r\nspring.datasource.username=root\r\nspring.datasource.password=\r\nspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver\r\n\r\n# JPA CONFIGURATION ( choose: create, update, validate, none )\r\nspring.jpa.hibernate.ddl-auto=update\r\n\r\n# SECURITY\r\napi.security.token.secret=secret\r\n\r\n#Jose\r\njose.is.enable.jose=false\r\n\r\n#ChatGpt\r\nchatgpt.model=gpt-3.5-turbo\r\nchatgpt.api.url=https://api.openai.com/v1/chat/completions\r\nchatgpt.api.key=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\r\n\r\n#Swagger\r\nspringdoc.swagger-ui.path=/api-docs\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 13814a4a6cc44d13d7e223ab55842ebee0f1892a)
++++ b/src/main/resources/application.properties	(date 1740242856816)
+@@ -16,7 +16,7 @@
+ jose.is.enable.jose=false
+ 
+ #ChatGpt
+-chatgpt.model=gpt-3.5-turbo
++chatgpt.model=gpt-4o-mini
+ chatgpt.api.url=https://api.openai.com/v1/chat/completions
+ chatgpt.api.key=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
+ 
